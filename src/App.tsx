@@ -1,9 +1,7 @@
+import InsuranceForm from "./modules/insurance-form/insurance-form";
+
 function App() {
-  return (
-    <div>
-      <h1 className="text-3xl font-bold">Hi</h1>
-    </div>
-  );
+  return <InsuranceForm />;
 }
 
 export default App;
