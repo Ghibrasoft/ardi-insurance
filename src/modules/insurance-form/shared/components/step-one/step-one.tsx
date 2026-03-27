@@ -27,6 +27,7 @@ export const StepOne = ({
   const {
     plateState,
     handlePlateLookup,
+    handlePlateKeyDown,
     handleDriverInfoBlur,
     handleVehicleInfoBlur,
     handleDriverInfoChange,
@@ -204,6 +205,7 @@ export const StepOne = ({
                 onBlur={() =>
                   handleVehicleInfoBlur(InsuranceFormFieldNames.PLATE_NUMBER)
                 }
+                onKeyDown={handlePlateKeyDown}
               />
               {plateState.isFound ? (
                 <div className="shrink-0 w-10 h-10 rounded-lg bg-green-50 border border-green-200 flex items-center justify-center text-green-500">
@@ -232,6 +234,8 @@ export const StepOne = ({
               required
             >
               <Input
+                disabled
+                clearable={false}
                 name={InsuranceFormFieldNames.MAKE}
                 placeholder={
                   INSURANCE_FORM_FIELD_PLACEHOLDERS[
@@ -239,7 +243,6 @@ export const StepOne = ({
                   ]
                 }
                 value={data.vehicle.make}
-                disabled
                 error={!!errors.vehicle.make}
                 onChange={(e) =>
                   handleVehicleInfoChange(
@@ -259,6 +262,8 @@ export const StepOne = ({
               required
             >
               <Input
+                disabled
+                clearable={false}
                 name={InsuranceFormFieldNames.MODEL}
                 placeholder={
                   INSURANCE_FORM_FIELD_PLACEHOLDERS[
@@ -266,7 +271,6 @@ export const StepOne = ({
                   ]
                 }
                 value={data.vehicle.model}
-                disabled
                 error={!!errors.vehicle.model}
                 onChange={(e) =>
                   handleVehicleInfoChange(
@@ -286,6 +290,8 @@ export const StepOne = ({
               required
             >
               <Input
+                disabled
+                clearable={false}
                 name={InsuranceFormFieldNames.YEAR}
                 type="number"
                 placeholder={
@@ -294,7 +300,6 @@ export const StepOne = ({
                   ]
                 }
                 value={data.vehicle.year ?? ""}
-                disabled
                 error={!!errors.vehicle.year}
                 onChange={(e) =>
                   handleVehicleInfoChange(

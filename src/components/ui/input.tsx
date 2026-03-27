@@ -56,13 +56,16 @@ const maskFunctions: Record<MaskVariant, (value: string) => string> = {
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
+  clearable?: boolean;
   maskVariant?: MaskVariant;
 }
 
 export function Input({
+  value,
   error,
   maskVariant,
   className = "",
+  clearable = true,
   onFocus,
   onChange,
   ...props
@@ -99,22 +102,42 @@ export function Input({
     [maskVariant, onChange, onFocus]
   );
 
+  const handleClear = useCallback(() => {
+    const e = {
+      target: { value: "" },
+    } as unknown as React.ChangeEvent<HTMLInputElement>;
+    onChange?.(e);
+  }, [onChange]);
+
   return (
-    <input
-      {...props}
-      className={cn(
-        "w-full px-3 py-2.5 rounded-lg border text-sm",
-        "bg-white text-gray-900 placeholder:text-gray-400",
-        "outline-none transition-all duration-150",
-        "disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed",
-        error
-          ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
-          : "border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100",
-        className
+    <div className="relative w-full">
+      <input
+        {...props}
+        value={value}
+        className={cn(
+          "w-full px-3 py-2.5 rounded-lg border text-sm",
+          "bg-white text-gray-900 placeholder:text-gray-400",
+          "outline-none transition-all duration-150",
+          "disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed",
+          error
+            ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
+            : "border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100",
+          className,
+          value ? "pr-8" : ""
+        )}
+        maxLength={maxLength}
+        onFocus={handleFocus}
+        onChange={handleChange}
+      />
+      {clearable && value && (
+        <button
+          type="button"
+          onClick={handleClear}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+        >
+          ×
+        </button>
       )}
-      maxLength={maxLength}
-      onFocus={handleFocus}
-      onChange={handleChange}
-    />
+    </div>
   );
 }

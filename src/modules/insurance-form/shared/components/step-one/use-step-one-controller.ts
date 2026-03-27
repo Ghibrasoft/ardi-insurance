@@ -76,7 +76,16 @@ export const useStepOneController = ({
   const handlePlateNumberChange = useCallback(
     (value: string) => {
       setPlateState({ isFound: false, isLoading: false, error: null });
-      onChange({ ...data, vehicle: { ...data.vehicle, plateNumber: value } });
+      onChange({
+        ...data,
+        vehicle: {
+          ...data.vehicle,
+          plateNumber: value,
+          ...(value.trim() === ""
+            ? { make: "", model: "", year: null, marketValue: null }
+            : {}),
+        },
+      });
     },
     [data, onChange]
   );
@@ -114,12 +123,22 @@ export const useStepOneController = ({
       });
     }
   }, [data, onChange]);
+  const handlePlateKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handlePlateLookup();
+      }
+    },
+    [handlePlateLookup]
+  );
 
   return {
     plateState,
+    handlePlateLookup,
+    handlePlateKeyDown,
     handleDriverInfoBlur,
     handleVehicleInfoBlur,
-    handlePlateLookup,
     handleDriverInfoChange,
     handleVehicleInfoChange,
     handlePlateNumberChange,
