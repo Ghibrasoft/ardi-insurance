@@ -1,13 +1,14 @@
-import { SectionCard } from "../../../../components/ui/section-card";
-import { FormField } from "../../../../components/ui/form-field";
-import { Input } from "../../../../components/ui/input";
-import { Button } from "../../../../components/ui/button";
+import { SectionCard } from "../../../../../components/ui/section-card";
+import { FormField } from "../../../../../components/ui/form-field";
+import { Input } from "../../../../../components/ui/input";
+import { Button } from "../../../../../components/ui/button";
 import {
   INSURANCE_FORM_FIELD_PLACEHOLDERS,
   INSURANCE_FORM_FIELD_LABELS,
   InsuranceFormFieldNames,
-} from "../../insurance-form-config";
-import type { IStepOneData } from "../insurance-form-types";
+} from "../../../insurance-form-config";
+import type { IStepOneData } from "../../insurance-form-types";
+import { useStepOneController } from "./use-step-one-controller";
 
 interface StepOneProps {
   data: IStepOneData;
@@ -15,22 +16,16 @@ interface StepOneProps {
 }
 
 export const StepOne = ({ data, onChange }: StepOneProps) => {
-  const handleDriverChange = (field: string, value: string) => {
-    onChange({
-      ...data,
-      driver: { ...data.driver, [field]: value },
-    });
-  };
-
-  const handleVehicleChange = (
-    field: string,
-    value: string | number | null
-  ) => {
-    onChange({
-      ...data,
-      vehicle: { ...data.vehicle, [field]: value },
-    });
-  };
+  const {
+    plateState,
+    handlePlateLookup,
+    handleDriverChange,
+    handleVehicleChange,
+    handlePlateNumberChange,
+  } = useStepOneController({
+    data,
+    onChange,
+  });
 
   return (
     <div className="flex flex-col gap-6">
@@ -162,33 +157,47 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
       >
         <div className="flex flex-col gap-4">
           {/* Plate lookup */}
-          <FormField
-            label={
-              INSURANCE_FORM_FIELD_LABELS[InsuranceFormFieldNames.PLATE_NUMBER]
-            }
-            required
-          >
-            <div className="flex gap-2">
-              <Input
-                name={InsuranceFormFieldNames.PLATE_NUMBER}
-                placeholder={
-                  INSURANCE_FORM_FIELD_PLACEHOLDERS[
-                    InsuranceFormFieldNames.PLATE_NUMBER
-                  ]
-                }
-                value={data.vehicle.plateNumber}
-                onChange={(e) =>
-                  handleVehicleChange(
-                    InsuranceFormFieldNames.PLATE_NUMBER,
-                    e.target.value
-                  )
-                }
-              />
-              <Button variant="secondary" className="shrink-0">
-                ძებნა
-              </Button>
-            </div>
-          </FormField>
+          <form>
+            <FormField
+              label={
+                INSURANCE_FORM_FIELD_LABELS[
+                  InsuranceFormFieldNames.PLATE_NUMBER
+                ]
+              }
+              error={plateState.error ?? undefined}
+              required
+            >
+              <div className="flex gap-2">
+                <Input
+                  name={InsuranceFormFieldNames.PLATE_NUMBER}
+                  placeholder={
+                    INSURANCE_FORM_FIELD_PLACEHOLDERS[
+                      InsuranceFormFieldNames.PLATE_NUMBER
+                    ]
+                  }
+                  value={data.vehicle.plateNumber}
+                  onChange={(e) => handlePlateNumberChange(e.target.value)}
+                />
+
+                {plateState.isFound ? (
+                  <div className="shrink-0 w-10 h-10 rounded-lg bg-green-50 border border-green-200 flex items-center justify-center text-green-500">
+                    ✓
+                  </div>
+                ) : (
+                  <Button
+                    type="submit"
+                    variant="secondary"
+                    className="shrink-0"
+                    isLoading={plateState.isLoading}
+                    disabled={!data.vehicle.plateNumber.trim()}
+                    onClick={handlePlateLookup}
+                  >
+                    ძებნა
+                  </Button>
+                )}
+              </div>
+            </FormField>
+          </form>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
