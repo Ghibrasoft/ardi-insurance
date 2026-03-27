@@ -1,10 +1,11 @@
-import { SectionCard } from "../../../../../components/ui/section-card";
-import { SummaryRow } from "../../../../../components/ui/summary-row";
-import { formatDate } from "../../../../../lib/utils/format-date";
-import { formatPrice } from "../../../../../lib/utils/format-price";
-import type { IQuoteSummary } from "../../insurance-form-types";
-import { StepFour } from "../step-four/step-four";
-import { useStepThreeController } from "./use-step-three-controller";
+import { SectionCard } from "../../../../components/ui/section-card";
+import { SummaryRow } from "../../../../components/ui/summary-row";
+import { ADDONS } from "../../../../lib/constants/insurance-addons";
+import { PACKAGES } from "../../../../lib/constants/insurance-packages";
+import { formatDate } from "../../../../lib/utils/format-date";
+import { formatPrice } from "../../../../lib/utils/format-price";
+import type { IQuoteSummary } from "../insurance-form-types";
+import { StepFour } from "./step-four/step-four";
 
 interface StepThreeProps {
   isFormSucceed: boolean;
@@ -12,9 +13,8 @@ interface StepThreeProps {
 }
 
 export const StepThree = ({ quote, isFormSucceed }: StepThreeProps) => {
-  const { pkg, selectedAddons } = useStepThreeController({
-    quote,
-  });
+  const pkg = PACKAGES.find((p) => p.id === quote?.packageId)!;
+  const selectedAddons = ADDONS.filter((a) => quote?.addons.includes(a.id));
 
   if (isFormSucceed) return <StepFour quote={quote} />;
 

@@ -2,7 +2,7 @@ import { Stepper } from "../../components/layout/stepper";
 import { InsuranceFormHeader } from "./shared/components/insurance-form-header";
 import { InsuranceFormNavigation } from "./shared/components/insurance-form-navigation";
 import { StepOne } from "./shared/components/step-one/step-one";
-import { StepThree } from "./shared/components/step-three/step-three";
+import { StepThree } from "./shared/components/step-three";
 import { StepTwo } from "./shared/components/step-two/step-two";
 import { InsuranceFormStepsEnum } from "./shared/insurance-form-types";
 import { useInsuranceFormController } from "./use-insurance-form-controller";
