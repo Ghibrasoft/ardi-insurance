@@ -1,30 +1,25 @@
-import { SectionCard } from "../../../../components/ui/section-card";
-import { ADDONS } from "../../../../lib/constants/insurance-addons";
-import { PACKAGES } from "../../../../lib/constants/insurance-packages";
-import {
-  calculatePremium,
-  getPolicyDates,
-} from "../../../../lib/utils/calculations";
-import { formatDate } from "../../../../lib/utils/format-date";
-import { formatPrice } from "../../../../lib/utils/format-price";
-import type { IStepOneData, IStepTwoData } from "../insurance-form-types";
+import { SectionCard } from "../../../../../components/ui/section-card";
+import { formatDate } from "../../../../../lib/utils/format-date";
+import { formatPrice } from "../../../../../lib/utils/format-price";
+import type { IStepOneData, IStepTwoData } from "../../insurance-form-types";
+import { useStepThreeController } from "./use-step-three-controller";
 
 interface StepThreeProps {
-  step1Data: IStepOneData;
-  step2Data: IStepTwoData;
+  stepOneData: IStepOneData;
+  stepTwoData: IStepTwoData;
 }
 
-export const StepThree = ({ step1Data, step2Data }: StepThreeProps) => {
-  const pkg = PACKAGES.find((p) => p.id === step2Data.packageId)!;
-  const selectedAddons = ADDONS.filter((a) => step2Data.addons.includes(a.id));
-  const { startDate, endDate } = getPolicyDates();
-
-  const { annualPremium, monthlyPremium } = calculatePremium({
-    addons: step2Data.addons,
-    packageId: step2Data.packageId,
-    vehicleYear: step1Data.vehicle.year!,
-    dateOfBirth: step1Data.driver.dateOfBirth,
-    marketValue: step1Data.vehicle.marketValue!,
+export const StepThree = ({ stepOneData, stepTwoData }: StepThreeProps) => {
+  const {
+    pkg,
+    endDate,
+    startDate,
+    annualPremium,
+    monthlyPremium,
+    selectedAddons,
+  } = useStepThreeController({
+    stepOneData,
+    stepTwoData,
   });
 
   return (
@@ -34,17 +29,17 @@ export const StepThree = ({ step1Data, step2Data }: StepThreeProps) => {
         <div className="grid grid-cols-2 gap-3 text-sm">
           <SummaryRow
             label="სახელი და გვარი"
-            value={`${step1Data.driver.firstName} ${step1Data.driver.lastName}`}
+            value={`${stepOneData.driver.firstName} ${stepOneData.driver.lastName}`}
           />
           <SummaryRow
             label="პირადი ნომერი"
-            value={step1Data.driver.personalId}
+            value={stepOneData.driver.personalId}
           />
           <SummaryRow
             label="დაბადების თარიღი"
-            value={step1Data.driver.dateOfBirth}
+            value={stepOneData.driver.dateOfBirth}
           />
-          <SummaryRow label="ტელეფონი" value={`${step1Data.driver.phone}`} />
+          <SummaryRow label="ტელეფონი" value={`${stepOneData.driver.phone}`} />
         </div>
       </SectionCard>
 
@@ -53,16 +48,19 @@ export const StepThree = ({ step1Data, step2Data }: StepThreeProps) => {
         <div className="grid grid-cols-2 gap-3 text-sm">
           <SummaryRow
             label="სახელმწიფო ნომერი"
-            value={step1Data.vehicle.plateNumber}
+            value={stepOneData.vehicle.plateNumber}
           />
           <SummaryRow
             label="მარკა / მოდელი"
-            value={`${step1Data.vehicle.make} ${step1Data.vehicle.model}`}
+            value={`${stepOneData.vehicle.make} ${stepOneData.vehicle.model}`}
           />
-          <SummaryRow label="გამოშვების წელი" value={step1Data.vehicle.year} />
+          <SummaryRow
+            label="გამოშვების წელი"
+            value={stepOneData.vehicle.year}
+          />
           <SummaryRow
             label="საბაზრო ღირებულება"
-            value={`${formatPrice(step1Data.vehicle.marketValue ?? 0)} ₾`}
+            value={`${formatPrice(stepOneData.vehicle.marketValue ?? 0)} ₾`}
           />
         </div>
       </SectionCard>
@@ -80,7 +78,7 @@ export const StepThree = ({ step1Data, step2Data }: StepThreeProps) => {
         </div>
       </SectionCard>
 
-      {/* Premium */}
+      {/* Bonus */}
       <SectionCard title="პრემია">
         <div className="flex flex-col gap-3 text-sm">
           <SummaryRow label="პოლისის დაწყება" value={formatDate(startDate)} />

@@ -1,7 +1,7 @@
 import { Stepper } from "../../components/layout/stepper";
 import { Button } from "../../components/ui/button";
 import { StepOne } from "./shared/components/step-one/step-one";
-import { StepThree } from "./shared/components/step-three";
+import { StepThree } from "./shared/components/step-three/step-three";
 import { StepTwo } from "./shared/components/step-two";
 import { useInsuranceFormController } from "./use-insurance-form-controller";
 
@@ -52,8 +52,8 @@ export default function InsuranceForm() {
             )}
             {currentStep === 3 && (
               <StepThree
-                step1Data={collectedData.stepOneData}
-                step2Data={collectedData.stepTwoData}
+                stepOneData={collectedData.stepOneData}
+                stepTwoData={collectedData.stepTwoData}
               />
             )}
           </div>
