@@ -14,9 +14,9 @@ export default function InsuranceForm() {
     handleBack,
     handleSubmit,
     handleNextClick,
-    setStepOneErrors,
     handleSubmitStepOne,
     handleSubmitStepTwo,
+    handleStepOneErrorsChange,
   } = useInsuranceFormController();
 
   return (
@@ -41,7 +41,7 @@ export default function InsuranceForm() {
                 errors={stepOneErrors}
                 data={collectedData.stepOneData}
                 onChange={handleSubmitStepOne}
-                onErrorsChange={setStepOneErrors}
+                onErrorsChange={handleStepOneErrorsChange}
               />
             )}
             {currentStep === 2 && (

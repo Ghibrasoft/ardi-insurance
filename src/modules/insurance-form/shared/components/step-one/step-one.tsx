@@ -9,6 +9,7 @@ import {
 } from "../../../insurance-form-config";
 import type { IStepOneData, IStepOneErrors } from "../../insurance-form-types";
 import { useStepOneController } from "./use-step-one-controller";
+import { PLATE_NUMBER_REGEX } from "../../utils/validation";
 
 interface StepOneProps {
   data: IStepOneData;
@@ -160,6 +161,7 @@ export const StepOne = ({
               placeholder={
                 INSURANCE_FORM_FIELD_PLACEHOLDERS[InsuranceFormFieldNames.PHONE]
               }
+              maskVariant="phone"
               value={data.driver.phone}
               error={!!errors.driver.phone}
               onChange={(e) =>
@@ -195,6 +197,7 @@ export const StepOne = ({
                     InsuranceFormFieldNames.PLATE_NUMBER
                   ]
                 }
+                maskVariant="plate-number"
                 value={data.vehicle.plateNumber}
                 error={!!errors.vehicle.plateNumber || !!plateState.error}
                 onChange={(e) => handlePlateNumberChange(e.target.value)}
@@ -211,7 +214,9 @@ export const StepOne = ({
                   variant="secondary"
                   className="shrink-0"
                   isLoading={plateState.isLoading}
-                  disabled={!data.vehicle.plateNumber.trim()}
+                  disabled={
+                    !PLATE_NUMBER_REGEX.test(data.vehicle.plateNumber.trim())
+                  }
                   onClick={handlePlateLookup}
                 >
                   ძებნა
@@ -234,6 +239,7 @@ export const StepOne = ({
                   ]
                 }
                 value={data.vehicle.make}
+                disabled
                 error={!!errors.vehicle.make}
                 onChange={(e) =>
                   handleVehicleInfoChange(
@@ -260,6 +266,7 @@ export const StepOne = ({
                   ]
                 }
                 value={data.vehicle.model}
+                disabled
                 error={!!errors.vehicle.model}
                 onChange={(e) =>
                   handleVehicleInfoChange(
@@ -287,6 +294,7 @@ export const StepOne = ({
                   ]
                 }
                 value={data.vehicle.year ?? ""}
+                disabled
                 error={!!errors.vehicle.year}
                 onChange={(e) =>
                   handleVehicleInfoChange(

@@ -4,6 +4,9 @@ import type {
   FieldErrorsType,
 } from "../insurance-form-types";
 
+export const PHONE_REGEX = /^\+\(995\) \d{3} \d{3} \d{3}$/;
+export const PLATE_NUMBER_REGEX = /^[A-Z]{2}-\d{3}-[A-Z]{2}$/i;
+
 // Helpers
 function getAge(dateOfBirth: string): number {
   const dob = new Date(dateOfBirth);
@@ -15,8 +18,7 @@ function getAge(dateOfBirth: string): number {
 }
 
 function isValidGeorgianPhone(phone: string): boolean {
-  const cleaned = phone.replace(/\s+/g, "");
-  return /^(\+995|0)5\d{8}$/.test(cleaned);
+  return PHONE_REGEX.test(phone.trim());
 }
 
 // Field-level validators
@@ -34,9 +36,9 @@ export const driverValidators: {
     if (getAge(v) < 18) return "მძღოლი უნდა იყოს მინიმუმ 18 წლის";
   },
   phone: (v) => {
-    if (!v.trim()) return "ტელეფონი სავალდებულოა";
+    if (!v.trim() || v.trim() === "+(995) ") return "ტელეფონი სავალდებულოა";
     if (!isValidGeorgianPhone(v))
-      return "ტელეფონის ფორმატი არასწორია (+995 5XX XXX XXX)";
+      return "ტელეფონის ფორმატი არასწორია +(995) 555 123 456";
   },
 };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type {
   StepType,
   IStepOneData,
@@ -31,23 +31,28 @@ export const useInsuranceFormController = () => {
     vehicle: {},
   });
 
-  const handleSubmitStepOne = (data: IStepOneData) => {
+  const handleSubmitStepOne = useCallback((data: IStepOneData) => {
     setCollectedData((prev) => ({ ...prev, stepOneData: data }));
-  };
+  }, []);
+  const handleStepOneErrorsChange = useCallback((errors: IStepOneErrors) => {
+    setStepOneErrors(errors);
+  }, []);
 
-  const handleSubmitStepTwo = (data: IStepTwoData) => {
+  const handleSubmitStepTwo = useCallback((data: IStepTwoData) => {
     setCollectedData((prev) => ({ ...prev, stepTwoData: data }));
-  };
+  }, []);
 
-  const handleNextClick = () => {
+  const handleNext = useCallback(() => {
+    if (currentStep < 3) setCurrentStep((prev) => (prev + 1) as StepType);
+  }, [currentStep]);
+
+  const handleNextClick = useCallback(() => {
     if (currentStep === 1) {
       const driverErrors = validateDriverInfo(collectedData.stepOneData.driver);
       const vehicleErrors = validateVehicleInfo(
         collectedData.stepOneData.vehicle
       );
-
       setStepOneErrors({ driver: driverErrors, vehicle: vehicleErrors });
-
       const isValid =
         Object.keys(driverErrors).length === 0 &&
         Object.keys(vehicleErrors).length === 0;
@@ -56,14 +61,8 @@ export const useInsuranceFormController = () => {
       return;
     }
 
-    if (currentStep === 2) {
-      handleNext();
-    }
-  };
-
-  const handleNext = () => {
-    if (currentStep < 3) setCurrentStep((prev) => (prev + 1) as StepType);
-  };
+    if (currentStep === 2) handleNext();
+  }, [currentStep, collectedData, handleNext]);
 
   const handleBack = () => {
     if (currentStep > 1) setCurrentStep((prev) => (prev - 1) as StepType);
@@ -71,9 +70,19 @@ export const useInsuranceFormController = () => {
 
   const handleSubmit = async () => {
     setFormState({ error: null, isLoading: true });
-
+    const readyParams = {
+      ...collectedData,
+      stepOneData: {
+        ...collectedData.stepOneData,
+        driver: {
+          ...collectedData.stepOneData.driver,
+          phone:
+            "+" + collectedData.stepOneData.driver.phone.replace(/[^0-9]/g, ""),
+        },
+      },
+    };
     try {
-      await submitInsuranceForm(collectedData);
+      await submitInsuranceForm(readyParams);
       setFormState({ error: null, isLoading: false });
     } catch {
       setFormState({
@@ -91,8 +100,8 @@ export const useInsuranceFormController = () => {
     handleBack,
     handleSubmit,
     handleNextClick,
-    setStepOneErrors,
     handleSubmitStepOne,
     handleSubmitStepTwo,
+    handleStepOneErrorsChange,
   };
 };
