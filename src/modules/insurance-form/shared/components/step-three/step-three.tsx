@@ -26,7 +26,7 @@ export const StepThree = ({ stepOneData, stepTwoData }: StepThreeProps) => {
     <div className="flex flex-col gap-6">
       {/* Driver */}
       <SectionCard title="მძღოლის ინფორმაცია">
-        <div className="grid grid-cols-2 gap-3 text-sm">
+        <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
           <SummaryRow
             label="სახელი და გვარი"
             value={`${stepOneData.driver.firstName} ${stepOneData.driver.lastName}`}
@@ -45,7 +45,7 @@ export const StepThree = ({ stepOneData, stepTwoData }: StepThreeProps) => {
 
       {/* Vehicle */}
       <SectionCard title="ავტომობილის ინფორმაცია">
-        <div className="grid grid-cols-2 gap-3 text-sm">
+        <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
           <SummaryRow
             label="სახელმწიფო ნომერი"
             value={stepOneData.vehicle.plateNumber}
@@ -83,18 +83,16 @@ export const StepThree = ({ stepOneData, stepTwoData }: StepThreeProps) => {
         <div className="flex flex-col gap-3 text-sm">
           <SummaryRow label="პოლისის დაწყება" value={formatDate(startDate)} />
           <SummaryRow label="პოლისის დასრულება" value={formatDate(endDate)} />
-          <div className="border-t border-gray-100 pt-3 mt-1 flex flex-col gap-2">
-            <SummaryRow
-              label="წლიური პრემია"
-              value={`${formatPrice(annualPremium)} ₾`}
-              highlight
-            />
-            <SummaryRow
-              label="თვიური გადახდა"
-              value={`${formatPrice(monthlyPremium)} ₾`}
-              highlight
-            />
-          </div>
+          <SummaryRow
+            label="წლიური პრემია"
+            value={`${formatPrice(annualPremium)} ₾`}
+            highlight
+          />
+          <SummaryRow
+            label="თვიური გადახდა"
+            value={`${formatPrice(monthlyPremium)} ₾`}
+            highlight
+          />
         </div>
       </SectionCard>
     </div>
@@ -108,14 +106,14 @@ interface SummaryRowProps {
 }
 
 function SummaryRow({ label, value, highlight }: SummaryRowProps) {
-  const display =
+  const computedValue =
     value === null || value === undefined || value.toString().trim() === ""
       ? "N/A"
       : String(value);
 
   return (
     <div className="flex justify-between items-center">
-      <span className="text-gray-500">{label}</span>
+      <span className="text-gray-500 text-left">{label}</span>
       <span
         className={
           highlight
@@ -123,7 +121,7 @@ function SummaryRow({ label, value, highlight }: SummaryRowProps) {
             : "font-medium text-gray-900"
         }
       >
-        {display}
+        {computedValue}
       </span>
     </div>
   );

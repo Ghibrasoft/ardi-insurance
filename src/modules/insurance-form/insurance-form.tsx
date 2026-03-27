@@ -1,8 +1,10 @@
 import { Stepper } from "../../components/layout/stepper";
-import { Button } from "../../components/ui/button";
+import { InsuranceFormHeader } from "./shared/components/insurance-form-header";
+import { InsuranceFormNavigation } from "./shared/components/insurance-form-navigation";
 import { StepOne } from "./shared/components/step-one/step-one";
 import { StepThree } from "./shared/components/step-three/step-three";
 import { StepTwo } from "./shared/components/step-two/step-two";
+import { InsuranceFormStepsEnum } from "./shared/insurance-form-types";
 import { useInsuranceFormController } from "./use-insurance-form-controller";
 
 export default function InsuranceForm() {
@@ -19,63 +21,53 @@ export default function InsuranceForm() {
     handleStepOneErrorsChange,
   } = useInsuranceFormController();
 
+  const renderFormContent = (step: InsuranceFormStepsEnum) => {
+    switch (step) {
+      case InsuranceFormStepsEnum.ONE:
+        return (
+          <StepOne
+            errors={stepOneErrors}
+            data={collectedData.stepOneData}
+            onChange={handleSubmitStepOne}
+            onErrorsChange={handleStepOneErrorsChange}
+          />
+        );
+
+      case InsuranceFormStepsEnum.TWO:
+        return (
+          <StepTwo
+            data={collectedData.stepTwoData}
+            onChange={handleSubmitStepTwo}
+          />
+        );
+
+      default:
+        return (
+          <StepThree
+            stepOneData={collectedData.stepOneData}
+            stepTwoData={collectedData.stepTwoData}
+          />
+        );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-2xl mx-auto py-10 px-4">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">ავტოდაზღვევა</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            შეავსეთ ფორმა შეთავაზების მისაღებად
-          </p>
-        </div>
+        <InsuranceFormHeader />
 
-        {/* Card */}
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           <Stepper currentStep={currentStep} />
 
-          {/* Step content */}
-          <div className="p-6">
-            {currentStep === 1 && (
-              <StepOne
-                errors={stepOneErrors}
-                data={collectedData.stepOneData}
-                onChange={handleSubmitStepOne}
-                onErrorsChange={handleStepOneErrorsChange}
-              />
-            )}
-            {currentStep === 2 && (
-              <StepTwo
-                data={collectedData.stepTwoData}
-                onChange={handleSubmitStepTwo}
-              />
-            )}
-            {currentStep === 3 && (
-              <StepThree
-                stepOneData={collectedData.stepOneData}
-                stepTwoData={collectedData.stepTwoData}
-              />
-            )}
-          </div>
+          <div className="p-6">{renderFormContent(currentStep)}</div>
 
-          {/* Navigation */}
-          <div className="px-6 py-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between">
-            <Button
-              variant="secondary"
-              disabled={currentStep === 1 || formState.isLoading}
-              onClick={handleBack}
-            >
-              ← უკან
-            </Button>
-
-            {currentStep < 3 ? (
-              <Button onClick={handleNextClick}>შემდეგი →</Button>
-            ) : (
-              <Button isLoading={formState.isLoading} onClick={handleSubmit}>
-                დადასტურება ✓
-              </Button>
-            )}
-          </div>
+          <InsuranceFormNavigation
+            currentStep={currentStep}
+            isLoading={formState.isLoading}
+            handleBack={handleBack}
+            handleSubmit={handleSubmit}
+            handleNextClick={handleNextClick}
+          />
         </div>
       </div>
     </div>

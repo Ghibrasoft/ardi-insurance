@@ -51,4 +51,8 @@ export interface IStepOneErrors {
   vehicle: FieldErrorsType<IVehicleInfo>;
 }
 
-export type StepType = 1 | 2 | 3;
+export enum InsuranceFormStepsEnum {
+  ONE = 1,
+  TWO = 2,
+  THREE = 3,
+}
