@@ -2,38 +2,71 @@ import { useState } from "react";
 import type {
   IDriverInfo,
   IStepOneData,
+  IStepOneErrors,
   IVehicleInfo,
 } from "../../insurance-form-types";
 import { checkPlateNumber } from "../../../../../lib/utils/check-plate-number";
+import {
+  validateDriverField,
+  validateVehicleField,
+} from "../../utils/validation";
 
 interface IPlateState {
   isFound: boolean;
   isLoading: boolean;
   error: string | null;
 }
+
 interface UseStepOneControllerProps {
   data: IStepOneData;
+  errors: IStepOneErrors;
   onChange: (data: IStepOneData) => void;
+  onErrorsChange: (errors: IStepOneErrors) => void;
 }
 
 export const useStepOneController = ({
   data,
+  errors,
   onChange,
+  onErrorsChange,
 }: UseStepOneControllerProps) => {
   const [plateState, setPlateState] = useState<IPlateState>({
-    error: null,
     isFound: false,
     isLoading: false,
+    error: null,
   });
+
+  // Driver handlers
+  const handleDriverInfoBlur = <K extends keyof IDriverInfo>(field: K) => {
+    const error = validateDriverField(field, data.driver[field]);
+    onErrorsChange({
+      ...errors,
+      driver: { ...errors.driver, [field]: error },
+    });
+  };
+  const handleDriverInfoChange = (field: keyof IDriverInfo, value: string) => {
+    onChange({ ...data, driver: { ...data.driver, [field]: value } });
+  };
+
+  // Vehicle handlers
+  const handleVehicleInfoBlur = <K extends keyof IVehicleInfo>(field: K) => {
+    const error = validateVehicleField(field, data.vehicle[field]);
+    onErrorsChange({
+      ...errors,
+      vehicle: { ...errors.vehicle, [field]: error },
+    });
+  };
+  const handleVehicleInfoChange = (
+    field: keyof IVehicleInfo,
+    value: string | number | null
+  ) => {
+    onChange({ ...data, vehicle: { ...data.vehicle, [field]: value } });
+  };
 
   const handlePlateNumberChange = (value: string) => {
     setPlateState({ isFound: false, isLoading: false, error: null });
-    onChange({
-      ...data,
-      vehicle: { ...data.vehicle, plateNumber: value },
-    });
+    onChange({ ...data, vehicle: { ...data.vehicle, plateNumber: value } });
   };
-
   const handlePlateLookup = async () => {
     if (!data.vehicle.plateNumber.trim()) return;
 
@@ -69,28 +102,13 @@ export const useStepOneController = ({
     }
   };
 
-  const handleDriverChange = (field: keyof IDriverInfo, value: string) => {
-    onChange({
-      ...data,
-      driver: { ...data.driver, [field]: value },
-    });
-  };
-
-  const handleVehicleChange = (
-    field: keyof IVehicleInfo,
-    value: string | number | null
-  ) => {
-    onChange({
-      ...data,
-      vehicle: { ...data.vehicle, [field]: value },
-    });
-  };
-
   return {
     plateState,
+    handleDriverInfoBlur,
+    handleVehicleInfoBlur,
     handlePlateLookup,
-    handleDriverChange,
-    handleVehicleChange,
+    handleDriverInfoChange,
+    handleVehicleInfoChange,
     handlePlateNumberChange,
   };
 };

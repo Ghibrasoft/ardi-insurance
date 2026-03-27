@@ -7,25 +7,31 @@ import {
   INSURANCE_FORM_FIELD_LABELS,
   InsuranceFormFieldNames,
 } from "../../../insurance-form-config";
-import type { IStepOneData } from "../../insurance-form-types";
+import type { IStepOneData, IStepOneErrors } from "../../insurance-form-types";
 import { useStepOneController } from "./use-step-one-controller";
 
 interface StepOneProps {
   data: IStepOneData;
+  errors: IStepOneErrors;
   onChange: (data: IStepOneData) => void;
+  onErrorsChange: (errors: IStepOneErrors) => void;
 }
 
-export const StepOne = ({ data, onChange }: StepOneProps) => {
+export const StepOne = ({
+  data,
+  errors,
+  onChange,
+  onErrorsChange,
+}: StepOneProps) => {
   const {
     plateState,
     handlePlateLookup,
-    handleDriverChange,
-    handleVehicleChange,
+    handleDriverInfoBlur,
+    handleVehicleInfoBlur,
+    handleDriverInfoChange,
+    handleVehicleInfoChange,
     handlePlateNumberChange,
-  } = useStepOneController({
-    data,
-    onChange,
-  });
+  } = useStepOneController({ data, errors, onChange, onErrorsChange });
 
   return (
     <div className="flex flex-col gap-6">
@@ -39,6 +45,7 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
             label={
               INSURANCE_FORM_FIELD_LABELS[InsuranceFormFieldNames.FIRST_NAME]
             }
+            error={errors.driver.firstName}
             required
           >
             <Input
@@ -49,11 +56,15 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
                 ]
               }
               value={data.driver.firstName}
+              error={!!errors.driver.firstName}
               onChange={(e) =>
-                handleDriverChange(
+                handleDriverInfoChange(
                   InsuranceFormFieldNames.FIRST_NAME,
                   e.target.value
                 )
+              }
+              onBlur={() =>
+                handleDriverInfoBlur(InsuranceFormFieldNames.FIRST_NAME)
               }
             />
           </FormField>
@@ -62,6 +73,7 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
             label={
               INSURANCE_FORM_FIELD_LABELS[InsuranceFormFieldNames.LAST_NAME]
             }
+            error={errors.driver.lastName}
             required
           >
             <Input
@@ -72,11 +84,15 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
                 ]
               }
               value={data.driver.lastName}
+              error={!!errors.driver.lastName}
               onChange={(e) =>
-                handleDriverChange(
+                handleDriverInfoChange(
                   InsuranceFormFieldNames.LAST_NAME,
                   e.target.value
                 )
+              }
+              onBlur={() =>
+                handleDriverInfoBlur(InsuranceFormFieldNames.LAST_NAME)
               }
             />
           </FormField>
@@ -85,6 +101,7 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
             label={
               INSURANCE_FORM_FIELD_LABELS[InsuranceFormFieldNames.PERSONAL_ID]
             }
+            error={errors.driver.personalId}
             required
           >
             <Input
@@ -96,11 +113,15 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
               }
               maxLength={11}
               value={data.driver.personalId}
+              error={!!errors.driver.personalId}
               onChange={(e) =>
-                handleDriverChange(
+                handleDriverInfoChange(
                   InsuranceFormFieldNames.PERSONAL_ID,
                   e.target.value
                 )
+              }
+              onBlur={() =>
+                handleDriverInfoBlur(InsuranceFormFieldNames.PERSONAL_ID)
               }
             />
           </FormField>
@@ -109,28 +130,29 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
             label={
               INSURANCE_FORM_FIELD_LABELS[InsuranceFormFieldNames.DATE_OF_BIRTH]
             }
+            error={errors.driver.dateOfBirth}
             required
           >
             <Input
               name={InsuranceFormFieldNames.DATE_OF_BIRTH}
-              placeholder={
-                INSURANCE_FORM_FIELD_PLACEHOLDERS[
-                  InsuranceFormFieldNames.DATE_OF_BIRTH
-                ]
-              }
               type="date"
               value={data.driver.dateOfBirth}
+              error={!!errors.driver.dateOfBirth}
               onChange={(e) =>
-                handleDriverChange(
+                handleDriverInfoChange(
                   InsuranceFormFieldNames.DATE_OF_BIRTH,
                   e.target.value
                 )
+              }
+              onBlur={() =>
+                handleDriverInfoBlur(InsuranceFormFieldNames.DATE_OF_BIRTH)
               }
             />
           </FormField>
 
           <FormField
             label={INSURANCE_FORM_FIELD_LABELS[InsuranceFormFieldNames.PHONE]}
+            error={errors.driver.phone}
             required
           >
             <Input
@@ -139,12 +161,14 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
                 INSURANCE_FORM_FIELD_PLACEHOLDERS[InsuranceFormFieldNames.PHONE]
               }
               value={data.driver.phone}
+              error={!!errors.driver.phone}
               onChange={(e) =>
-                handleDriverChange(
+                handleDriverInfoChange(
                   InsuranceFormFieldNames.PHONE,
                   e.target.value
                 )
               }
+              onBlur={() => handleDriverInfoBlur(InsuranceFormFieldNames.PHONE)}
             />
           </FormField>
         </div>
@@ -156,52 +180,50 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
         description="შეიყვანეთ ავტომობილის მონაცემები"
       >
         <div className="flex flex-col gap-4">
-          {/* Plate lookup */}
-          <form>
-            <FormField
-              label={
-                INSURANCE_FORM_FIELD_LABELS[
-                  InsuranceFormFieldNames.PLATE_NUMBER
-                ]
-              }
-              error={plateState.error ?? undefined}
-              required
-            >
-              <div className="flex gap-2">
-                <Input
-                  name={InsuranceFormFieldNames.PLATE_NUMBER}
-                  placeholder={
-                    INSURANCE_FORM_FIELD_PLACEHOLDERS[
-                      InsuranceFormFieldNames.PLATE_NUMBER
-                    ]
-                  }
-                  value={data.vehicle.plateNumber}
-                  onChange={(e) => handlePlateNumberChange(e.target.value)}
-                />
-
-                {plateState.isFound ? (
-                  <div className="shrink-0 w-10 h-10 rounded-lg bg-green-50 border border-green-200 flex items-center justify-center text-green-500">
-                    ✓
-                  </div>
-                ) : (
-                  <Button
-                    type="submit"
-                    variant="secondary"
-                    className="shrink-0"
-                    isLoading={plateState.isLoading}
-                    disabled={!data.vehicle.plateNumber.trim()}
-                    onClick={handlePlateLookup}
-                  >
-                    ძებნა
-                  </Button>
-                )}
-              </div>
-            </FormField>
-          </form>
+          <FormField
+            label={
+              INSURANCE_FORM_FIELD_LABELS[InsuranceFormFieldNames.PLATE_NUMBER]
+            }
+            error={plateState.error ?? errors.vehicle.plateNumber}
+            required
+          >
+            <div className="flex gap-2">
+              <Input
+                name={InsuranceFormFieldNames.PLATE_NUMBER}
+                placeholder={
+                  INSURANCE_FORM_FIELD_PLACEHOLDERS[
+                    InsuranceFormFieldNames.PLATE_NUMBER
+                  ]
+                }
+                value={data.vehicle.plateNumber}
+                error={!!errors.vehicle.plateNumber || !!plateState.error}
+                onChange={(e) => handlePlateNumberChange(e.target.value)}
+                onBlur={() =>
+                  handleVehicleInfoBlur(InsuranceFormFieldNames.PLATE_NUMBER)
+                }
+              />
+              {plateState.isFound ? (
+                <div className="shrink-0 w-10 h-10 rounded-lg bg-green-50 border border-green-200 flex items-center justify-center text-green-500">
+                  ✓
+                </div>
+              ) : (
+                <Button
+                  variant="secondary"
+                  className="shrink-0"
+                  isLoading={plateState.isLoading}
+                  disabled={!data.vehicle.plateNumber.trim()}
+                  onClick={handlePlateLookup}
+                >
+                  ძებნა
+                </Button>
+              )}
+            </div>
+          </FormField>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               label={INSURANCE_FORM_FIELD_LABELS[InsuranceFormFieldNames.MAKE]}
+              error={errors.vehicle.make}
               required
             >
               <Input
@@ -212,17 +234,22 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
                   ]
                 }
                 value={data.vehicle.make}
+                error={!!errors.vehicle.make}
                 onChange={(e) =>
-                  handleVehicleChange(
+                  handleVehicleInfoChange(
                     InsuranceFormFieldNames.MAKE,
                     e.target.value
                   )
+                }
+                onBlur={() =>
+                  handleVehicleInfoBlur(InsuranceFormFieldNames.MAKE)
                 }
               />
             </FormField>
 
             <FormField
               label={INSURANCE_FORM_FIELD_LABELS[InsuranceFormFieldNames.MODEL]}
+              error={errors.vehicle.model}
               required
             >
               <Input
@@ -233,17 +260,22 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
                   ]
                 }
                 value={data.vehicle.model}
+                error={!!errors.vehicle.model}
                 onChange={(e) =>
-                  handleVehicleChange(
+                  handleVehicleInfoChange(
                     InsuranceFormFieldNames.MODEL,
                     e.target.value
                   )
+                }
+                onBlur={() =>
+                  handleVehicleInfoBlur(InsuranceFormFieldNames.MODEL)
                 }
               />
             </FormField>
 
             <FormField
               label={INSURANCE_FORM_FIELD_LABELS[InsuranceFormFieldNames.YEAR]}
+              error={errors.vehicle.year}
               required
             >
               <Input
@@ -255,11 +287,15 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
                   ]
                 }
                 value={data.vehicle.year ?? ""}
+                error={!!errors.vehicle.year}
                 onChange={(e) =>
-                  handleVehicleChange(
+                  handleVehicleInfoChange(
                     InsuranceFormFieldNames.YEAR,
                     e.target.value ? Number(e.target.value) : null
                   )
+                }
+                onBlur={() =>
+                  handleVehicleInfoBlur(InsuranceFormFieldNames.YEAR)
                 }
               />
             </FormField>
@@ -270,6 +306,7 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
                   InsuranceFormFieldNames.MARKET_VALUE
                 ]
               }
+              error={errors.vehicle.marketValue}
               required
             >
               <Input
@@ -281,11 +318,15 @@ export const StepOne = ({ data, onChange }: StepOneProps) => {
                   ]
                 }
                 value={data.vehicle.marketValue ?? ""}
+                error={!!errors.vehicle.marketValue}
                 onChange={(e) =>
-                  handleVehicleChange(
+                  handleVehicleInfoChange(
                     InsuranceFormFieldNames.MARKET_VALUE,
                     e.target.value ? Number(e.target.value) : null
                   )
+                }
+                onBlur={() =>
+                  handleVehicleInfoBlur(InsuranceFormFieldNames.MARKET_VALUE)
                 }
               />
             </FormField>
