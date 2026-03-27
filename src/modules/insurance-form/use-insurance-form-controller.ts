@@ -22,7 +22,7 @@ export const useInsuranceFormController = () => {
     error: null,
     isLoading: false,
   });
-  const [currentStep, setCurrentStep] = useState<StepType>(2);
+  const [currentStep, setCurrentStep] = useState<StepType>(1);
   const [collectedData, setCollectedData] = useState(
     INSURANCE_FORM_DEFAULT_VALUES
   );
