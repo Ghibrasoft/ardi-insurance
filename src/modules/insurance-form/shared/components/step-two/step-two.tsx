@@ -1,15 +1,10 @@
-import { CheckboxCard } from "../../../../components/ui/checkbox-card";
-import { RadioCard } from "../../../../components/ui/radio-card";
-import { SectionCard } from "../../../../components/ui/section-card";
-import {
-  ADDONS,
-  type AddonIdType,
-} from "../../../../lib/constants/insurance-addons";
-import {
-  PACKAGES,
-  type PackageIdType,
-} from "../../../../lib/constants/insurance-packages";
-import type { IStepTwoData } from "../insurance-form-types";
+import { CheckboxCard } from "../../../../../components/ui/checkbox-card";
+import { RadioCard } from "../../../../../components/ui/radio-card";
+import { SectionCard } from "../../../../../components/ui/section-card";
+import { ADDONS } from "../../../../../lib/constants/insurance-addons";
+import { PACKAGES } from "../../../../../lib/constants/insurance-packages";
+import type { IStepTwoData } from "../../insurance-form-types";
+import { useStepTwoController } from "./use-step-two-controller";
 
 interface StepTwoProps {
   data: IStepTwoData;
@@ -17,19 +12,10 @@ interface StepTwoProps {
 }
 
 export const StepTwo = ({ data, onChange }: StepTwoProps) => {
-  const handlePackageSelect = (packageId: PackageIdType) => {
-    onChange({ ...data, packageId });
-  };
-
-  const handleAddonToggle = (addonId: AddonIdType) => {
-    const exists = data.addons.includes(addonId);
-    onChange({
-      ...data,
-      addons: exists
-        ? data.addons.filter((a) => a !== addonId)
-        : [...data.addons, addonId],
-    });
-  };
+  const { handleAddonToggle, handlePackageSelect } = useStepTwoController({
+    data,
+    onChange,
+  });
 
   return (
     <div className="flex flex-col gap-6">

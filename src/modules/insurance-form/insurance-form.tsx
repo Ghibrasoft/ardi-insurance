@@ -2,7 +2,7 @@ import { Stepper } from "../../components/layout/stepper";
 import { Button } from "../../components/ui/button";
 import { StepOne } from "./shared/components/step-one/step-one";
 import { StepThree } from "./shared/components/step-three/step-three";
-import { StepTwo } from "./shared/components/step-two";
+import { StepTwo } from "./shared/components/step-two/step-two";
 import { useInsuranceFormController } from "./use-insurance-form-controller";
 
 export default function InsuranceForm() {
