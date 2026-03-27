@@ -70,6 +70,7 @@ export function Input({
   onChange,
   ...props
 }: InputProps) {
+  const isEmpty = !value || value === "";
   const maxLength = useMemo(
     () =>
       maskVariant === "plate-number"
@@ -115,15 +116,16 @@ export function Input({
         {...props}
         value={value}
         className={cn(
-          "w-full px-3 py-2.5 rounded-lg border text-sm",
-          "bg-white text-gray-900 placeholder:text-gray-400",
+          "w-full px-3 py-2.5 rounded-lg border text-sm cursor-text",
+          "bg-white placeholder:text-gray-400",
           "outline-none transition-all duration-150",
           "disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed",
           error
             ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
             : "border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100",
-          className,
-          value ? "pr-8" : ""
+          props.type === "date" && isEmpty ? "text-gray-400" : "text-gray-900",
+          value ? "pr-8" : "",
+          className
         )}
         maxLength={maxLength}
         onFocus={handleFocus}
