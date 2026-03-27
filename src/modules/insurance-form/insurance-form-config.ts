@@ -18,18 +18,18 @@ export enum InsuranceFormFieldNames {
 
 const STEP_ONE_DEFAULTS: IStepOneData = {
   driver: {
-    firstName: "",
-    lastName: "",
-    personalId: "",
-    dateOfBirth: "",
-    phone: "",
+    [InsuranceFormFieldNames.FIRST_NAME]: "",
+    [InsuranceFormFieldNames.LAST_NAME]: "",
+    [InsuranceFormFieldNames.PERSONAL_ID]: "",
+    [InsuranceFormFieldNames.DATE_OF_BIRTH]: "",
+    [InsuranceFormFieldNames.PHONE]: "",
   },
   vehicle: {
-    plateNumber: "",
-    make: "",
-    model: "",
-    year: null,
-    marketValue: null,
+    [InsuranceFormFieldNames.PLATE_NUMBER]: "",
+    [InsuranceFormFieldNames.MAKE]: "",
+    [InsuranceFormFieldNames.MODEL]: "",
+    [InsuranceFormFieldNames.YEAR]: null,
+    [InsuranceFormFieldNames.MARKET_VALUE]: null,
   },
 };
 
