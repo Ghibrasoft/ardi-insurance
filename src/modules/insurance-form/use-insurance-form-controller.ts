@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
-import type {
-  StepType,
-  IStepOneData,
-  IStepOneErrors,
-  IStepTwoData,
+import {
+  InsuranceFormStepsEnum,
+  type IStepOneData,
+  type IStepOneErrors,
+  type IStepTwoData,
 } from "./shared/insurance-form-types";
 import { INSURANCE_FORM_DEFAULT_VALUES } from "./insurance-form-config";
 import { submitInsuranceForm } from "./shared/api/insurance-form-mock";
@@ -22,7 +22,9 @@ export const useInsuranceFormController = () => {
     error: null,
     isLoading: false,
   });
-  const [currentStep, setCurrentStep] = useState<StepType>(2);
+  const [currentStep, setCurrentStep] = useState<InsuranceFormStepsEnum>(
+    InsuranceFormStepsEnum.ONE
+  );
   const [collectedData, setCollectedData] = useState(
     INSURANCE_FORM_DEFAULT_VALUES
   );
@@ -43,7 +45,8 @@ export const useInsuranceFormController = () => {
   }, []);
 
   const handleNext = useCallback(() => {
-    if (currentStep < 3) setCurrentStep((prev) => (prev + 1) as StepType);
+    if (currentStep < 3)
+      setCurrentStep((prev) => (prev + 1) as InsuranceFormStepsEnum);
   }, [currentStep]);
 
   const handleNextClick = useCallback(() => {
@@ -65,7 +68,8 @@ export const useInsuranceFormController = () => {
   }, [currentStep, collectedData, handleNext]);
 
   const handleBack = () => {
-    if (currentStep > 1) setCurrentStep((prev) => (prev - 1) as StepType);
+    if (currentStep > 1)
+      setCurrentStep((prev) => (prev - 1) as InsuranceFormStepsEnum);
   };
 
   const handleSubmit = async () => {
