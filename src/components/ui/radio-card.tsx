@@ -8,13 +8,13 @@ interface RadioCardProps {
   onClick: () => void;
 }
 
-export const RadioCard = ({
+export function RadioCard({
   title,
   selected,
   children,
   description,
   onClick,
-}: RadioCardProps) => {
+}: RadioCardProps) {
   return (
     <SelectableCard selected={selected} onClick={onClick}>
       <div className="flex items-center justify-between mb-2">
@@ -33,4 +33,4 @@ export const RadioCard = ({
       {children}
     </SelectableCard>
   );
-};
+}

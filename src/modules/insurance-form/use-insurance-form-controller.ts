@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import {
   InsuranceFormStepsEnum,
+  type IQuoteSummary,
   type IStepOneData,
   type IStepOneErrors,
   type IStepTwoData,
@@ -11,6 +12,7 @@ import {
   validateDriverInfo,
   validateVehicleInfo,
 } from "./shared/utils/validation";
+import { calculatePremium, getPolicyDates } from "../../lib/utils/calculations";
 
 interface IFormState {
   error: string | null;
@@ -22,8 +24,9 @@ export const useInsuranceFormController = () => {
     error: null,
     isLoading: false,
   });
+  const [quote, setQuote] = useState<IQuoteSummary | null>(null);
   const [currentStep, setCurrentStep] = useState<InsuranceFormStepsEnum>(
-    InsuranceFormStepsEnum.ONE
+    InsuranceFormStepsEnum.FOUR
   );
   const [collectedData, setCollectedData] = useState(
     INSURANCE_FORM_DEFAULT_VALUES
@@ -72,6 +75,30 @@ export const useInsuranceFormController = () => {
       setCurrentStep((prev) => (prev - 1) as InsuranceFormStepsEnum);
   };
 
+  // const handleSubmit = async () => {
+  //   setFormState({ error: null, isLoading: true });
+  //   const readyParams = {
+  //     ...collectedData,
+  //     stepOneData: {
+  //       ...collectedData.stepOneData,
+  //       driver: {
+  //         ...collectedData.stepOneData.driver,
+  //         phone:
+  //           "+" + collectedData.stepOneData.driver.phone.replace(/[^0-9]/g, ""),
+  //       },
+  //     },
+  //   };
+  //   try {
+  //     await submitInsuranceForm(readyParams);
+  //     setFormState({ error: null, isLoading: false });
+  //   } catch {
+  //     setFormState({
+  //       error: "დაფიქსირდა შეცდომა. სცადეთ თავიდან.",
+  //       isLoading: false,
+  //     });
+  //   }
+  // };
+
   const handleSubmit = async () => {
     setFormState({ error: null, isLoading: true });
     const readyParams = {
@@ -87,6 +114,36 @@ export const useInsuranceFormController = () => {
     };
     try {
       await submitInsuranceForm(readyParams);
+
+      // ✅ policy dates
+      const { startDate, endDate } = getPolicyDates();
+
+      // ✅ premium calculation (correct keys)
+      const { annualPremium, monthlyPremium } = calculatePremium({
+        addons: collectedData.stepTwoData.addons,
+        packageId: collectedData.stepTwoData.packageId,
+        vehicleYear: collectedData.stepOneData.vehicle.year!,
+        dateOfBirth: collectedData.stepOneData.driver.dateOfBirth,
+        marketValue: collectedData.stepOneData.vehicle.marketValue!,
+      });
+
+      // ✅ build quote (matches your interface exactly)
+      const newQuote: IQuoteSummary = {
+        driver: collectedData.stepOneData.driver,
+        vehicle: collectedData.stepOneData.vehicle,
+        packageId: collectedData.stepTwoData.packageId,
+        addons: collectedData.stepTwoData.addons,
+        annualPremium,
+        monthlyPremium,
+        startDate,
+        endDate,
+      };
+
+      setQuote(newQuote);
+
+      // ✅ move to success step
+      setCurrentStep(InsuranceFormStepsEnum.FOUR);
+
       setFormState({ error: null, isLoading: false });
     } catch {
       setFormState({
@@ -97,6 +154,7 @@ export const useInsuranceFormController = () => {
   };
 
   return {
+    quote,
     formState,
     currentStep,
     collectedData,

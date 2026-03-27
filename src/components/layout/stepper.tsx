@@ -3,7 +3,7 @@ interface StepperProps {
   totalSteps?: number;
 }
 
-export function Stepper({ currentStep, totalSteps = 3 }: StepperProps) {
+export function Stepper({ currentStep, totalSteps = 4 }: StepperProps) {
   return (
     <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
       <span className="text-sm font-medium text-gray-500">

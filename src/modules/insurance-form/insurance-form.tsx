@@ -1,6 +1,7 @@
 import { Stepper } from "../../components/layout/stepper";
 import { InsuranceFormHeader } from "./shared/components/insurance-form-header";
 import { InsuranceFormNavigation } from "./shared/components/insurance-form-navigation";
+import { StepFour } from "./shared/components/step-four/step-four";
 import { StepOne } from "./shared/components/step-one/step-one";
 import { StepThree } from "./shared/components/step-three/step-three";
 import { StepTwo } from "./shared/components/step-two/step-two";
@@ -9,6 +10,7 @@ import { useInsuranceFormController } from "./use-insurance-form-controller";
 
 export default function InsuranceForm() {
   const {
+    quote,
     formState,
     currentStep,
     stepOneErrors,
@@ -41,13 +43,16 @@ export default function InsuranceForm() {
           />
         );
 
-      default:
+      case InsuranceFormStepsEnum.THREE:
         return (
           <StepThree
             stepOneData={collectedData.stepOneData}
             stepTwoData={collectedData.stepTwoData}
           />
         );
+
+      default:
+        return <StepFour quote={quote} />;
     }
   };
 
@@ -61,13 +66,15 @@ export default function InsuranceForm() {
 
           <div className="p-6">{renderFormContent(currentStep)}</div>
 
-          <InsuranceFormNavigation
-            currentStep={currentStep}
-            isLoading={formState.isLoading}
-            handleBack={handleBack}
-            handleSubmit={handleSubmit}
-            handleNextClick={handleNextClick}
-          />
+          {currentStep === InsuranceFormStepsEnum.FOUR && (
+            <InsuranceFormNavigation
+              currentStep={currentStep}
+              isLoading={formState.isLoading}
+              handleBack={handleBack}
+              handleSubmit={handleSubmit}
+              handleNextClick={handleNextClick}
+            />
+          )}
         </div>
       </div>
     </div>
