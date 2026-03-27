@@ -1,12 +1,13 @@
 import { Stepper } from "../../components/layout/stepper";
 import { Button } from "../../components/ui/button";
-import { StepOne } from "./shared/components/step-one";
+import { StepOne } from "./shared/components/step-one/step-one";
 import { StepThree } from "./shared/components/step-three";
 import { StepTwo } from "./shared/components/step-two";
 import { useInsuranceFormController } from "./use-insurance-form-controller";
 
 export default function InsuranceForm() {
   const {
+    formState,
     currentStep,
     collectedData,
     handleNext,
@@ -57,8 +58,8 @@ export default function InsuranceForm() {
           <div className="px-6 py-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between">
             <Button
               variant="secondary"
+              disabled={currentStep === 1 || formState.isLoading}
               onClick={handleBack}
-              disabled={currentStep === 1}
             >
               ← უკან
             </Button>
@@ -66,7 +67,9 @@ export default function InsuranceForm() {
             {currentStep < 3 ? (
               <Button onClick={handleNext}>შემდეგი →</Button>
             ) : (
-              <Button onClick={handleSubmit}>დადასტურება ✓</Button>
+              <Button isLoading={formState.isLoading} onClick={handleSubmit}>
+                დადასტურება ✓
+              </Button>
             )}
           </div>
         </div>
