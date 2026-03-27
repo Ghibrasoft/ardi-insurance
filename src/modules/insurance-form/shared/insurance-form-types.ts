@@ -51,4 +51,4 @@ export interface IStepOneErrors {
   vehicle: FieldErrorsType<IVehicleInfo>;
 }
 
-export type AppStepType = 1 | 2 | 3;
+export type StepType = 1 | 2 | 3;

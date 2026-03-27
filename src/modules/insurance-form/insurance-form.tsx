@@ -9,12 +9,14 @@ export default function InsuranceForm() {
   const {
     formState,
     currentStep,
+    stepOneErrors,
     collectedData,
-    handleNext,
     handleBack,
     handleSubmit,
+    handleNextClick,
     handleSubmitStepOne,
     handleSubmitStepTwo,
+    handleStepOneErrorsChange,
   } = useInsuranceFormController();
 
   return (
@@ -36,8 +38,10 @@ export default function InsuranceForm() {
           <div className="p-6">
             {currentStep === 1 && (
               <StepOne
+                errors={stepOneErrors}
                 data={collectedData.stepOneData}
                 onChange={handleSubmitStepOne}
+                onErrorsChange={handleStepOneErrorsChange}
               />
             )}
             {currentStep === 2 && (
@@ -65,7 +69,7 @@ export default function InsuranceForm() {
             </Button>
 
             {currentStep < 3 ? (
-              <Button onClick={handleNext}>შემდეგი →</Button>
+              <Button onClick={handleNextClick}>შემდეგი →</Button>
             ) : (
               <Button isLoading={formState.isLoading} onClick={handleSubmit}>
                 დადასტურება ✓

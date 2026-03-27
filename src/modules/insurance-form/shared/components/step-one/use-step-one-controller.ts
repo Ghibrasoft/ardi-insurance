@@ -1,40 +1,86 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type {
   IDriverInfo,
   IStepOneData,
+  IStepOneErrors,
   IVehicleInfo,
 } from "../../insurance-form-types";
 import { checkPlateNumber } from "../../../../../lib/utils/check-plate-number";
+import {
+  validateDriverField,
+  validateVehicleField,
+} from "../../utils/validation";
 
 interface IPlateState {
   isFound: boolean;
   isLoading: boolean;
   error: string | null;
 }
+
 interface UseStepOneControllerProps {
   data: IStepOneData;
+  errors: IStepOneErrors;
   onChange: (data: IStepOneData) => void;
+  onErrorsChange: (errors: IStepOneErrors) => void;
 }
 
 export const useStepOneController = ({
   data,
+  errors,
   onChange,
+  onErrorsChange,
 }: UseStepOneControllerProps) => {
   const [plateState, setPlateState] = useState<IPlateState>({
-    error: null,
     isFound: false,
     isLoading: false,
+    error: null,
   });
 
-  const handlePlateNumberChange = (value: string) => {
-    setPlateState({ isFound: false, isLoading: false, error: null });
-    onChange({
-      ...data,
-      vehicle: { ...data.vehicle, plateNumber: value },
-    });
-  };
+  // Driver handlers
+  const handleDriverInfoBlur = useCallback(
+    <K extends keyof IDriverInfo>(field: K) => {
+      const error = validateDriverField(field, data.driver[field]);
+      onErrorsChange({
+        ...errors,
+        driver: { ...errors.driver, [field]: error },
+      });
+    },
+    [data.driver, errors, onErrorsChange]
+  );
+  const handleDriverInfoChange = useCallback(
+    (field: keyof IDriverInfo, value: string) => {
+      onChange({ ...data, driver: { ...data.driver, [field]: value } });
+    },
+    [data, onChange]
+  );
 
-  const handlePlateLookup = async () => {
+  // Vehicle handlers
+  const handleVehicleInfoBlur = useCallback(
+    <K extends keyof IVehicleInfo>(field: K) => {
+      const error = validateVehicleField(field, data.vehicle[field]);
+      onErrorsChange({
+        ...errors,
+        vehicle: { ...errors.vehicle, [field]: error },
+      });
+    },
+    [data.vehicle, errors, onErrorsChange]
+  );
+
+  const handleVehicleInfoChange = useCallback(
+    (field: keyof IVehicleInfo, value: string | number | null) => {
+      onChange({ ...data, vehicle: { ...data.vehicle, [field]: value } });
+    },
+    [data, onChange]
+  );
+
+  const handlePlateNumberChange = useCallback(
+    (value: string) => {
+      setPlateState({ isFound: false, isLoading: false, error: null });
+      onChange({ ...data, vehicle: { ...data.vehicle, plateNumber: value } });
+    },
+    [data, onChange]
+  );
+  const handlePlateLookup = useCallback(async () => {
     if (!data.vehicle.plateNumber.trim()) return;
 
     setPlateState({ isFound: false, isLoading: true, error: null });
@@ -67,30 +113,15 @@ export const useStepOneController = ({
         error: "დაფიქსირდა შეცდომა. სცადეთ თავიდან.",
       });
     }
-  };
-
-  const handleDriverChange = (field: keyof IDriverInfo, value: string) => {
-    onChange({
-      ...data,
-      driver: { ...data.driver, [field]: value },
-    });
-  };
-
-  const handleVehicleChange = (
-    field: keyof IVehicleInfo,
-    value: string | number | null
-  ) => {
-    onChange({
-      ...data,
-      vehicle: { ...data.vehicle, [field]: value },
-    });
-  };
+  }, [data, onChange]);
 
   return {
     plateState,
+    handleDriverInfoBlur,
+    handleVehicleInfoBlur,
     handlePlateLookup,
-    handleDriverChange,
-    handleVehicleChange,
+    handleDriverInfoChange,
+    handleVehicleInfoChange,
     handlePlateNumberChange,
   };
 };
