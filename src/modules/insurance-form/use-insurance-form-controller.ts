@@ -38,6 +38,30 @@ export const useInsuranceFormController = () => {
     vehicle: {},
   });
 
+  const handleCalculateQuote = useCallback(() => {
+    const { startDate, endDate } = getPolicyDates();
+    const { annualPremium, monthlyPremium } = calculatePremium({
+      addons: collectedData.stepTwoData.addons,
+      packageId: collectedData.stepTwoData.packageId,
+      vehicleYear: collectedData.stepOneData.vehicle.year!,
+      dateOfBirth: collectedData.stepOneData.driver.dateOfBirth,
+      marketValue: collectedData.stepOneData.vehicle.marketValue!,
+    });
+
+    const newQuote: IQuoteSummary = {
+      driver: collectedData.stepOneData.driver,
+      vehicle: collectedData.stepOneData.vehicle,
+      addons: collectedData.stepTwoData.addons,
+      packageId: collectedData.stepTwoData.packageId,
+      endDate,
+      startDate,
+      annualPremium,
+      monthlyPremium,
+    };
+
+    setQuote(newQuote);
+  }, [collectedData]);
+
   const handleSubmitStepOne = useCallback((data: IStepOneData) => {
     setCollectedData((prev) => ({ ...prev, stepOneData: data }));
   }, []);
@@ -69,8 +93,11 @@ export const useInsuranceFormController = () => {
       return;
     }
 
-    if (currentStep === 2) handleNext();
-  }, [currentStep, collectedData, handleNext]);
+    if (currentStep === 2) {
+      handleCalculateQuote();
+      setCurrentStep(3);
+    }
+  }, [currentStep, collectedData, handleNext, handleCalculateQuote]);
 
   const handleBack = () => {
     if (currentStep > 1)
@@ -79,6 +106,7 @@ export const useInsuranceFormController = () => {
 
   const handleSubmit = async () => {
     setFormState({ error: null, isLoading: true, isSubmitSucceed: false });
+
     const readyParams = {
       ...collectedData,
       stepOneData: {
@@ -92,29 +120,6 @@ export const useInsuranceFormController = () => {
     };
     try {
       await submitInsuranceForm(readyParams);
-
-      const { startDate, endDate } = getPolicyDates();
-
-      const { annualPremium, monthlyPremium } = calculatePremium({
-        addons: collectedData.stepTwoData.addons,
-        packageId: collectedData.stepTwoData.packageId,
-        vehicleYear: collectedData.stepOneData.vehicle.year!,
-        dateOfBirth: collectedData.stepOneData.driver.dateOfBirth,
-        marketValue: collectedData.stepOneData.vehicle.marketValue!,
-      });
-
-      const newQuote: IQuoteSummary = {
-        endDate,
-        startDate,
-        annualPremium,
-        monthlyPremium,
-        driver: collectedData.stepOneData.driver,
-        addons: collectedData.stepTwoData.addons,
-        vehicle: collectedData.stepOneData.vehicle,
-        packageId: collectedData.stepTwoData.packageId,
-      };
-
-      setQuote(newQuote);
 
       setFormState({ error: null, isLoading: false, isSubmitSucceed: true });
     } catch {

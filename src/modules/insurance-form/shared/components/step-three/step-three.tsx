@@ -2,37 +2,18 @@ import { SectionCard } from "../../../../../components/ui/section-card";
 import { SummaryRow } from "../../../../../components/ui/summary-row";
 import { formatDate } from "../../../../../lib/utils/format-date";
 import { formatPrice } from "../../../../../lib/utils/format-price";
-import type {
-  IQuoteSummary,
-  IStepOneData,
-  IStepTwoData,
-} from "../../insurance-form-types";
+import type { IQuoteSummary } from "../../insurance-form-types";
 import { StepFour } from "../step-four/step-four";
 import { useStepThreeController } from "./use-step-three-controller";
 
 interface StepThreeProps {
   isFormSucceed: boolean;
-  stepOneData: IStepOneData;
-  stepTwoData: IStepTwoData;
   quote: IQuoteSummary | null;
 }
 
-export const StepThree = ({
-  quote,
-  stepOneData,
-  stepTwoData,
-  isFormSucceed,
-}: StepThreeProps) => {
-  const {
-    pkg,
-    endDate,
-    startDate,
-    annualPremium,
-    monthlyPremium,
-    selectedAddons,
-  } = useStepThreeController({
-    stepOneData,
-    stepTwoData,
+export const StepThree = ({ quote, isFormSucceed }: StepThreeProps) => {
+  const { pkg, selectedAddons } = useStepThreeController({
+    quote,
   });
 
   if (isFormSucceed) return <StepFour quote={quote} />;
@@ -44,17 +25,14 @@ export const StepThree = ({
         <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
           <SummaryRow
             label="სახელი და გვარი"
-            value={`${stepOneData.driver.firstName} ${stepOneData.driver.lastName}`}
+            value={`${quote?.driver.firstName} ${quote?.driver.lastName}`}
           />
-          <SummaryRow
-            label="პირადი ნომერი"
-            value={stepOneData.driver.personalId}
-          />
+          <SummaryRow label="პირადი ნომერი" value={quote?.driver.personalId} />
           <SummaryRow
             label="დაბადების თარიღი"
-            value={stepOneData.driver.dateOfBirth}
+            value={quote?.driver.dateOfBirth}
           />
-          <SummaryRow label="ტელეფონი" value={`${stepOneData.driver.phone}`} />
+          <SummaryRow label="ტელეფონი" value={`${quote?.driver.phone}`} />
         </div>
       </SectionCard>
 
@@ -63,19 +41,16 @@ export const StepThree = ({
         <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
           <SummaryRow
             label="სახელმწიფო ნომერი"
-            value={stepOneData.vehicle.plateNumber}
+            value={quote?.vehicle.plateNumber}
           />
           <SummaryRow
             label="მარკა / მოდელი"
-            value={`${stepOneData.vehicle.make} ${stepOneData.vehicle.model}`}
+            value={`${quote?.vehicle.make} ${quote?.vehicle.model}`}
           />
-          <SummaryRow
-            label="გამოშვების წელი"
-            value={stepOneData.vehicle.year}
-          />
+          <SummaryRow label="გამოშვების წელი" value={quote?.vehicle.year} />
           <SummaryRow
             label="საბაზრო ღირებულება"
-            value={`${formatPrice(stepOneData.vehicle.marketValue ?? 0)} ₾`}
+            value={`${formatPrice(quote?.vehicle.marketValue ?? 0)} ₾`}
           />
         </div>
       </SectionCard>
@@ -96,16 +71,22 @@ export const StepThree = ({
       {/* Bonus */}
       <SectionCard title="პრემია">
         <div className="flex flex-col gap-3 text-sm">
-          <SummaryRow label="პოლისის დაწყება" value={formatDate(startDate)} />
-          <SummaryRow label="პოლისის დასრულება" value={formatDate(endDate)} />
+          <SummaryRow
+            label="პოლისის დაწყება"
+            value={formatDate(quote?.startDate)}
+          />
+          <SummaryRow
+            label="პოლისის დასრულება"
+            value={formatDate(quote?.endDate)}
+          />
           <SummaryRow
             label="წლიური პრემია"
-            value={`${formatPrice(annualPremium)} ₾`}
+            value={`${formatPrice(quote?.annualPremium ?? 0)} ₾`}
             highlight
           />
           <SummaryRow
             label="თვიური გადახდა"
-            value={`${formatPrice(monthlyPremium)} ₾`}
+            value={`${formatPrice(quote?.monthlyPremium ?? 0)} ₾`}
             highlight
           />
         </div>

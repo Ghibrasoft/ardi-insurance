@@ -44,12 +44,7 @@ export default function InsuranceForm() {
 
       default:
         return (
-          <StepThree
-            quote={quote}
-            stepOneData={collectedData.stepOneData}
-            stepTwoData={collectedData.stepTwoData}
-            isFormSucceed={formState.isSubmitSucceed}
-          />
+          <StepThree quote={quote} isFormSucceed={formState.isSubmitSucceed} />
         );
     }
   };
