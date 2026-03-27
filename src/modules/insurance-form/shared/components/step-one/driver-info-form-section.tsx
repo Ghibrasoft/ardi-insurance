@@ -21,14 +21,14 @@ const DRIVER_INFO_FORM_FIELDS = [
   { key: InsuranceFormFieldNames.LAST_NAME, required: true },
   { key: InsuranceFormFieldNames.PERSONAL_ID, required: true, maxLength: 11 },
   {
-    key: InsuranceFormFieldNames.DATE_OF_BIRTH,
-    required: true,
-    type: "date",
-  },
-  {
     key: InsuranceFormFieldNames.PHONE,
     required: true,
     maskVariant: "phone",
+  },
+  {
+    key: InsuranceFormFieldNames.DATE_OF_BIRTH,
+    required: true,
+    type: "date",
   },
 ] as const;
 

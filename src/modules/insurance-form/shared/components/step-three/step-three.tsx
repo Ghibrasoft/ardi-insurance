@@ -1,15 +1,28 @@
 import { SectionCard } from "../../../../../components/ui/section-card";
+import { SummaryRow } from "../../../../../components/ui/summary-row";
 import { formatDate } from "../../../../../lib/utils/format-date";
 import { formatPrice } from "../../../../../lib/utils/format-price";
-import type { IStepOneData, IStepTwoData } from "../../insurance-form-types";
+import type {
+  IQuoteSummary,
+  IStepOneData,
+  IStepTwoData,
+} from "../../insurance-form-types";
+import { StepFour } from "../step-four/step-four";
 import { useStepThreeController } from "./use-step-three-controller";
 
 interface StepThreeProps {
+  isFormSucceed: boolean;
   stepOneData: IStepOneData;
   stepTwoData: IStepTwoData;
+  quote: IQuoteSummary | null;
 }
 
-export const StepThree = ({ stepOneData, stepTwoData }: StepThreeProps) => {
+export const StepThree = ({
+  quote,
+  stepOneData,
+  stepTwoData,
+  isFormSucceed,
+}: StepThreeProps) => {
   const {
     pkg,
     endDate,
@@ -21,6 +34,8 @@ export const StepThree = ({ stepOneData, stepTwoData }: StepThreeProps) => {
     stepOneData,
     stepTwoData,
   });
+
+  if (isFormSucceed) return <StepFour quote={quote} />;
 
   return (
     <div className="flex flex-col gap-6">
@@ -98,31 +113,3 @@ export const StepThree = ({ stepOneData, stepTwoData }: StepThreeProps) => {
     </div>
   );
 };
-
-interface SummaryRowProps {
-  label: string;
-  value?: string | number | null;
-  highlight?: boolean;
-}
-
-function SummaryRow({ label, value, highlight }: SummaryRowProps) {
-  const computedValue =
-    value === null || value === undefined || value.toString().trim() === ""
-      ? "N/A"
-      : String(value);
-
-  return (
-    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-0.5 sm:gap-1">
-      <span className="text-gray-500">{label}:</span>
-      <span
-        className={
-          highlight
-            ? "font-bold text-blue-600 text-base"
-            : "font-medium text-gray-900"
-        }
-      >
-        {computedValue}
-      </span>
-    </div>
-  );
-}

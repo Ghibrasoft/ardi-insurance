@@ -17,16 +17,18 @@ import { calculatePremium, getPolicyDates } from "../../lib/utils/calculations";
 interface IFormState {
   error: string | null;
   isLoading: boolean;
+  isSubmitSucceed: boolean;
 }
 
 export const useInsuranceFormController = () => {
   const [formState, setFormState] = useState<IFormState>({
     error: null,
     isLoading: false,
+    isSubmitSucceed: false,
   });
   const [quote, setQuote] = useState<IQuoteSummary | null>(null);
   const [currentStep, setCurrentStep] = useState<InsuranceFormStepsEnum>(
-    InsuranceFormStepsEnum.FOUR
+    InsuranceFormStepsEnum.ONE
   );
   const [collectedData, setCollectedData] = useState(
     INSURANCE_FORM_DEFAULT_VALUES
@@ -75,32 +77,8 @@ export const useInsuranceFormController = () => {
       setCurrentStep((prev) => (prev - 1) as InsuranceFormStepsEnum);
   };
 
-  // const handleSubmit = async () => {
-  //   setFormState({ error: null, isLoading: true });
-  //   const readyParams = {
-  //     ...collectedData,
-  //     stepOneData: {
-  //       ...collectedData.stepOneData,
-  //       driver: {
-  //         ...collectedData.stepOneData.driver,
-  //         phone:
-  //           "+" + collectedData.stepOneData.driver.phone.replace(/[^0-9]/g, ""),
-  //       },
-  //     },
-  //   };
-  //   try {
-  //     await submitInsuranceForm(readyParams);
-  //     setFormState({ error: null, isLoading: false });
-  //   } catch {
-  //     setFormState({
-  //       error: "დაფიქსირდა შეცდომა. სცადეთ თავიდან.",
-  //       isLoading: false,
-  //     });
-  //   }
-  // };
-
   const handleSubmit = async () => {
-    setFormState({ error: null, isLoading: true });
+    setFormState({ error: null, isLoading: true, isSubmitSucceed: false });
     const readyParams = {
       ...collectedData,
       stepOneData: {
@@ -115,10 +93,8 @@ export const useInsuranceFormController = () => {
     try {
       await submitInsuranceForm(readyParams);
 
-      // ✅ policy dates
       const { startDate, endDate } = getPolicyDates();
 
-      // ✅ premium calculation (correct keys)
       const { annualPremium, monthlyPremium } = calculatePremium({
         addons: collectedData.stepTwoData.addons,
         packageId: collectedData.stepTwoData.packageId,
@@ -127,28 +103,25 @@ export const useInsuranceFormController = () => {
         marketValue: collectedData.stepOneData.vehicle.marketValue!,
       });
 
-      // ✅ build quote (matches your interface exactly)
       const newQuote: IQuoteSummary = {
-        driver: collectedData.stepOneData.driver,
-        vehicle: collectedData.stepOneData.vehicle,
-        packageId: collectedData.stepTwoData.packageId,
-        addons: collectedData.stepTwoData.addons,
+        endDate,
+        startDate,
         annualPremium,
         monthlyPremium,
-        startDate,
-        endDate,
+        driver: collectedData.stepOneData.driver,
+        addons: collectedData.stepTwoData.addons,
+        vehicle: collectedData.stepOneData.vehicle,
+        packageId: collectedData.stepTwoData.packageId,
       };
 
       setQuote(newQuote);
 
-      // ✅ move to success step
-      setCurrentStep(InsuranceFormStepsEnum.FOUR);
-
-      setFormState({ error: null, isLoading: false });
+      setFormState({ error: null, isLoading: false, isSubmitSucceed: true });
     } catch {
       setFormState({
         error: "დაფიქსირდა შეცდომა. სცადეთ თავიდან.",
         isLoading: false,
+        isSubmitSucceed: false,
       });
     }
   };

@@ -1,7 +1,6 @@
 import { Stepper } from "../../components/layout/stepper";
 import { InsuranceFormHeader } from "./shared/components/insurance-form-header";
 import { InsuranceFormNavigation } from "./shared/components/insurance-form-navigation";
-import { StepFour } from "./shared/components/step-four/step-four";
 import { StepOne } from "./shared/components/step-one/step-one";
 import { StepThree } from "./shared/components/step-three/step-three";
 import { StepTwo } from "./shared/components/step-two/step-two";
@@ -43,16 +42,15 @@ export default function InsuranceForm() {
           />
         );
 
-      case InsuranceFormStepsEnum.THREE:
+      default:
         return (
           <StepThree
+            quote={quote}
             stepOneData={collectedData.stepOneData}
             stepTwoData={collectedData.stepTwoData}
+            isFormSucceed={formState.isSubmitSucceed}
           />
         );
-
-      default:
-        return <StepFour quote={quote} />;
     }
   };
 
@@ -62,11 +60,15 @@ export default function InsuranceForm() {
         <InsuranceFormHeader />
 
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-          <Stepper currentStep={currentStep} />
+          <Stepper
+            totalSteps={3}
+            currentStep={currentStep}
+            isFinished={formState.isSubmitSucceed}
+          />
 
           <div className="p-6">{renderFormContent(currentStep)}</div>
 
-          {currentStep === InsuranceFormStepsEnum.FOUR && (
+          {!formState.isSubmitSucceed && (
             <InsuranceFormNavigation
               currentStep={currentStep}
               isLoading={formState.isLoading}
