@@ -24,6 +24,10 @@ interface UseStepOneControllerProps {
   onErrorsChange: (errors: IStepOneErrors) => void;
 }
 
+export type UseStepOneControllerType = {
+  controller: ReturnType<typeof useStepOneController>;
+};
+
 export const useStepOneController = ({
   data,
   errors,
