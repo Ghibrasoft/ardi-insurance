@@ -112,7 +112,7 @@ function SummaryRow({ label, value, highlight }: SummaryRowProps) {
       : String(value);
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-0.5 sm:gap-1">
       <span className="text-gray-500">{label}:</span>
       <span
         className={
