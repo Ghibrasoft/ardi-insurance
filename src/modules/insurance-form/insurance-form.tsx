@@ -83,7 +83,7 @@ export default function InsuranceForm() {
       </div>
 
       {shouldRenderQuoteHistory && (
-        <div className="container mx-auto px-4 pb-10">
+        <div className="container mx-auto pb-10 px-4">
           <QuoteHistoryList />
         </div>
       )}

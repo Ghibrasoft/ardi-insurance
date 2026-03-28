@@ -129,7 +129,7 @@ export const useInsuranceFormController = () => {
     setFormState({ error: null, isLoading: false, isSubmitSucceed: false });
   }, [removeCollectedData]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     setFormState({ error: null, isLoading: true, isSubmitSucceed: false });
 
     const readyParams = {
@@ -159,7 +159,7 @@ export const useInsuranceFormController = () => {
         isSubmitSucceed: false,
       });
     }
-  };
+  }, [quote, collectedData, saveQuoteHistory, removeCollectedData]);
 
   return {
     quote,

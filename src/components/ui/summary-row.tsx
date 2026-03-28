@@ -17,7 +17,7 @@ export function SummaryRow({
       : String(value);
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-0.5 sm:gap-3">
+    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-0.5 sm:gap-4">
       <span className="text-gray-500 whitespace-nowrap shrink-0">{label}:</span>
 
       <span

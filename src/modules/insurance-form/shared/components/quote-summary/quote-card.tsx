@@ -19,49 +19,51 @@ export const QuoteCard = ({ quote, onDelete }: IQuoteCardProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <div className="w-full max-w-md bg-white border border-gray-200 shadow-sm rounded-xl p-4 text-sm text-left flex flex-col gap-2">
-        <SummaryRow
-          label="მძღოლი"
-          value={`${quote.driver.firstName} ${quote.driver.lastName}`}
-        />
-        <SummaryRow
-          label="ავტომობილი"
-          value={`${quote.vehicle.make} ${quote.vehicle.model}`}
-        />
-        <SummaryRow label="პაკეტი" value={quote.packageId} />
-        {quote.addons.length > 0 && (
-          <SummaryRow label="დამატებითი ოფციები" value={displayAddons} />
-        )}
-        <SummaryRow
-          label="წლიური პრემია"
-          value={`${formatPrice(quote.annualPremium)} ₾`}
-          highlight
-        />
-        <SummaryRow
-          label="თვიური გადახდა"
-          value={`${formatPrice(quote.monthlyPremium)} ₾`}
-          highlight
-        />
-        <SummaryRow
-          label="პერიოდი"
-          value={`${formatDate(quote.startDate)} - ${formatDate(
-            quote.endDate
-          )}`}
-        />
-
-        <Divider />
-
-        <div className="flex justify-between gap-2">
-          {onDelete && (
-            <Button variant="error" onClick={onDelete} className="text-xs">
-              წაშლა
-            </Button>
+    <div className="h-full">
+      <div className="h-full w-full bg-white border border-gray-200 shadow-sm rounded-xl p-4 text-sm text-left flex flex-col justify-between gap-2">
+        <div className="flex flex-col gap-2">
+          <SummaryRow
+            label="მძღოლი"
+            value={`${quote.driver.firstName} ${quote.driver.lastName}`}
+          />
+          <SummaryRow
+            label="ავტომობილი"
+            value={`${quote.vehicle.make} ${quote.vehicle.model}`}
+          />
+          <SummaryRow label="პაკეტი" value={quote.packageId} />
+          {quote.addons.length > 0 && (
+            <SummaryRow label="დამატებითი ოფციები" value={displayAddons} />
           )}
+          <SummaryRow
+            label="წლიური პრემია"
+            value={`${formatPrice(quote.annualPremium)} ₾`}
+            highlight
+          />
+          <SummaryRow
+            label="თვიური გადახდა"
+            value={`${formatPrice(quote.monthlyPremium)} ₾`}
+            highlight
+          />
+          <SummaryRow
+            label="პერიოდი"
+            value={`${formatDate(quote.startDate)} - ${formatDate(
+              quote.endDate
+            )}`}
+          />
+        </div>
 
-          <Button onClick={handlePrint} className="sm:w-fit w-full">
-            PDF / ამობეჭდვა
-          </Button>
+        <div>
+          <Divider />
+          <div className="flex justify-between gap-2 pt-2">
+            {onDelete && (
+              <Button variant="error" onClick={onDelete} className="text-xs">
+                წაშლა
+              </Button>
+            )}
+            <Button onClick={handlePrint} className="sm:w-fit w-full">
+              PDF / ამობეჭდვა
+            </Button>
+          </div>
         </div>
       </div>
     </div>
