@@ -1,16 +1,16 @@
 import type { AddonIdType } from "../../../../../lib/constants/insurance-addons";
 import type { PackageIdType } from "../../../../../lib/constants/insurance-packages";
-import type { IStepTwoData } from "../../insurance-form-types";
+import type { InsurancePlanSelectionData } from "../../insurance-form-types";
 
-interface UseStepTwoControllerProps {
-  data: IStepTwoData;
-  onChange: (data: IStepTwoData) => void;
+interface UseInsurancePlanSelectionControllerProps {
+  data: InsurancePlanSelectionData;
+  onChange: (data: InsurancePlanSelectionData) => void;
 }
 
-export const useStepTwoController = ({
+export const useInsurancePlanSelectionController = ({
   data,
   onChange,
-}: UseStepTwoControllerProps) => {
+}: UseInsurancePlanSelectionControllerProps) => {
   const handlePackageSelect = (packageId: PackageIdType) => {
     onChange({ ...data, packageId });
   };

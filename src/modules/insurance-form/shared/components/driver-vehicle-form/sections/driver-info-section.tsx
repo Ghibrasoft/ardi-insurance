@@ -1,38 +1,44 @@
-import { FormField } from "../../../../../components/ui/form-field";
-import { Input } from "../../../../../components/ui/input";
-import { SectionCard } from "../../../../../components/ui/section-card";
-
+import { FormField } from "../../../../../../components/ui/form-field";
+import { Input } from "../../../../../../components/ui/input";
+import { SectionCard } from "../../../../../../components/ui/section-card";
 import {
   INSURANCE_FORM_FIELD_LABELS,
   INSURANCE_FORM_FIELD_PLACEHOLDERS,
   InsuranceFormFieldNames,
-} from "../../../insurance-form-config";
+} from "../../../../insurance-form-config";
+import type {
+  IDriverVehicleFormData,
+  IDriverVehicleFormErrors,
+} from "../../../insurance-form-types";
+import type { UseDriverVehicleFormControllerType } from "../use-driver-vehicle-form-controller";
 
-import type { IStepOneData, IStepOneErrors } from "../../insurance-form-types";
-import type { UseStepOneControllerType } from "./use-step-one-controller";
-
-interface Props extends UseStepOneControllerType {
-  data: IStepOneData;
-  errors: IStepOneErrors;
+interface Props extends UseDriverVehicleFormControllerType {
+  data: IDriverVehicleFormData;
+  errors: IDriverVehicleFormErrors;
 }
 
 const DRIVER_INFO_FORM_FIELDS = [
   { key: InsuranceFormFieldNames.FIRST_NAME, required: true },
   { key: InsuranceFormFieldNames.LAST_NAME, required: true },
-  { key: InsuranceFormFieldNames.PERSONAL_ID, required: true, maxLength: 11 },
   {
-    key: InsuranceFormFieldNames.DATE_OF_BIRTH,
+    key: InsuranceFormFieldNames.PERSONAL_ID,
     required: true,
-    type: "date",
+    maskVariant: "numeric",
+    maxLength: 11,
   },
   {
     key: InsuranceFormFieldNames.PHONE,
     required: true,
     maskVariant: "phone",
   },
+  {
+    key: InsuranceFormFieldNames.DATE_OF_BIRTH,
+    required: true,
+    type: "date",
+  },
 ] as const;
 
-export const DriverInfoFormSection = ({ data, errors, controller }: Props) => {
+export const DriverInfoSection = ({ data, errors, controller }: Props) => {
   const { handleDriverInfoChange, handleDriverInfoBlur } = controller;
 
   return (

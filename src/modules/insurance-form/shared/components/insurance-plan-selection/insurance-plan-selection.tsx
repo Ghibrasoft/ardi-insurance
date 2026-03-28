@@ -3,19 +3,23 @@ import { RadioCard } from "../../../../../components/ui/radio-card";
 import { SectionCard } from "../../../../../components/ui/section-card";
 import { ADDONS } from "../../../../../lib/constants/insurance-addons";
 import { PACKAGES } from "../../../../../lib/constants/insurance-packages";
-import type { IStepTwoData } from "../../insurance-form-types";
-import { useStepTwoController } from "./use-step-two-controller";
+import type { InsurancePlanSelectionData } from "../../insurance-form-types";
+import { useInsurancePlanSelectionController } from "./use-insurance-plan-selection-controller";
 
-interface StepTwoProps {
-  data: IStepTwoData;
-  onChange: (data: IStepTwoData) => void;
+interface InsurancePlanSelectionProps {
+  data: InsurancePlanSelectionData;
+  onChange: (data: InsurancePlanSelectionData) => void;
 }
 
-export const StepTwo = ({ data, onChange }: StepTwoProps) => {
-  const { handleAddonToggle, handlePackageSelect } = useStepTwoController({
-    data,
-    onChange,
-  });
+export const InsurancePlanSelection = ({
+  data,
+  onChange,
+}: InsurancePlanSelectionProps) => {
+  const { handleAddonToggle, handlePackageSelect } =
+    useInsurancePlanSelectionController({
+      data,
+      onChange,
+    });
 
   return (
     <div className="flex flex-col gap-6">

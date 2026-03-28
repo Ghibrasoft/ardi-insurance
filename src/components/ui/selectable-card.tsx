@@ -4,11 +4,11 @@ interface SelectableCardProps {
   onClick: () => void;
 }
 
-export const SelectableCard = ({
+export function SelectableCard({
   selected,
   children,
   onClick,
-}: SelectableCardProps) => {
+}: SelectableCardProps) {
   return (
     <button
       onClick={onClick}
@@ -24,4 +24,4 @@ export const SelectableCard = ({
       {children}
     </button>
   );
-};
+}

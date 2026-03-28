@@ -8,13 +8,13 @@ interface CheckboxCardProps {
   onClick: () => void;
 }
 
-export const CheckboxCard = ({
+export function CheckboxCard({
   title,
   checked,
   description,
   rightContent,
   onClick,
-}: CheckboxCardProps) => {
+}: CheckboxCardProps) {
   return (
     <SelectableCard selected={checked} onClick={onClick}>
       <div className="flex items-center justify-between">
@@ -37,4 +37,4 @@ export const CheckboxCard = ({
       </div>
     </SelectableCard>
   );
-};
+}

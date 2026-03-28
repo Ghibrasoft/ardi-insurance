@@ -1,23 +1,23 @@
 interface StepperProps {
   currentStep: number;
-  totalSteps?: number;
+  totalSteps: number;
+  isFinished?: boolean;
 }
 
-export function Stepper({ currentStep, totalSteps = 3 }: StepperProps) {
+export function Stepper({
+  currentStep,
+  totalSteps = 3,
+  isFinished = false,
+}: StepperProps) {
   return (
-    <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
-      <span className="text-sm font-medium text-gray-500">
-        ნაბიჯი{" "}
-        <span className="text-gray-900 font-semibold">{currentStep}</span>
-        {" / "}
-        {totalSteps}
-      </span>
-
+    <div className="flex items-center justify-center px-6 py-4 bg-white border-b border-gray-200">
       <div className="flex items-center gap-2">
         {Array.from({ length: totalSteps }).map((_, i) => {
           const step = i + 1;
-          const isCompleted = currentStep > step;
-          const isActive = currentStep === step;
+          const isCompleted =
+            currentStep > step ||
+            (isFinished && currentStep === totalSteps && step === totalSteps);
+          const isActive = currentStep === step && !isFinished;
 
           return (
             <div key={step} className="flex items-center gap-2">
@@ -38,10 +38,11 @@ export function Stepper({ currentStep, totalSteps = 3 }: StepperProps) {
               >
                 {isCompleted ? "✓" : step}
               </div>
+
               {i < totalSteps - 1 && (
                 <div
                   className={`w-8 h-0.5 transition-all duration-200 ${
-                    isCompleted ? "bg-blue-600" : "bg-gray-200"
+                    currentStep > step ? "bg-blue-600" : "bg-gray-200"
                   }`}
                 />
               )}

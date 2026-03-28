@@ -1,14 +1,17 @@
-import type { IStepOneData, IStepTwoData } from "./shared/insurance-form-types";
+import type {
+  IDriverVehicleFormData,
+  InsurancePlanSelectionData,
+} from "./shared/insurance-form-types";
 
 export enum InsuranceFormFieldNames {
-  // Step one
+  // Driver & Vehicle Form
   FIRST_NAME = "firstName",
   LAST_NAME = "lastName",
   PERSONAL_ID = "personalId",
   DATE_OF_BIRTH = "dateOfBirth",
   PHONE = "phone",
 
-  // Step two
+  // Insurance Plan Selection
   PLATE_NUMBER = "plateNumber",
   MAKE = "make",
   MODEL = "model",
@@ -16,7 +19,7 @@ export enum InsuranceFormFieldNames {
   MARKET_VALUE = "marketValue",
 }
 
-const STEP_ONE_DEFAULTS: IStepOneData = {
+const DRIVER_AND_VEHICLE_DATA: IDriverVehicleFormData = {
   driver: {
     [InsuranceFormFieldNames.FIRST_NAME]: "",
     [InsuranceFormFieldNames.LAST_NAME]: "",
@@ -33,14 +36,14 @@ const STEP_ONE_DEFAULTS: IStepOneData = {
   },
 };
 
-const STEP_TWO_DEFAULTS: IStepTwoData = {
+const INSURANCE_PLAN_SELECTION_DATA: InsurancePlanSelectionData = {
   packageId: "basic",
   addons: [],
 };
 
 export const INSURANCE_FORM_DEFAULT_VALUES = {
-  stepOneData: STEP_ONE_DEFAULTS,
-  stepTwoData: STEP_TWO_DEFAULTS,
+  driverVehicleData: DRIVER_AND_VEHICLE_DATA,
+  insurancePlanSelectionData: INSURANCE_PLAN_SELECTION_DATA,
 };
 
 export const INSURANCE_FORM_FIELD_LABELS = {

@@ -1,6 +1,12 @@
 import type { AddonIdType } from "../../../lib/constants/insurance-addons";
 import type { PackageIdType } from "../../../lib/constants/insurance-packages";
 
+export enum InsuranceFormStepsEnum {
+  ONE = 1,
+  TWO = 2,
+  THREE = 3,
+}
+
 export interface IDriverInfo {
   firstName: string;
   lastName: string;
@@ -17,12 +23,12 @@ export interface IVehicleInfo {
   marketValue: number | null;
 }
 
-export interface IStepOneData {
+export interface IDriverVehicleFormData {
   driver: IDriverInfo;
   vehicle: IVehicleInfo;
 }
 
-export interface IStepTwoData {
+export interface InsurancePlanSelectionData {
   packageId: PackageIdType;
   addons: AddonIdType[];
 }
@@ -46,13 +52,7 @@ export interface IPlateCheckResult {
 
 export type FieldErrorsType<T> = Partial<Record<keyof T, string>>;
 
-export interface IStepOneErrors {
+export interface IDriverVehicleFormErrors {
   driver: FieldErrorsType<IDriverInfo>;
   vehicle: FieldErrorsType<IVehicleInfo>;
-}
-
-export enum InsuranceFormStepsEnum {
-  ONE = 1,
-  TWO = 2,
-  THREE = 3,
 }

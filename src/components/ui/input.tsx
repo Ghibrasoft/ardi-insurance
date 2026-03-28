@@ -1,7 +1,7 @@
 import { type InputHTMLAttributes, useCallback, useMemo } from "react";
 import { cn } from "../../lib/utils/cn";
 
-type MaskVariant = "plate-number" | "phone";
+type MaskVariant = "plate-number" | "phone" | "numeric";
 
 const maskFunctions: Record<MaskVariant, (value: string) => string> = {
   "plate-number": (value: string) => {
@@ -15,20 +15,15 @@ const maskFunctions: Record<MaskVariant, (value: string) => string> = {
       const isLetter = /[A-Z]/.test(char);
       const isDigit = /[0-9]/.test(char);
 
-      // positions 0,1 → letters
       if (letterCount < 2 && isLetter) {
         masked += char;
         letterCount++;
         if (letterCount === 2) masked += "-";
-      }
-      // positions 3,4,5 → digits
-      else if (letterCount === 2 && digitCount < 3 && isDigit) {
+      } else if (letterCount === 2 && digitCount < 3 && isDigit) {
         masked += char;
         digitCount++;
         if (digitCount === 3) masked += "-";
-      }
-      // positions 7,8 → letters
-      else if (digitCount === 3 && isLetter && masked.length < 9) {
+      } else if (digitCount === 3 && isLetter && masked.length < 9) {
         masked += char;
       }
     }
@@ -38,20 +33,26 @@ const maskFunctions: Record<MaskVariant, (value: string) => string> = {
 
   phone: (value: string) => {
     const digits = value.replace(/\D/g, "");
-    const local = digits.startsWith("995") ? digits.slice(3) : digits;
+    const local = digits.startsWith("9955")
+      ? digits.slice(4)
+      : digits.startsWith("995")
+      ? digits.slice(3)
+      : digits.startsWith("5")
+      ? digits.slice(1)
+      : digits;
 
-    if (local.length === 0) return "+(995) ";
+    const part1 = local.slice(0, 2);
+    const part2 = local.slice(2, 5);
+    const part3 = local.slice(5, 8);
 
-    const part1 = local.slice(0, 3);
-    const part2 = local.slice(3, 6);
-    const part3 = local.slice(6, 9);
-
-    let masked = `+(995) ${part1}`;
-    if (local.length > 3) masked += ` ${part2}`;
-    if (local.length > 6) masked += ` ${part3}`;
+    let masked = "+995 5";
+    masked += part1;
+    if (local.length > 2) masked += ` ${part2}`;
+    if (local.length > 5) masked += ` ${part3}`;
 
     return masked;
   },
+  numeric: (value: string) => value.replace(/\D+/g, ""),
 };
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -93,9 +94,8 @@ export function Input({
 
   const handleFocus = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
-      // auto-insert prefix for phone
       if (maskVariant === "phone" && !e.target.value) {
-        e.target.value = "+(995) ";
+        e.target.value = "+995 5";
         onChange?.(e as unknown as React.ChangeEvent<HTMLInputElement>);
       }
       onFocus?.(e);
