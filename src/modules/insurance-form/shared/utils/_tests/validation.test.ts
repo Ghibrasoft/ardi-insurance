@@ -7,8 +7,7 @@ import {
 } from "../validation";
 import type { IDriverInfo, IVehicleInfo } from "../../insurance-form-types";
 
-// ─── Base valid data ──────────────────────────────────────────────────────────
-
+// Base valid data
 const VALID_DRIVER: IDriverInfo = {
   firstName: "გიორგი",
   lastName: "მაისურაძე",
@@ -25,8 +24,7 @@ const VALID_VEHICLE: IVehicleInfo = {
   marketValue: 25000,
 };
 
-// ─── Driver validation ────────────────────────────────────────────────────────
-
+// Driver validation
 describe("validateDriverInfo", () => {
   it("returns no errors for valid driver", () => {
     const errors = validateDriverInfo(VALID_DRIVER);
@@ -144,8 +142,7 @@ describe("validateDriverInfo", () => {
   });
 });
 
-// ─── Vehicle validation ───────────────────────────────────────────────────────
-
+// Vehicle validation
 describe("validateVehicleInfo", () => {
   it("returns no errors for valid vehicle", () => {
     const errors = validateVehicleInfo(VALID_VEHICLE);

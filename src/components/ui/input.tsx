@@ -3,7 +3,10 @@ import { cn } from "../../lib/utils/cn";
 
 type MaskVariant = "plate-number" | "phone" | "numeric";
 
-const maskFunctions: Record<MaskVariant, (value: string) => string> = {
+const maskFunctions: Record<
+  MaskVariant,
+  (value: string, phonePrefix?: string) => string
+> = {
   "plate-number": (value: string) => {
     const upper = value.toUpperCase().replace(/[^A-Z0-9]/g, "");
     let masked = "";
@@ -31,27 +34,26 @@ const maskFunctions: Record<MaskVariant, (value: string) => string> = {
     return masked;
   },
 
-  phone: (value: string) => {
+  phone: (value: string, phonePrefix = "995") => {
     const digits = value.replace(/\D/g, "");
-    const local = digits.startsWith("9955")
-      ? digits.slice(4)
-      : digits.startsWith("995")
-      ? digits.slice(3)
-      : digits.startsWith("5")
-      ? digits.slice(1)
+
+    const local = digits.startsWith(phonePrefix)
+      ? digits.slice(phonePrefix.length)
       : digits;
 
-    const part1 = local.slice(0, 2);
-    const part2 = local.slice(2, 5);
-    const part3 = local.slice(5, 8);
+    const part1 = local.slice(0, 3);
+    const part2 = local.slice(3, 6);
+    const part3 = local.slice(6, 9);
 
-    let masked = "+995 5";
-    masked += part1;
-    if (local.length > 2) masked += ` ${part2}`;
-    if (local.length > 5) masked += ` ${part3}`;
+    let masked = `+${phonePrefix}`;
+
+    if (part1) masked += ` ${part1}`;
+    if (part2) masked += ` ${part2}`;
+    if (part3) masked += ` ${part3}`;
 
     return masked;
   },
+
   numeric: (value: string) => value.replace(/\D+/g, ""),
 };
 
@@ -59,6 +61,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
   clearable?: boolean;
   maskVariant?: MaskVariant;
+  phonePrefix?: string;
 }
 
 export function Input({
@@ -67,11 +70,13 @@ export function Input({
   maskVariant,
   className = "",
   clearable = true,
+  phonePrefix = "995",
   onFocus,
   onChange,
   ...props
 }: InputProps) {
   const isEmpty = !value || value === "";
+
   const maxLength = useMemo(
     () =>
       maskVariant === "plate-number"
@@ -85,22 +90,29 @@ export function Input({
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (maskVariant) {
-        e.target.value = maskFunctions[maskVariant](e.target.value);
+        const maskedValue = maskFunctions[maskVariant](
+          e.target.value,
+          phonePrefix
+        );
+        e.target.value = maskedValue;
       }
       onChange?.(e);
     },
-    [maskVariant, onChange]
+    [maskVariant, phonePrefix, onChange]
   );
 
   const handleFocus = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
-      if (maskVariant === "phone" && !e.target.value) {
-        e.target.value = "+995 5";
+      if (
+        maskVariant === "phone" &&
+        (!e.target.value || e.target.value === "+")
+      ) {
+        e.target.value = `+${phonePrefix}`;
         onChange?.(e as unknown as React.ChangeEvent<HTMLInputElement>);
       }
       onFocus?.(e);
     },
-    [maskVariant, onChange, onFocus]
+    [maskVariant, phonePrefix, onFocus, onChange]
   );
 
   const handleClear = useCallback(() => {
@@ -131,6 +143,7 @@ export function Input({
         onFocus={handleFocus}
         onChange={handleChange}
       />
+
       {clearable && value && (
         <button
           type="button"
