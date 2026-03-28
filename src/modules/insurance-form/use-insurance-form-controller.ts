@@ -87,12 +87,7 @@ export const useInsuranceFormController = () => {
   );
 
   const handleNext = useCallback(() => {
-    if (currentStep < 3)
-      setCurrentStep((prev) => (prev + 1) as InsuranceFormStepsEnum);
-  }, [currentStep]);
-
-  const handleNextClick = useCallback(() => {
-    if (currentStep === 1) {
+    if (currentStep === InsuranceFormStepsEnum.ONE) {
       const driverErrors = validateDriverInfo(
         collectedData.driverVehicleData.driver
       );
@@ -104,20 +99,21 @@ export const useInsuranceFormController = () => {
         Object.keys(driverErrors).length === 0 &&
         Object.keys(vehicleErrors).length === 0;
 
-      if (isValid) handleNext();
+      if (isValid)
+        setCurrentStep((prev) => (prev + 1) as InsuranceFormStepsEnum);
       return;
     }
 
-    if (currentStep === 2) {
+    if (currentStep === InsuranceFormStepsEnum.TWO) {
       handleCalculateQuote();
-      setCurrentStep(3);
+      setCurrentStep(InsuranceFormStepsEnum.THREE);
     }
-  }, [currentStep, collectedData, handleNext, handleCalculateQuote]);
+  }, [currentStep, collectedData, handleCalculateQuote]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     if (currentStep > 1)
       setCurrentStep((prev) => (prev - 1) as InsuranceFormStepsEnum);
-  };
+  }, [currentStep]);
 
   const handleSubmit = async () => {
     setFormState({ error: null, isLoading: true, isSubmitSucceed: false });
@@ -154,8 +150,8 @@ export const useInsuranceFormController = () => {
     collectedData,
     driverVehicleErrors,
     handleBack,
+    handleNext,
     handleSubmit,
-    handleNextClick,
     handleSubmitDriverVehicleForm,
     handleSubmitInsurancePlanSelection,
     handleDriverVehicleErrorsChange,

@@ -15,8 +15,8 @@ export default function InsuranceForm() {
     collectedData,
     driverVehicleErrors,
     handleBack,
+    handleNext,
     handleSubmit,
-    handleNextClick,
     handleSubmitDriverVehicleForm,
     handleDriverVehicleErrorsChange,
     handleSubmitInsurancePlanSelection,
@@ -71,8 +71,8 @@ export default function InsuranceForm() {
               currentStep={currentStep}
               isLoading={formState.isLoading}
               handleBack={handleBack}
+              handleNext={handleNext}
               handleSubmit={handleSubmit}
-              handleNextClick={handleNextClick}
             />
           )}
         </div>
