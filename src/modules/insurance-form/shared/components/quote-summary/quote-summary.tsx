@@ -3,13 +3,13 @@ import { SummaryRow } from "../../../../../components/ui/summary-row";
 import { formatDate } from "../../../../../lib/utils/format-date";
 import { formatPrice } from "../../../../../lib/utils/format-price";
 import type { IQuoteSummary } from "../../insurance-form-types";
-import { StepFourHeader } from "./step-four-header";
+import { QuoteSummaryHeader } from "./quote-summary-header";
 
-interface StepFourProps {
+interface QuoteSummaryProps {
   quote: IQuoteSummary | null;
 }
 
-export const StepFour = ({ quote }: StepFourProps) => {
+export const QuoteSummary = ({ quote }: QuoteSummaryProps) => {
   const handlePrint = () => {
     window.print();
   };
@@ -18,7 +18,7 @@ export const StepFour = ({ quote }: StepFourProps) => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
-      <StepFourHeader />
+      <QuoteSummaryHeader />
 
       <div className="w-full max-w-md bg-white border border-gray-200 shadow-sm rounded-xl p-4 text-sm text-left flex flex-col gap-2">
         <SummaryRow

@@ -5,18 +5,18 @@ import { PACKAGES } from "../../../../lib/constants/insurance-packages";
 import { formatDate } from "../../../../lib/utils/format-date";
 import { formatPrice } from "../../../../lib/utils/format-price";
 import type { IQuoteSummary } from "../insurance-form-types";
-import { StepFour } from "./step-four/step-four";
+import { QuoteSummary } from "./quote-summary/quote-summary";
 
-interface StepThreeProps {
+interface PolicySummaryProps {
   isFormSucceed: boolean;
   quote: IQuoteSummary | null;
 }
 
-export const StepThree = ({ quote, isFormSucceed }: StepThreeProps) => {
+export const PolicySummary = ({ quote, isFormSucceed }: PolicySummaryProps) => {
   const pkg = PACKAGES.find((p) => p.id === quote?.packageId)!;
   const selectedAddons = ADDONS.filter((a) => quote?.addons.includes(a.id));
 
-  if (isFormSucceed) return <StepFour quote={quote} />;
+  if (isFormSucceed) return <QuoteSummary quote={quote} />;
 
   return (
     <div className="flex flex-col gap-6">

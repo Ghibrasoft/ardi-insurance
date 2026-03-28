@@ -1,4 +1,4 @@
-export const StepFourHeader = () => {
+export const QuoteSummaryHeader = () => {
   return (
     <div className="flex flex-col items-center justify-center text-center gap-3 py-5">
       <div className="w-16 h-16 flex items-center justify-center rounded-full bg-green-100">

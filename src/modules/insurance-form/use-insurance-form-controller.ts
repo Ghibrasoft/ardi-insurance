@@ -2,9 +2,9 @@ import { useCallback, useState } from "react";
 import {
   InsuranceFormStepsEnum,
   type IQuoteSummary,
-  type IStepOneData,
-  type IStepOneErrors,
-  type IStepTwoData,
+  type IDriverVehicleFormData,
+  type IDriverVehicleFormErrors,
+  type InsurancePlanSelectionData,
 } from "./shared/insurance-form-types";
 import { INSURANCE_FORM_DEFAULT_VALUES } from "./insurance-form-config";
 import { submitInsuranceForm } from "./shared/api/insurance-form-mock";
@@ -33,26 +33,27 @@ export const useInsuranceFormController = () => {
   const [collectedData, setCollectedData] = useState(
     INSURANCE_FORM_DEFAULT_VALUES
   );
-  const [stepOneErrors, setStepOneErrors] = useState<IStepOneErrors>({
-    driver: {},
-    vehicle: {},
-  });
+  const [driverVehicleErrors, setDriverVehicleErrors] =
+    useState<IDriverVehicleFormErrors>({
+      driver: {},
+      vehicle: {},
+    });
 
   const handleCalculateQuote = useCallback(() => {
     const { startDate, endDate } = getPolicyDates();
     const { annualPremium, monthlyPremium } = calculatePremium({
-      addons: collectedData.stepTwoData.addons,
-      packageId: collectedData.stepTwoData.packageId,
-      vehicleYear: collectedData.stepOneData.vehicle.year!,
-      dateOfBirth: collectedData.stepOneData.driver.dateOfBirth,
-      marketValue: collectedData.stepOneData.vehicle.marketValue!,
+      addons: collectedData.insurancePlanSelectionData.addons,
+      packageId: collectedData.insurancePlanSelectionData.packageId,
+      vehicleYear: collectedData.driverVehicleData.vehicle.year!,
+      dateOfBirth: collectedData.driverVehicleData.driver.dateOfBirth,
+      marketValue: collectedData.driverVehicleData.vehicle.marketValue!,
     });
 
     const newQuote: IQuoteSummary = {
-      driver: collectedData.stepOneData.driver,
-      vehicle: collectedData.stepOneData.vehicle,
-      addons: collectedData.stepTwoData.addons,
-      packageId: collectedData.stepTwoData.packageId,
+      driver: collectedData.driverVehicleData.driver,
+      vehicle: collectedData.driverVehicleData.vehicle,
+      addons: collectedData.insurancePlanSelectionData.addons,
+      packageId: collectedData.insurancePlanSelectionData.packageId,
       endDate,
       startDate,
       annualPremium,
@@ -62,16 +63,28 @@ export const useInsuranceFormController = () => {
     setQuote(newQuote);
   }, [collectedData]);
 
-  const handleSubmitStepOne = useCallback((data: IStepOneData) => {
-    setCollectedData((prev) => ({ ...prev, stepOneData: data }));
-  }, []);
-  const handleStepOneErrorsChange = useCallback((errors: IStepOneErrors) => {
-    setStepOneErrors(errors);
-  }, []);
+  const handleSubmitDriverVehicleForm = useCallback(
+    (data: IDriverVehicleFormData) => {
+      setCollectedData((prev) => ({ ...prev, driverVehicleData: data }));
+    },
+    []
+  );
+  const handleDriverVehicleErrorsChange = useCallback(
+    (errors: IDriverVehicleFormErrors) => {
+      setDriverVehicleErrors(errors);
+    },
+    []
+  );
 
-  const handleSubmitStepTwo = useCallback((data: IStepTwoData) => {
-    setCollectedData((prev) => ({ ...prev, stepTwoData: data }));
-  }, []);
+  const handleSubmitInsurancePlanSelection = useCallback(
+    (data: InsurancePlanSelectionData) => {
+      setCollectedData((prev) => ({
+        ...prev,
+        insurancePlanSelectionData: data,
+      }));
+    },
+    []
+  );
 
   const handleNext = useCallback(() => {
     if (currentStep < 3)
@@ -80,11 +93,13 @@ export const useInsuranceFormController = () => {
 
   const handleNextClick = useCallback(() => {
     if (currentStep === 1) {
-      const driverErrors = validateDriverInfo(collectedData.stepOneData.driver);
-      const vehicleErrors = validateVehicleInfo(
-        collectedData.stepOneData.vehicle
+      const driverErrors = validateDriverInfo(
+        collectedData.driverVehicleData.driver
       );
-      setStepOneErrors({ driver: driverErrors, vehicle: vehicleErrors });
+      const vehicleErrors = validateVehicleInfo(
+        collectedData.driverVehicleData.vehicle
+      );
+      setDriverVehicleErrors({ driver: driverErrors, vehicle: vehicleErrors });
       const isValid =
         Object.keys(driverErrors).length === 0 &&
         Object.keys(vehicleErrors).length === 0;
@@ -109,12 +124,13 @@ export const useInsuranceFormController = () => {
 
     const readyParams = {
       ...collectedData,
-      stepOneData: {
-        ...collectedData.stepOneData,
+      driverVehicleData: {
+        ...collectedData.driverVehicleData,
         driver: {
-          ...collectedData.stepOneData.driver,
+          ...collectedData.driverVehicleData.driver,
           phone:
-            "+" + collectedData.stepOneData.driver.phone.replace(/[^0-9]/g, ""),
+            "+" +
+            collectedData.driverVehicleData.driver.phone.replace(/[^0-9]/g, ""),
         },
       },
     };
@@ -136,12 +152,12 @@ export const useInsuranceFormController = () => {
     formState,
     currentStep,
     collectedData,
-    stepOneErrors,
+    driverVehicleErrors,
     handleBack,
     handleSubmit,
     handleNextClick,
-    handleSubmitStepOne,
-    handleSubmitStepTwo,
-    handleStepOneErrorsChange,
+    handleSubmitDriverVehicleForm,
+    handleSubmitInsurancePlanSelection,
+    handleDriverVehicleErrorsChange,
   };
 };

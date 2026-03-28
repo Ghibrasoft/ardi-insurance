@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import type {
   IDriverInfo,
-  IStepOneData,
-  IStepOneErrors,
+  IDriverVehicleFormData,
+  IDriverVehicleFormErrors,
   IVehicleInfo,
 } from "../../insurance-form-types";
 import { checkPlateNumber } from "../../../../../lib/utils/check-plate-number";
@@ -17,23 +17,23 @@ interface IPlateState {
   error: string | null;
 }
 
-interface UseStepOneControllerProps {
-  data: IStepOneData;
-  errors: IStepOneErrors;
-  onChange: (data: IStepOneData) => void;
-  onErrorsChange: (errors: IStepOneErrors) => void;
+interface UseDriverVehicleFormControllerProps {
+  data: IDriverVehicleFormData;
+  errors: IDriverVehicleFormErrors;
+  onChange: (data: IDriverVehicleFormData) => void;
+  onErrorsChange: (errors: IDriverVehicleFormErrors) => void;
 }
 
-export type UseStepOneControllerType = {
-  controller: ReturnType<typeof useStepOneController>;
+export type UseDriverVehicleFormControllerType = {
+  controller: ReturnType<typeof useDriverVehicleFormController>;
 };
 
-export const useStepOneController = ({
+export const useDriverVehicleFormController = ({
   data,
   errors,
   onChange,
   onErrorsChange,
-}: UseStepOneControllerProps) => {
+}: UseDriverVehicleFormControllerProps) => {
   const [plateState, setPlateState] = useState<IPlateState>({
     isFound: false,
     isLoading: false,

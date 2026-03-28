@@ -1,22 +1,23 @@
 import { useCallback } from "react";
-import { Button } from "../../../../../components/ui/button";
-import { FormField } from "../../../../../components/ui/form-field";
-import { Input } from "../../../../../components/ui/input";
-import { SectionCard } from "../../../../../components/ui/section-card";
-
 import {
   INSURANCE_FORM_FIELD_LABELS,
   INSURANCE_FORM_FIELD_PLACEHOLDERS,
   InsuranceFormFieldNames,
-} from "../../../insurance-form-config";
+} from "../../../../insurance-form-config";
+import type {
+  IDriverVehicleFormData,
+  IDriverVehicleFormErrors,
+} from "../../../insurance-form-types";
+import type { UseDriverVehicleFormControllerType } from "../use-driver-vehicle-form-controller";
+import { SectionCard } from "../../../../../../components/ui/section-card";
+import { FormField } from "../../../../../../components/ui/form-field";
+import { Input } from "../../../../../../components/ui/input";
+import { Button } from "../../../../../../components/ui/button";
+import { PLATE_NUMBER_REGEX } from "../../../utils/validation";
 
-import type { IStepOneData, IStepOneErrors } from "../../insurance-form-types";
-import { PLATE_NUMBER_REGEX } from "../../utils/validation";
-import type { UseStepOneControllerType } from "./use-step-one-controller";
-
-interface Props extends UseStepOneControllerType {
-  data: IStepOneData;
-  errors: IStepOneErrors;
+interface Props extends UseDriverVehicleFormControllerType {
+  data: IDriverVehicleFormData;
+  errors: IDriverVehicleFormErrors;
 }
 
 const VEHICLE_INFO_FORM_FIELDS = [
@@ -46,7 +47,7 @@ const VEHICLE_INFO_FORM_FIELDS = [
   },
 ] as const;
 
-export const VehicleInfoFormSection = ({ data, errors, controller }: Props) => {
+export const VehicleInfoSection = ({ data, errors, controller }: Props) => {
   const {
     plateState,
     handlePlateLookup,

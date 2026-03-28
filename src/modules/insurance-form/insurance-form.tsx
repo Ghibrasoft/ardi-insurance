@@ -1,9 +1,9 @@
 import { Stepper } from "../../components/layout/stepper";
 import { InsuranceFormHeader } from "./shared/components/insurance-form-header";
 import { InsuranceFormNavigation } from "./shared/components/insurance-form-navigation";
-import { StepOne } from "./shared/components/step-one/step-one";
-import { StepThree } from "./shared/components/step-three";
-import { StepTwo } from "./shared/components/step-two/step-two";
+import { DriverVehicleForm } from "./shared/components/driver-vehicle-form/driver-vehicle-form";
+import { PolicySummary } from "./shared/components/policy-summary";
+import { InsurancePlanSelection } from "./shared/components/insurance-plan-selection/insurance-plan-selection";
 import { InsuranceFormStepsEnum } from "./shared/insurance-form-types";
 import { useInsuranceFormController } from "./use-insurance-form-controller";
 
@@ -12,39 +12,42 @@ export default function InsuranceForm() {
     quote,
     formState,
     currentStep,
-    stepOneErrors,
     collectedData,
+    driverVehicleErrors,
     handleBack,
     handleSubmit,
     handleNextClick,
-    handleSubmitStepOne,
-    handleSubmitStepTwo,
-    handleStepOneErrorsChange,
+    handleSubmitDriverVehicleForm,
+    handleDriverVehicleErrorsChange,
+    handleSubmitInsurancePlanSelection,
   } = useInsuranceFormController();
 
   const renderFormContent = (step: InsuranceFormStepsEnum) => {
     switch (step) {
       case InsuranceFormStepsEnum.ONE:
         return (
-          <StepOne
-            errors={stepOneErrors}
-            data={collectedData.stepOneData}
-            onChange={handleSubmitStepOne}
-            onErrorsChange={handleStepOneErrorsChange}
+          <DriverVehicleForm
+            errors={driverVehicleErrors}
+            data={collectedData.driverVehicleData}
+            onChange={handleSubmitDriverVehicleForm}
+            onErrorsChange={handleDriverVehicleErrorsChange}
           />
         );
 
       case InsuranceFormStepsEnum.TWO:
         return (
-          <StepTwo
-            data={collectedData.stepTwoData}
-            onChange={handleSubmitStepTwo}
+          <InsurancePlanSelection
+            data={collectedData.insurancePlanSelectionData}
+            onChange={handleSubmitInsurancePlanSelection}
           />
         );
 
       default:
         return (
-          <StepThree quote={quote} isFormSucceed={formState.isSubmitSucceed} />
+          <PolicySummary
+            quote={quote}
+            isFormSucceed={formState.isSubmitSucceed}
+          />
         );
     }
   };
