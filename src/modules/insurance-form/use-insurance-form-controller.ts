@@ -143,6 +143,9 @@ export const useInsuranceFormController = () => {
       if (quote) {
         saveQuoteHistory(quote);
       }
+
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      setCollectedData(INSURANCE_FORM_DEFAULT_VALUES);
       setFormState({ error: null, isLoading: false, isSubmitSucceed: true });
     } catch {
       setFormState({
