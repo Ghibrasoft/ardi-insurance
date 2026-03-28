@@ -123,6 +123,16 @@ export const useInsuranceFormController = () => {
       setCurrentStep((prev) => (prev - 1) as InsuranceFormStepsEnum);
   }, [currentStep]);
 
+  // useInsuranceFormController.ts
+  const handleClearForm = useCallback(() => {
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+    setCollectedData(INSURANCE_FORM_DEFAULT_VALUES);
+    setDriverVehicleErrors({ driver: {}, vehicle: {} });
+    setCurrentStep(InsuranceFormStepsEnum.ONE);
+    setQuote(null);
+    setFormState({ error: null, isLoading: false, isSubmitSucceed: false });
+  }, []);
+
   const handleSubmit = async () => {
     setFormState({ error: null, isLoading: true, isSubmitSucceed: false });
 
@@ -170,6 +180,7 @@ export const useInsuranceFormController = () => {
     handleBack,
     handleNext,
     handleSubmit,
+    handleClearForm,
     handleSubmitDriverVehicleForm,
     handleSubmitInsurancePlanSelection,
     handleDriverVehicleErrorsChange,

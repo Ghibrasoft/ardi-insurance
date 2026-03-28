@@ -54,8 +54,19 @@ export const useDriverVehicleFormController = ({
   const handleDriverInfoChange = useCallback(
     (field: keyof IDriverInfo, value: string) => {
       onChange({ ...data, driver: { ...data.driver, [field]: value } });
+
+      const error = validateDriverField(
+        field,
+        value as IDriverInfo[typeof field]
+      );
+      if (!error) {
+        onErrorsChange({
+          ...errors,
+          driver: { ...errors.driver, [field]: undefined },
+        });
+      }
     },
-    [data, onChange]
+    [data, errors, onChange, onErrorsChange]
   );
 
   // Vehicle handlers
@@ -69,12 +80,22 @@ export const useDriverVehicleFormController = ({
     },
     [data.vehicle, errors, onErrorsChange]
   );
-
   const handleVehicleInfoChange = useCallback(
     (field: keyof IVehicleInfo, value: string | number | null) => {
       onChange({ ...data, vehicle: { ...data.vehicle, [field]: value } });
+
+      const error = validateVehicleField(
+        field,
+        value as IVehicleInfo[typeof field]
+      );
+      if (!error) {
+        onErrorsChange({
+          ...errors,
+          vehicle: { ...errors.vehicle, [field]: undefined },
+        });
+      }
     },
-    [data, onChange]
+    [data, errors, onChange, onErrorsChange]
   );
 
   const handlePlateNumberChange = useCallback(
@@ -111,6 +132,18 @@ export const useDriverVehicleFormController = ({
             year: result.year,
           },
         });
+
+        onErrorsChange({
+          ...errors,
+          vehicle: {
+            ...errors.vehicle,
+            plateNumber: undefined,
+            make: undefined,
+            model: undefined,
+            year: undefined,
+          },
+        });
+
         setPlateState({ isFound: true, isLoading: false, error: null });
       } else {
         setPlateState({
@@ -126,7 +159,7 @@ export const useDriverVehicleFormController = ({
         error: "დაფიქსირდა შეცდომა. სცადეთ თავიდან.",
       });
     }
-  }, [data, onChange]);
+  }, [data, errors, onChange, onErrorsChange]);
   const handlePlateKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {

@@ -19,6 +19,7 @@ export default function InsuranceForm() {
     handleBack,
     handleNext,
     handleSubmit,
+    handleClearForm,
     handleSubmitDriverVehicleForm,
     handleDriverVehicleErrorsChange,
     handleSubmitInsurancePlanSelection,
@@ -75,6 +76,7 @@ export default function InsuranceForm() {
               handleBack={handleBack}
               handleNext={handleNext}
               handleSubmit={handleSubmit}
+              handleClearForm={handleClearForm}
             />
           )}
         </div>
