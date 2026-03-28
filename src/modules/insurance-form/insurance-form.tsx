@@ -6,6 +6,7 @@ import { PolicySummary } from "./shared/components/policy-summary";
 import { InsurancePlanSelection } from "./shared/components/insurance-plan-selection/insurance-plan-selection";
 import { InsuranceFormStepsEnum } from "./shared/insurance-form-types";
 import { useInsuranceFormController } from "./use-insurance-form-controller";
+import { QuoteHistoryList } from "./shared/components/quote-summary/quote-history-list";
 
 export default function InsuranceForm() {
   const {
@@ -14,6 +15,7 @@ export default function InsuranceForm() {
     currentStep,
     collectedData,
     driverVehicleErrors,
+    shouldRenderQuoteHistory,
     handleBack,
     handleNext,
     handleSubmit,
@@ -54,7 +56,7 @@ export default function InsuranceForm() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-2xl mx-auto py-10 px-4">
+      <div className="container mx-auto py-10 px-4">
         <InsuranceFormHeader />
 
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
@@ -77,6 +79,12 @@ export default function InsuranceForm() {
           )}
         </div>
       </div>
+
+      {shouldRenderQuoteHistory && (
+        <div className="container mx-auto px-4 pb-10">
+          <QuoteHistoryList />
+        </div>
+      )}
     </div>
   );
 }

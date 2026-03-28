@@ -10,7 +10,13 @@ export function useQuoteHistory() {
   });
 
   const saveQuoteHistory = (quote: IQuoteSummary) => {
-    const updated = [quote, ...history].slice(0, 10);
+    const updated = [quote, ...history].slice(0, 5);
+    setHistory(updated);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+  };
+
+  const deleteQuoteFromHistory = (index: number) => {
+    const updated = history.filter((_, i) => i !== index);
     setHistory(updated);
     localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
   };
@@ -20,5 +26,10 @@ export function useQuoteHistory() {
     localStorage.removeItem(HISTORY_KEY);
   };
 
-  return { history, saveQuoteHistory, clearQuoteHistory };
+  return {
+    history,
+    saveQuoteHistory,
+    clearQuoteHistory,
+    deleteQuoteFromHistory,
+  };
 }

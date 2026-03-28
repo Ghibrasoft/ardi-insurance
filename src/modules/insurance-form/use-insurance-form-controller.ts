@@ -28,7 +28,7 @@ const getSavedDraft = (): typeof INSURANCE_FORM_DEFAULT_VALUES => {
 };
 
 export const useInsuranceFormController = () => {
-  const { saveQuoteHistory } = useQuoteHistory();
+  const { history, saveQuoteHistory } = useQuoteHistory();
   const [formState, setFormState] = useState<IFormState>({
     error: null,
     isLoading: false,
@@ -44,6 +44,8 @@ export const useInsuranceFormController = () => {
       driver: {},
       vehicle: {},
     });
+  const shouldRenderQuoteHistory =
+    formState.isSubmitSucceed && history.length > 0;
 
   const handleCalculateQuote = useCallback(() => {
     const { startDate, endDate } = getPolicyDates();
@@ -161,6 +163,7 @@ export const useInsuranceFormController = () => {
     currentStep,
     collectedData,
     driverVehicleErrors,
+    shouldRenderQuoteHistory,
     handleBack,
     handleNext,
     handleSubmit,

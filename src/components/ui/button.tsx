@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from "react";
 import { cn } from "../../lib/utils/cn";
 
-type ButtonVariant = "primary" | "secondary" | "ghost";
+type ButtonVariant = "primary" | "secondary" | "ghost" | "error";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -13,6 +13,8 @@ const VARIANT_STYLES: Record<ButtonVariant, string> = {
   secondary:
     "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-400",
   ghost: "text-gray-600 hover:bg-gray-100 disabled:text-gray-300",
+  error:
+    "bg-red-50 text-red-700 border border-red-300 hover:bg-red-100 disabled:bg-red-50 disabled:text-red-400",
 };
 
 export function Button({
