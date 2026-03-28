@@ -6,9 +6,12 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     return saved ? JSON.parse(saved) : initialValue;
   });
 
-  const setValue = (value: T) => {
-    setStoredValue(value);
-    localStorage.setItem(key, JSON.stringify(value));
+  const setValue = (value: T | ((prev: T) => T)) => {
+    setStoredValue((prev) => {
+      const newValue = value instanceof Function ? value(prev) : value;
+      localStorage.setItem(key, JSON.stringify(newValue));
+      return newValue;
+    });
   };
 
   const removeValue = () => {

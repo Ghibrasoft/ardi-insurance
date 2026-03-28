@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   InsuranceFormStepsEnum,
   type IQuoteSummary,
@@ -14,6 +14,7 @@ import {
 } from "./shared/utils/validation";
 import { calculatePremium, getPolicyDates } from "../../lib/utils/calculations";
 import { useQuoteHistory } from "./shared/hooks/use-quote-history";
+import { useLocalStorage } from "../../hooks/use-local-storage";
 
 interface IFormState {
   error: string | null;
@@ -22,10 +23,6 @@ interface IFormState {
 }
 
 const DRAFT_STORAGE_KEY = "ardi-ins-draft";
-const getSavedDraft = (): typeof INSURANCE_FORM_DEFAULT_VALUES => {
-  const saved = localStorage.getItem(DRAFT_STORAGE_KEY);
-  return saved ? JSON.parse(saved) : INSURANCE_FORM_DEFAULT_VALUES;
-};
 
 export const useInsuranceFormController = () => {
   const { history, saveQuoteHistory } = useQuoteHistory();
@@ -38,7 +35,8 @@ export const useInsuranceFormController = () => {
   const [currentStep, setCurrentStep] = useState<InsuranceFormStepsEnum>(
     InsuranceFormStepsEnum.ONE
   );
-  const [collectedData, setCollectedData] = useState(getSavedDraft);
+  const [collectedData, setCollectedData, removeCollectedData] =
+    useLocalStorage(DRAFT_STORAGE_KEY, INSURANCE_FORM_DEFAULT_VALUES);
   const [driverVehicleErrors, setDriverVehicleErrors] =
     useState<IDriverVehicleFormErrors>({
       driver: {},
@@ -75,7 +73,7 @@ export const useInsuranceFormController = () => {
     (data: IDriverVehicleFormData) => {
       setCollectedData((prev) => ({ ...prev, driverVehicleData: data }));
     },
-    []
+    [setCollectedData]
   );
   const handleDriverVehicleErrorsChange = useCallback(
     (errors: IDriverVehicleFormErrors) => {
@@ -91,7 +89,7 @@ export const useInsuranceFormController = () => {
         insurancePlanSelectionData: data,
       }));
     },
-    []
+    [setCollectedData]
   );
 
   const handleNext = useCallback(() => {
@@ -123,15 +121,13 @@ export const useInsuranceFormController = () => {
       setCurrentStep((prev) => (prev - 1) as InsuranceFormStepsEnum);
   }, [currentStep]);
 
-  // useInsuranceFormController.ts
   const handleClearForm = useCallback(() => {
-    localStorage.removeItem(DRAFT_STORAGE_KEY);
-    setCollectedData(INSURANCE_FORM_DEFAULT_VALUES);
+    removeCollectedData();
     setDriverVehicleErrors({ driver: {}, vehicle: {} });
     setCurrentStep(InsuranceFormStepsEnum.ONE);
     setQuote(null);
     setFormState({ error: null, isLoading: false, isSubmitSucceed: false });
-  }, []);
+  }, [removeCollectedData]);
 
   const handleSubmit = async () => {
     setFormState({ error: null, isLoading: true, isSubmitSucceed: false });
@@ -154,8 +150,7 @@ export const useInsuranceFormController = () => {
         saveQuoteHistory(quote);
       }
 
-      localStorage.removeItem(DRAFT_STORAGE_KEY);
-      setCollectedData(INSURANCE_FORM_DEFAULT_VALUES);
+      removeCollectedData();
       setFormState({ error: null, isLoading: false, isSubmitSucceed: true });
     } catch {
       setFormState({
@@ -165,10 +160,6 @@ export const useInsuranceFormController = () => {
       });
     }
   };
-
-  useEffect(() => {
-    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(collectedData));
-  }, [collectedData]);
 
   return {
     quote,

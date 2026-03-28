@@ -4,6 +4,7 @@ import { formatDate } from "../../../../../lib/utils/format-date";
 import { formatPrice } from "../../../../../lib/utils/format-price";
 import { Button } from "../../../../../components/ui/button";
 import { ADDONS } from "../../../../../lib/constants/insurance-addons";
+import { Divider } from "../../../../../components/ui/divider";
 
 interface IQuoteCardProps {
   quote: IQuoteSummary;
@@ -48,18 +49,20 @@ export const QuoteCard = ({ quote, onDelete }: IQuoteCardProps) => {
             quote.endDate
           )}`}
         />
-      </div>
 
-      <div className="flex justify-end pt-2 border-t border-gray-100 gap-2">
-        <Button onClick={handlePrint} className="sm:w-fit w-full">
-          PDF / ამობეჭდვა
-        </Button>
+        <Divider />
 
-        {onDelete && (
-          <Button variant="error" onClick={onDelete} className="text-xs">
-            წაშლა
+        <div className="flex justify-between gap-2">
+          {onDelete && (
+            <Button variant="error" onClick={onDelete} className="text-xs">
+              წაშლა
+            </Button>
+          )}
+
+          <Button onClick={handlePrint} className="sm:w-fit w-full">
+            PDF / ამობეჭდვა
           </Button>
-        )}
+        </div>
       </div>
     </div>
   );
