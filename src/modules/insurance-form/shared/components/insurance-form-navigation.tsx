@@ -1,8 +1,9 @@
 import { Button } from "../../../../components/ui/button";
 
 interface InsuranceFormNavigationProps {
-  currentStep: number;
   isLoading: boolean;
+  currentStep: number;
+  isFormDirty: boolean;
   handleBack: () => void;
   handleNext: () => void;
   handleSubmit: () => void;
@@ -10,6 +11,7 @@ interface InsuranceFormNavigationProps {
 }
 export const InsuranceFormNavigation = ({
   isLoading,
+  isFormDirty,
   currentStep,
   handleBack,
   handleNext,
@@ -18,7 +20,12 @@ export const InsuranceFormNavigation = ({
 }: InsuranceFormNavigationProps) => {
   return (
     <div className="px-6 py-4 border-t border-gray-100 bg-gray-50 flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-2">
-      <Button variant="ghost" btnColor="error" onClick={handleClearForm}>
+      <Button
+        variant="ghost"
+        btnColor="error"
+        disabled={!isFormDirty}
+        onClick={handleClearForm}
+      >
         გასუფთავება
       </Button>
 

@@ -44,6 +44,9 @@ export const useInsuranceFormController = () => {
     });
   const shouldRenderQuoteHistory =
     formState.isSubmitSucceed && history.length > 0;
+  const isFormDirty =
+    JSON.stringify(collectedData) !==
+    JSON.stringify(INSURANCE_FORM_DEFAULT_VALUES);
 
   const handleCalculateQuote = useCallback(() => {
     const { startDate, endDate } = getPolicyDates();
@@ -164,6 +167,7 @@ export const useInsuranceFormController = () => {
   return {
     quote,
     formState,
+    isFormDirty,
     currentStep,
     collectedData,
     driverVehicleErrors,

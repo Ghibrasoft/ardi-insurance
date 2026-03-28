@@ -12,6 +12,7 @@ export default function InsuranceForm() {
   const {
     quote,
     formState,
+    isFormDirty,
     currentStep,
     collectedData,
     driverVehicleErrors,
@@ -74,6 +75,7 @@ export default function InsuranceForm() {
 
           {!formState.isSubmitSucceed && (
             <InsuranceFormNavigation
+              isFormDirty={isFormDirty}
               currentStep={currentStep}
               isLoading={formState.isLoading}
               handleBack={handleBack}
