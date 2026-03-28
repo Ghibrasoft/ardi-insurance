@@ -119,7 +119,7 @@ export function Input({
           "w-full px-3 py-2.5 rounded-lg border text-sm cursor-text",
           "bg-white placeholder:text-gray-400",
           "outline-none transition-all duration-150",
-          "disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed",
+          "disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none",
           error
             ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
             : "border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100",

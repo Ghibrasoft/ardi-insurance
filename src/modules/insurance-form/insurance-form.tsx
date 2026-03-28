@@ -6,17 +6,21 @@ import { PolicySummary } from "./shared/components/policy-summary";
 import { InsurancePlanSelection } from "./shared/components/insurance-plan-selection/insurance-plan-selection";
 import { InsuranceFormStepsEnum } from "./shared/insurance-form-types";
 import { useInsuranceFormController } from "./use-insurance-form-controller";
+import { QuoteHistoryList } from "./shared/components/quote-summary/quote-history-list";
 
 export default function InsuranceForm() {
   const {
     quote,
     formState,
+    isFormDirty,
     currentStep,
     collectedData,
     driverVehicleErrors,
+    shouldRenderQuoteHistory,
     handleBack,
     handleNext,
     handleSubmit,
+    handleClearForm,
     handleSubmitDriverVehicleForm,
     handleDriverVehicleErrorsChange,
     handleSubmitInsurancePlanSelection,
@@ -54,8 +58,11 @@ export default function InsuranceForm() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-2xl mx-auto py-10 px-4">
-        <InsuranceFormHeader />
+      <div className="container mx-auto py-10 px-4">
+        <InsuranceFormHeader
+          isFormSucceed={formState.isSubmitSucceed}
+          onReset={handleClearForm}
+        />
 
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           <Stepper
@@ -68,15 +75,23 @@ export default function InsuranceForm() {
 
           {!formState.isSubmitSucceed && (
             <InsuranceFormNavigation
+              isFormDirty={isFormDirty}
               currentStep={currentStep}
               isLoading={formState.isLoading}
               handleBack={handleBack}
               handleNext={handleNext}
               handleSubmit={handleSubmit}
+              handleClearForm={handleClearForm}
             />
           )}
         </div>
       </div>
+
+      {shouldRenderQuoteHistory && (
+        <div className="container mx-auto pb-10 px-4">
+          <QuoteHistoryList />
+        </div>
+      )}
     </div>
   );
 }

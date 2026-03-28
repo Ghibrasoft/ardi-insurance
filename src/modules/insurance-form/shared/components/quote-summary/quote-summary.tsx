@@ -1,9 +1,5 @@
-import { Button } from "../../../../../components/ui/button";
-import { SummaryRow } from "../../../../../components/ui/summary-row";
-import { ADDONS } from "../../../../../lib/constants/insurance-addons";
-import { formatDate } from "../../../../../lib/utils/format-date";
-import { formatPrice } from "../../../../../lib/utils/format-price";
 import type { IQuoteSummary } from "../../insurance-form-types";
+import { QuoteCard } from "./quote-card";
 import { QuoteSummaryHeader } from "./quote-summary-header";
 
 interface QuoteSummaryProps {
@@ -11,52 +7,11 @@ interface QuoteSummaryProps {
 }
 
 export const QuoteSummary = ({ quote }: QuoteSummaryProps) => {
-  const selectedAddons = ADDONS.filter((a) => quote.addons.includes(a.id));
-  const displayAddons = selectedAddons.map((a) => a.label).join(", ");
-
-  const handlePrint = () => {
-    window.print();
-  };
-
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className="flex flex-col gap-4">
       <QuoteSummaryHeader />
 
-      <div className="w-full max-w-md bg-white border border-gray-200 shadow-sm rounded-xl p-4 text-sm text-left flex flex-col gap-2">
-        <SummaryRow
-          label="მძღოლი"
-          value={`${quote.driver.firstName} ${quote.driver.lastName}`}
-        />
-        <SummaryRow
-          label="ავტომობილი"
-          value={`${quote.vehicle.make} ${quote.vehicle.model}`}
-        />
-        <SummaryRow label="პაკეტი" value={quote.packageId} />
-        {quote.addons.length > 0 && (
-          <SummaryRow label="დამატებითი ოფციები" value={displayAddons} />
-        )}
-        <SummaryRow
-          label="წლიური პრემია"
-          value={`${formatPrice(quote.annualPremium)} ₾`}
-          highlight
-        />
-        <SummaryRow
-          label="თვიური გადახდა"
-          value={`${formatPrice(quote.monthlyPremium)} ₾`}
-          highlight
-        />
-        <SummaryRow
-          label="პერიოდი"
-          value={`${formatDate(quote.startDate)} - ${formatDate(
-            quote.endDate
-          )}`}
-        />
-      </div>
-
-      {/* Actions */}
-      <Button onClick={handlePrint} className="sm:w-fit w-full">
-        PDF / ამობეჭდვა
-      </Button>
+      <QuoteCard quote={quote} />
     </div>
   );
 };
