@@ -7,18 +7,16 @@ import type { IQuoteSummary } from "../../insurance-form-types";
 import { QuoteSummaryHeader } from "./quote-summary-header";
 
 interface QuoteSummaryProps {
-  quote: IQuoteSummary | null;
+  quote: IQuoteSummary;
 }
 
 export const QuoteSummary = ({ quote }: QuoteSummaryProps) => {
-  const selectedAddons = ADDONS.filter((a) => quote?.addons.includes(a.id));
+  const selectedAddons = ADDONS.filter((a) => quote.addons.includes(a.id));
   const displayAddons = selectedAddons.map((a) => a.label).join(", ");
 
   const handlePrint = () => {
     window.print();
   };
-
-  if (!quote) return <p>შეცდომა მონაცემების ჩატვირთვისას. სცადეთ თავიდან.</p>;
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
