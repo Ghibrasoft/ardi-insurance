@@ -15,6 +15,7 @@ interface PolicySummaryProps {
 export const PolicySummary = ({ quote, isFormSucceed }: PolicySummaryProps) => {
   const pkg = PACKAGES.find((p) => p.id === quote?.packageId)!;
   const selectedAddons = ADDONS.filter((a) => quote?.addons.includes(a.id));
+  const displayAddons = selectedAddons.map((a) => a.label).join(", ");
 
   if (isFormSucceed) return <QuoteSummary quote={quote} />;
 
@@ -59,12 +60,7 @@ export const PolicySummary = ({ quote, isFormSucceed }: PolicySummaryProps) => {
       <SectionCard title="არჩეული პაკეტი">
         <div className="flex flex-col gap-3 text-sm">
           <SummaryRow label="პაკეტი" value={pkg.name} />
-          {selectedAddons.length > 0 && (
-            <SummaryRow
-              label="დამატებითი ოფციები"
-              value={selectedAddons.map((a) => a.label).join(", ")}
-            />
-          )}
+          <SummaryRow label="დამატებითი ოფციები" value={displayAddons} />
         </div>
       </SectionCard>
 

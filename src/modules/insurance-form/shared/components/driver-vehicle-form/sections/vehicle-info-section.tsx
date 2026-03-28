@@ -36,14 +36,14 @@ const VEHICLE_INFO_FORM_FIELDS = [
   {
     key: InsuranceFormFieldNames.YEAR,
     required: true,
-    type: "number",
     disabled: true,
     clearable: false,
+    maskVariant: "numeric",
   },
   {
     key: InsuranceFormFieldNames.MARKET_VALUE,
     required: true,
-    type: "number",
+    maskVariant: "numeric",
   },
 ] as const;
 
@@ -127,8 +127,8 @@ export const VehicleInfoSection = ({ data, errors, controller }: Props) => {
             const { key, ...inputProps } = field;
             const error = errors.vehicle[key];
             const rawValue = data.vehicle[key];
-
-            const displayValue = rawValue ?? "";
+            const displayValue =
+              rawValue === 0 || rawValue === null ? "" : String(rawValue);
 
             return (
               <FormField

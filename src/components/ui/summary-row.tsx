@@ -1,3 +1,5 @@
+import { cn } from "../../lib/utils/cn";
+
 interface SummaryRowProps {
   label: string;
   value?: string | number | null;
@@ -14,11 +16,12 @@ export function SummaryRow({ label, value, highlight }: SummaryRowProps) {
     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-0.5 sm:gap-1">
       <span className="text-gray-500">{label}:</span>
       <span
-        className={
+        className={cn(
+          "sm:text-right text-left",
           highlight
             ? "font-bold text-blue-600 text-base"
             : "font-medium text-gray-900"
-        }
+        )}
       >
         {computedValue}
       </span>

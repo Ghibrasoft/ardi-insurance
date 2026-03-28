@@ -1,5 +1,6 @@
 import { Button } from "../../../../../components/ui/button";
 import { SummaryRow } from "../../../../../components/ui/summary-row";
+import { ADDONS } from "../../../../../lib/constants/insurance-addons";
 import { formatDate } from "../../../../../lib/utils/format-date";
 import { formatPrice } from "../../../../../lib/utils/format-price";
 import type { IQuoteSummary } from "../../insurance-form-types";
@@ -10,11 +11,14 @@ interface QuoteSummaryProps {
 }
 
 export const QuoteSummary = ({ quote }: QuoteSummaryProps) => {
+  const selectedAddons = ADDONS.filter((a) => quote?.addons.includes(a.id));
+  const displayAddons = selectedAddons.map((a) => a.label).join(", ");
+
   const handlePrint = () => {
     window.print();
   };
 
-  if (!quote) return <div>Loading...</div>;
+  if (!quote) return <p>შეცდომა მონაცემების ჩატვირთვისას. სცადეთ თავიდან.</p>;
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
@@ -31,10 +35,7 @@ export const QuoteSummary = ({ quote }: QuoteSummaryProps) => {
         />
         <SummaryRow label="პაკეტი" value={quote.packageId} />
         {quote.addons.length > 0 && (
-          <SummaryRow
-            label="დამატებითი ოფციები"
-            value={quote.addons.join(", ")}
-          />
+          <SummaryRow label="დამატებითი ოფციები" value={displayAddons} />
         )}
         <SummaryRow
           label="წლიური პრემია"

@@ -20,7 +20,12 @@ interface Props extends UseDriverVehicleFormControllerType {
 const DRIVER_INFO_FORM_FIELDS = [
   { key: InsuranceFormFieldNames.FIRST_NAME, required: true },
   { key: InsuranceFormFieldNames.LAST_NAME, required: true },
-  { key: InsuranceFormFieldNames.PERSONAL_ID, required: true, maxLength: 11 },
+  {
+    key: InsuranceFormFieldNames.PERSONAL_ID,
+    required: true,
+    maskVariant: "numeric",
+    maxLength: 11,
+  },
   {
     key: InsuranceFormFieldNames.PHONE,
     required: true,
