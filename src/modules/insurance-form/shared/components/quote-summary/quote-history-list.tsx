@@ -25,7 +25,7 @@ export const QuoteHistoryList = () => {
             თქვენი ბოლო {history.length} შეთავაზება
           </p>
         </div>
-        <Button variant="error" onClick={clearQuoteHistory}>
+        <Button variant="ghost" btnColor="error" onClick={clearQuoteHistory}>
           გასუფთავება
         </Button>
       </div>

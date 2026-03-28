@@ -18,13 +18,13 @@ export const InsuranceFormNavigation = ({
 }: InsuranceFormNavigationProps) => {
   return (
     <div className="px-6 py-4 border-t border-gray-100 bg-gray-50 flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-2">
-      <Button variant="ghost" onClick={handleClearForm}>
+      <Button variant="ghost" btnColor="error" onClick={handleClearForm}>
         გასუფთავება
       </Button>
 
       <div className="flex flex-col-reverse sm:flex-row gap-2">
         <Button
-          variant="secondary"
+          variant="outlined"
           disabled={currentStep === 1 || isLoading}
           onClick={handleBack}
         >

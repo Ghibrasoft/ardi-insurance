@@ -56,7 +56,12 @@ export const QuoteCard = ({ quote, onDelete }: IQuoteCardProps) => {
           <Divider />
           <div className="flex justify-between gap-2 pt-2">
             {onDelete && (
-              <Button variant="error" onClick={onDelete} className="text-xs">
+              <Button
+                btnColor="error"
+                variant="ghost"
+                onClick={onDelete}
+                className="text-xs"
+              >
                 წაშლა
               </Button>
             )}

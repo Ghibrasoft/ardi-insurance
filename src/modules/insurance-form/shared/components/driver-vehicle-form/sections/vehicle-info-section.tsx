@@ -108,7 +108,7 @@ export const VehicleInfoSection = ({ data, errors, controller }: Props) => {
               </div>
             ) : (
               <Button
-                variant="secondary"
+                variant="outlined"
                 className="shrink-0"
                 isLoading={plateState.isLoading}
                 disabled={
