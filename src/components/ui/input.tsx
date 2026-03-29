@@ -41,12 +41,16 @@ const maskFunctions: Record<
       ? digits.slice(phonePrefix.length)
       : digits;
 
-    const part1 = local.slice(0, 3);
-    const part2 = local.slice(3, 6);
-    const part3 = local.slice(6, 9);
+    const validated =
+      local.startsWith("5") || local === ""
+        ? local
+        : local.replace(/^[^5]*/, "");
+
+    const part1 = validated.slice(0, 3);
+    const part2 = validated.slice(3, 6);
+    const part3 = validated.slice(6, 9);
 
     let masked = `+${phonePrefix}`;
-
     if (part1) masked += ` ${part1}`;
     if (part2) masked += ` ${part2}`;
     if (part3) masked += ` ${part3}`;
@@ -129,13 +133,15 @@ export function Input({
         value={value}
         className={cn(
           "w-full px-3 py-2.5 rounded-lg border text-sm cursor-text",
-          "bg-white placeholder:text-gray-400",
-          "outline-none transition-all duration-150",
-          "disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none",
+          "bg-(--color-surface) outline-none transition-all duration-150",
+          "disabled:bg-(--color-input-disabled) disabled:text-(--color-text-secondary) disabled:cursor-not-allowed disabled:pointer-events-none",
           error
-            ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
-            : "border-gray-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-100",
-          props.type === "date" && isEmpty ? "text-gray-400" : "text-gray-900",
+            ? "border-(--color-error) focus:border-(--color-error-hover) focus:ring-2 focus:ring-(--color-error-light)"
+            : "border-(--color-border) focus:border-(--color-primary) focus:ring-2 focus:ring-(--color-primary-ring)",
+          props.type === "date" && isEmpty
+            ? "text-(--color-text-placeholder)"
+            : "text-(--color-text-primary)",
+          "placeholder:text-(--color-text-placeholder)",
           value ? "pr-8" : "",
           className
         )}
@@ -148,7 +154,7 @@ export function Input({
         <button
           type="button"
           onClick={handleClear}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-(--color-text-secondary) hover:text-(--color-text-primary) cursor-pointer"
         >
           ×
         </button>

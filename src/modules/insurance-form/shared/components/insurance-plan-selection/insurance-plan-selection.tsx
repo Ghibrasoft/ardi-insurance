@@ -41,9 +41,9 @@ export const InsurancePlanSelection = ({
                 {pkg.coverages.map((coverage) => (
                   <li
                     key={coverage}
-                    className="text-xs text-gray-600 flex items-center gap-1.5"
+                    className="text-xs text-(--color-text-secondary) flex items-center gap-1.5"
                   >
-                    <span className="text-teal-500">✓</span>
+                    <span className="text-(--color-primary)">✓</span>
                     {coverage}
                   </li>
                 ))}
@@ -67,7 +67,7 @@ export const InsurancePlanSelection = ({
               title={addon.label}
               description={addon.description}
               rightContent={
-                <span className="text-sm font-semibold text-teal-600">
+                <span className="text-sm font-semibold text-(--color-primary)">
                   {addon.flatFee
                     ? `+${addon.flatFee} ₾`
                     : `+${addon.percentFee! * 100}%`}

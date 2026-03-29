@@ -18,14 +18,15 @@ export function SummaryRow({
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-0.5 sm:gap-4">
-      <span className="text-gray-500 whitespace-nowrap shrink-0">{label}:</span>
-
+      <span className="text-(--color-text-secondary) whitespace-nowrap shrink-0">
+        {label}:
+      </span>
       <span
         className={cn(
           "min-w-0 flex-1 text-left sm:text-right wrap-break-word",
           highlight
             ? "font-bold text-teal-600 text-base"
-            : "font-medium text-gray-900"
+            : "font-medium text-(--color-text-primary)"
         )}
       >
         {computedValue}

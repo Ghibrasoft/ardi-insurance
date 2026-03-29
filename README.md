@@ -1,166 +1,97 @@
 # ARDI — ავტომობილის დაზღვევა
 
-A multi-step car insurance quote application built as a technical assessment for ARDI.
+Multi-step car insurance quote application — ARDI technical assessment.
 
 ---
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- npm 9+
-
-### Installation
+## Setup
 
 ```bash
 git clone <repository-url>
 cd ardi-insurance
 npm install
-```
-
-### Running the app
-
-```bash
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-### Building for production
+Open [http://localhost:5173](http://localhost:5173)
 
 ```bash
-npm run build
-npm run preview
+npm run build    # production build
+npm run test:run # run unit tests
 ```
 
 ---
 
-## Tech Stack
+## Stack
 
-| Technology | Purpose |
-|---|---|
-| React 18 | UI framework |
-| TypeScript | Type safety |
-| Tailwind CSS v3 | Styling |
-| Vite | Build tool |
+|                       | Version |
+| --------------------- | ------- |
+| React                 | 18.3    |
+| TypeScript            | 5.9     |
+| Tailwind CSS          | 4.2     |
+| Vite                  | 8.0     |
+| Vitest                | 4.1     |
+| clsx + tailwind-merge | —       |
 
-No third-party UI libraries (Material UI, Ant Design, Chakra, etc.) or form validation libraries (Yup, Zod) were used — all validation and UI components are hand-built.
+No third-party UI or form validation libraries.
 
 ---
 
 ## Features
 
-### Core (Required)
+### Required
 
-- **3-step multi-step form**
-  - Step 1: Driver & vehicle information with full validation
-  - Step 2: Insurance package selection (Basic / Standard / Premium) + add-ons
-  - Step 3: Policy summary with calculated annual and monthly premium
-- **Form validation** — on blur and on submit
-  - Required fields
+- 3-step multi-step form — driver info → package selection → summary
+- Validation on blur and on submit:
   - Personal ID: exactly 11 digits
-  - Phone: Georgian mobile format `+995 5XX XXX XXX`
-  - Date of birth: driver must be at least 18 years old
+  - Phone: Georgian mobile format only (`+995 5XX XXX XXX`)
+  - Date of birth: minimum age 18
   - Vehicle year: cannot be in the future
-  - Market value: must be a positive number
-- **Price calculation** — computed on the frontend
-  - Base rate by package (Basic 1.2%, Standard 1.8%, Premium 2.5%)
-  - Age surcharge (+20% for 18–25, +15% for 61+)
-  - Vehicle age surcharge (+10% if older than 10 years)
-  - Add-on flat fees (Roadside +40 ₾, Replacement car +90 ₾)
-  - Zero deductible (+15% of total)
-- **Mock API** — async plate number lookup with 1-second delay, auto-fills make/model/year
-- **Back navigation** — previous step data is preserved
-- **Responsive layout** — mobile and desktop
+  - Market value: positive number
+- Premium calculated on the frontend — base rate × age multiplier × vehicle age + addons
+- Mock API — plate number lookup (1s delay), auto-fills make/model/year
+- Make, model, year fields are disabled after plate lookup — in a real system plate numbers are unique identifiers, so vehicle data should be fetched and locked, not manually entered. In production, driver fields (name, personal ID etc.) would also be auto-filled from a registry.
+- Back navigation — data preserved across steps
+- Responsive
 
-### Bonus (Additional)
+### Bonus
 
-- **Draft save** — form progress is auto-saved to `localStorage`, restored on page reload
-- **Quote history** — completed quotes are saved to `localStorage`, viewable after submission with per-item delete and clear all
-- **Error boundary** — catches unexpected render errors with back and refresh actions
-- **Form dirty state** — clear form button is disabled when form is empty
-- **Input masking** — plate number (`AB-123-CD`), phone (`+995 5XX XXX XXX`), numeric-only fields
-- **Auto-fill locking** — make/model/year fields lock after successful plate lookup
-- **Error recovery** — errors clear immediately when field becomes valid (on change), and show on blur or submit attempt
+- Draft auto-save to `localStorage`, restored on reload
+- Quote history — saved per submission, deletable per item or in bulk
+- Dark mode — CSS variable based, toggled from header, persisted
+- Input masking — Georgian plate format (`AB-123-CD`), phone, numeric-only
+- Error boundary — back and refresh actions
+- Form dirty state — clear button disabled on untouched form
+- Field errors clear on change as soon as value becomes valid
+- Unit tests — `calculations.ts` and `validation.ts` (53 tests, Vitest)
 
 ---
 
-## Project Structure
+## Architecture
 
-```
-src/
-├── components/
-│   ├── layout/
-│   │   └── stepper.tsx              # Step indicator
-│   └── ui/
-│       ├── button.tsx               # Reusable button (variants + color schemes)
-│       ├── input.tsx                # Input with mask support and clear button
-│       ├── form-field.tsx           # Label + input + error wrapper
-│       ├── section-card.tsx         # Titled card section
-│       ├── selectable-card.tsx      # Radio/checkbox card base
-│       ├── radio-card.tsx           # Single-select card
-│       ├── checkbox-card.tsx        # Multi-select card
-│       ├── summary-row.tsx          # Key-value display row
-│       ├── divider.tsx              # Visual separator
-│       └── error-boundary.tsx      # React error boundary
-├── hooks/
-│   └── use-local-storage.ts        # Generic localStorage hook
-├── lib/
-│   ├── constants/
-│   │   ├── insurance-packages.ts   # Package definitions
-│   │   └── insurance-addons.ts     # Add-on definitions
-│   └── utils/
-│       ├── calculations.ts         # Premium calculation logic
-│       ├── check-plate-number.ts   # Plate lookup utility
-│       ├── cn.ts                   # Tailwind class merge utility
-│       ├── format-date.ts          # Date formatter
-│       ├── format-price.ts         # Price formatter
-│       └── sleep.ts                # Async delay helper
-└── modules/
-    └── insurance-form/
-        ├── insurance-form.tsx                  # Root form component
-        ├── insurance-form-config.ts            # Field names, labels, defaults
-        ├── use-insurance-form-controller.ts    # Top-level state + navigation
-        └── shared/
-            ├── api/
-            │   └── insurance-form-mock.ts      # Mock submit API
-            ├── components/
-            │   ├── driver-vehicle-form/        # Step 1
-            │   ├── insurance-plan-selection/   # Step 2
-            │   ├── quote-summary/              # Success state + history
-            │   ├── policy-summary.tsx          # Step 3 summary
-            │   ├── insurance-form-header.tsx
-            │   └── insurance-form-navigation.tsx
-            ├── hooks/
-            │   └── use-quote-history.ts        # Quote history management
-            ├── utils/
-            │   └── validation.ts               # All form validators
-            └── insurance-form-types.ts         # Shared TypeScript types
-```
+**`modules/`** — feature-based encapsulation. Each module owns its components, hooks, utils, types, and API layer. Only the root component is exported. Adding a new form (e.g. home insurance) means adding a new folder under `modules/` with zero coupling to existing code.
+
+**Controller pattern** — each step has a dedicated hook owning field handlers, blur validation, and local UI state. The top-level `use-insurance-form-controller` owns step navigation, collected data, and submission.
+
+**Validation** — pure functions keyed by field name. Same logic used for single-field (blur) and full-form (submit) validation — no duplication.
+
+**Error state** — owned by top controller, passed as props. Next button triggers validation without refs or imperative handles.
+
+**`lib/`** — shared utilities (calculations, formatters, `cn`) live outside the module — reusable across future modules.
 
 ---
 
-## Architecture Decisions
+## Georgian-specific Notes
 
-**Module encapsulation** — all insurance form logic lives under `modules/insurance-form`. The module exposes only its root component to `App.tsx`. Internal components, hooks, types, and utilities are private to the module.
-
-**Controller pattern** — each form step has its own controller hook (`use-driver-vehicle-form-controller`, `use-insurance-plan-selection-controller`) that owns field change handlers, blur validation, and local UI state (e.g. plate lookup). The top-level `use-insurance-form-controller` owns step navigation, collected data, and submission.
-
-**Validation strategy** — validators are pure functions defined as a record keyed by field name. This allows both single-field (on blur) and full-form (on submit) validation using the same logic without duplication.
-
-**Error state ownership** — validation errors live in the top controller and are passed down as props. This allows the Next button (rendered outside the step component) to trigger validation and block navigation without needing refs or imperative handles.
-
-**Shared utilities in `lib/`** — calculation logic, formatters, and the `cn` utility are in `lib/` rather than inside the module, since they are genuinely reusable across future modules (e.g. home insurance, travel insurance).
+- Phone validation enforces `+995 5XX XXX XXX` format — Georgian mobile numbers start with `5` after the country code
+- Plate number format enforced as `AB-123-CD` — Georgian standard registration plate pattern
+- All UI labels and error messages are in Georgian (`ka`)
 
 ---
 
 ## What Could Be Improved
 
-- **Unit tests** — calculation logic (`calculations.ts`) and validators (`validation.ts`) are pure functions well-suited for unit testing with Vitest
-- **Dark mode** — `useDarkMode` hook and Tailwind `dark:` variants are partially prepared but not fully wired into all components
-- **Phone prefix handling** — the `+995 5` prefix is baked into the mask; a more robust approach would use a proper phone input library or a more generic prefix system
-- **LocalStorage error handling** — `JSON.parse` failures (corrupted draft) are not currently caught; a try/catch wrapper in `useLocalStorage` would improve resilience
-- **Accessibility** — form fields need explicit `id`/`htmlFor` pairing and ARIA attributes for screen reader support
-- **PDF generation** — currently uses `window.print()`; a proper PDF would use a library like `@react-pdf/renderer`
-- **Stale quote on back navigation** — if user goes back from step 3 and changes data, the displayed quote is stale until they proceed to step 3 again
+- `localStorage` — no error handling for corrupted/invalid JSON on draft load
+- Accessibility — `id`/`htmlFor` pairing and ARIA attributes missing
+- PDF — currently `window.print()`; proper solution needs `@react-pdf/renderer`
+- Phone input — country prefix handled via mask; a proper phone input with country selector would be more robust

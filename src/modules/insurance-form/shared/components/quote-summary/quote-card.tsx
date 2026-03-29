@@ -20,7 +20,7 @@ export const QuoteCard = ({ quote, onDelete }: IQuoteCardProps) => {
 
   return (
     <div className="h-full">
-      <div className="h-full w-full bg-white border border-gray-200 shadow-sm rounded-xl p-4 text-sm text-left flex flex-col justify-between gap-2">
+      <div className="h-full w-full bg-(--color-bg) border border-(--color-border) shadow-sm rounded-xl p-4 text-sm text-left flex flex-col justify-between gap-2">
         <div className="flex flex-col gap-2">
           <SummaryRow
             label="მძღოლი"

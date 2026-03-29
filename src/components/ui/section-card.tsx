@@ -10,11 +10,15 @@ export function SectionCard({
   children,
 }: SectionCardProps) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
-        <h2 className="text-base font-semibold text-gray-800">{title}</h2>
+    <div className="bg-(--color-surface) rounded-xl border border-(--color-border) shadow-sm overflow-hidden">
+      <div className="px-6 py-4 border-b border-(--color-border) bg-(--color-bg)">
+        <h2 className="text-base font-semibold text-(--color-text-primary)">
+          {title}
+        </h2>
         {description && (
-          <p className="text-sm text-gray-500 mt-0.5">{description}</p>
+          <p className="text-sm text-(--color-text-secondary) mt-0.5">
+            {description}
+          </p>
         )}
       </div>
       <div className="px-6 py-6">{children}</div>

@@ -1,3 +1,4 @@
+import { Divider } from "../../../../components/ui/divider";
 import { SectionCard } from "../../../../components/ui/section-card";
 import { SummaryRow } from "../../../../components/ui/summary-row";
 import { ADDONS } from "../../../../lib/constants/insurance-addons";
@@ -25,36 +26,44 @@ export const PolicySummary = ({ quote, isFormSucceed }: PolicySummaryProps) => {
     <div className="flex flex-col gap-6">
       {/* Driver */}
       <SectionCard title="მძღოლის ინფორმაცია">
-        <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
-          <SummaryRow
-            label="სახელი და გვარი"
-            value={`${quote.driver.firstName} ${quote.driver.lastName}`}
-          />
-          <SummaryRow label="პირადი ნომერი" value={quote.driver.personalId} />
-          <SummaryRow
-            label="დაბადების თარიღი"
-            value={quote.driver.dateOfBirth}
-          />
-          <SummaryRow label="ტელეფონი" value={`${quote.driver.phone}`} />
+        <div className="flex flex-col sm:flex-row gap-3 text-sm relative">
+          <div className="flex-1 flex flex-col gap-2">
+            <SummaryRow label="სახელი და გვარი" value="John Doe" />
+            <SummaryRow label="პირადი ნომერი" value="123456789" />
+          </div>
+
+          <Divider direction="vertical" flexItem className="hidden sm:block" />
+
+          <div className="flex-1 flex flex-col gap-2">
+            <SummaryRow label="დაბადების თარიღი" value="01/01/1990" />
+            <SummaryRow label="ტელეფონი" value="+995 555 123 456" />
+          </div>
         </div>
       </SectionCard>
 
       {/* Vehicle */}
       <SectionCard title="ავტომობილის ინფორმაცია">
-        <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
-          <SummaryRow
-            label="სახელმწიფო ნომერი"
-            value={quote.vehicle.plateNumber}
-          />
-          <SummaryRow
-            label="მარკა / მოდელი"
-            value={`${quote.vehicle.make} ${quote.vehicle.model}`}
-          />
-          <SummaryRow label="გამოშვების წელი" value={quote.vehicle.year} />
-          <SummaryRow
-            label="საბაზრო ღირებულება"
-            value={`${formatPrice(quote.vehicle.marketValue ?? 0)} ₾`}
-          />
+        <div className="flex flex-col sm:flex-row gap-3 text-sm relative">
+          <div className="flex-1 flex flex-col gap-2">
+            <SummaryRow
+              label="სახელმწიფო ნომერი"
+              value={quote.vehicle.plateNumber}
+            />
+            <SummaryRow
+              label="მარკა / მოდელი"
+              value={`${quote.vehicle.make} ${quote.vehicle.model}`}
+            />
+          </div>
+
+          <Divider direction="vertical" flexItem className="hidden sm:block" />
+
+          <div className="flex-1 flex flex-col gap-2">
+            <SummaryRow label="გამოშვების წელი" value={quote.vehicle.year} />
+            <SummaryRow
+              label="საბაზრო ღირებულება"
+              value={`${formatPrice(quote.vehicle.marketValue ?? 0)} ₾`}
+            />
+          </div>
         </div>
       </SectionCard>
 

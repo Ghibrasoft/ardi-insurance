@@ -19,7 +19,7 @@ export const InsuranceFormNavigation = ({
   handleClearForm,
 }: InsuranceFormNavigationProps) => {
   return (
-    <div className="px-6 py-4 border-t border-gray-100 bg-gray-50 flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-2">
+    <div className="px-6 py-4 border-t border-(--color-border) bg-(--color-bg) flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-2">
       <Button
         variant="ghost"
         btnColor="error"

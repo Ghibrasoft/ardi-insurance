@@ -10,7 +10,7 @@ export function Stepper({
   isFinished = false,
 }: StepperProps) {
   return (
-    <div className="flex items-center justify-center px-6 py-4 bg-white border-b border-gray-200">
+    <div className="flex items-center justify-center px-6 py-4 bg-(--color-surface) border-b border-(--color-border)">
       <div className="flex items-center gap-2">
         {Array.from({ length: totalSteps }).map((_, i) => {
           const step = i + 1;
@@ -25,14 +25,16 @@ export function Stepper({
                 className={`
                   w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold
                   transition-all duration-200
-                  ${isCompleted ? "bg-teal-600 text-white" : ""}
+                  ${isCompleted ? "bg-(--color-primary) text-white" : ""}
                   ${
                     isActive
-                      ? "bg-teal-600 text-white ring-4 ring-teal-100"
+                      ? "bg-(--color-primary) text-white ring-4 ring-(--color-primary-ring)"
                       : ""
                   }
                   ${
-                    !isActive && !isCompleted ? "bg-gray-100 text-gray-400" : ""
+                    !isActive && !isCompleted
+                      ? "bg-(--color-border) text-(--color-text-secondary)"
+                      : ""
                   }
                 `}
               >
@@ -42,7 +44,9 @@ export function Stepper({
               {i < totalSteps - 1 && (
                 <div
                   className={`w-8 h-0.5 transition-all duration-200 ${
-                    currentStep > step ? "bg-teal-600" : "bg-gray-200"
+                    currentStep > step
+                      ? "bg-(--color-primary)"
+                      : "bg-(--color-border)"
                   }`}
                 />
               )}

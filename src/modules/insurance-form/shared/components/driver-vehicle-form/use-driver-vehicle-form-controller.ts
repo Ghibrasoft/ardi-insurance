@@ -35,9 +35,9 @@ export const useDriverVehicleFormController = ({
   onErrorsChange,
 }: UseDriverVehicleFormControllerProps) => {
   const [plateState, setPlateState] = useState<IPlateState>({
+    error: null,
     isFound: false,
     isLoading: false,
-    error: null,
   });
 
   // Driver handlers
@@ -106,15 +106,25 @@ export const useDriverVehicleFormController = ({
         vehicle: {
           ...data.vehicle,
           plateNumber: value,
-          ...(value.trim() === ""
-            ? { make: "", model: "", year: null, marketValue: null }
-            : {}),
+          make: "",
+          model: "",
+          year: null,
+        },
+      });
+
+      onErrorsChange({
+        ...errors,
+        vehicle: {
+          ...errors.vehicle,
+          make: undefined,
+          model: undefined,
+          year: undefined,
         },
       });
     },
-    [data, onChange]
+    [data, errors, onChange, onErrorsChange]
   );
-  const handlePlateLookup = useCallback(async () => {
+  const handlePlateNumberLookup = useCallback(async () => {
     if (!data.vehicle.plateNumber.trim()) return;
 
     setPlateState({ isFound: false, isLoading: true, error: null });
@@ -164,19 +174,19 @@ export const useDriverVehicleFormController = ({
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        handlePlateLookup();
+        handlePlateNumberLookup();
       }
     },
-    [handlePlateLookup]
+    [handlePlateNumberLookup]
   );
 
   return {
     plateState,
-    handlePlateLookup,
     handlePlateKeyDown,
     handleDriverInfoBlur,
     handleVehicleInfoBlur,
     handleDriverInfoChange,
+    handlePlateNumberLookup,
     handleVehicleInfoChange,
     handlePlateNumberChange,
   };

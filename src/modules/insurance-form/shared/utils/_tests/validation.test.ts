@@ -126,6 +126,14 @@ describe("validateDriverInfo", () => {
     it("too short fails", () => {
       expect(validateDriverField("phone", "+995 555 123")).toBeTruthy();
     });
+
+    it("number not starting with 5 after prefix fails", () => {
+      expect(validateDriverField("phone", "+995 412 345 678")).toBeTruthy();
+    });
+
+    it("number starting with 5 after prefix passes", () => {
+      expect(validateDriverField("phone", "+995 512 345 678")).toBeUndefined();
+    });
   });
 
   describe("full driver validation", () => {
