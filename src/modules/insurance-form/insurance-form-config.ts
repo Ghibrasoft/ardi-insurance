@@ -4,14 +4,14 @@ import type {
 } from "./shared/insurance-form-types";
 
 export enum InsuranceFormFieldNames {
-  // Driver & Vehicle Form
+  // Driver
   FIRST_NAME = "firstName",
   LAST_NAME = "lastName",
   PERSONAL_ID = "personalId",
   DATE_OF_BIRTH = "dateOfBirth",
   PHONE = "phone",
 
-  // Insurance Plan Selection
+  // Vehicle
   PLATE_NUMBER = "plateNumber",
   MAKE = "make",
   MODEL = "model",

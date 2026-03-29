@@ -4,8 +4,8 @@ export interface FormFieldProps {
   label: string;
   error?: string;
   required?: boolean;
+  className?: string;
   children: React.ReactNode;
-  className?: string; // add className
 }
 
 export function FormField({
