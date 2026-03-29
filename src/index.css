@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 html,
@@ -25,6 +26,10 @@ body,
   --color-secondary-hover: #4338ca; /* indigo-700 */
   --color-secondary-light: #eef2ff; /* indigo-50 */
 
+  --color-success: #16a34a; /* green-600 */
+  --color-success-light: #dcfce7; /* green-50 */
+  --color-success-ring: #86efac; /* green-200 */
+
   --color-error: #dc2626;
   --color-error-hover: #b91c1c;
   --color-error-light: #fef2f2;
@@ -39,21 +44,35 @@ body,
   --color-text-placeholder: #64748b;
   --color-input-disabled: #1e293b;
 
-  --color-primary: #14b8a6; /* teal-500 — slightly lighter for dark */
+  --color-primary: #14b8a6; /* teal-500 */
   --color-primary-hover: #0d9488; /* teal-600 */
-  --color-primary-light: #0f2a27; /* dark teal tint */
+  --color-primary-light: #0f2a27; /* dark teal */
   --color-primary-ring: #134e4a; /* teal-900 */
 
   --color-secondary: #6366f1; /* indigo-500 */
   --color-secondary-hover: #4f46e5; /* indigo-600 */
-  --color-secondary-light: #1e1b4b; /* dark indigo tint */
+  --color-secondary-light: #1e1b4b; /* dark indigo */
 
-  --color-error: #f87171; /* red-400 (softer on dark) */
+  --color-success: #22c55e; /* green-500 */
+  --color-success-light: #14532d; /* dark green */
+  --color-success-ring: #166534; /* green-700 */
+
+  --color-error: #f87171; /* red-400  */
   --color-error-hover: #ef4444; /* red-500 */
-  --color-error-light: #2a0f0f; /* dark red tint */
+  --color-error-light: #2a0f0f; /* dark red */
 }
 
 body {
   background-color: var(--color-bg);
   color: var(--color-text-primary);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  cursor: pointer;
+}
+
+/* Firefox */
+input[type="date"]::-moz-calendar-picker-indicator {
+  display: none;
 }

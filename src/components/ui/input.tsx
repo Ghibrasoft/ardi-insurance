@@ -136,8 +136,8 @@ export function Input({
           "bg-(--color-surface) outline-none transition-all duration-150",
           "disabled:bg-(--color-input-disabled) disabled:text-(--color-text-secondary) disabled:cursor-not-allowed disabled:pointer-events-none",
           error
-            ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
-            : "border-(--color-border) focus:border-teal-500 focus:ring-2 focus:ring-teal-100",
+            ? "border-(--color-error) focus:border-(--color-error-hover) focus:ring-2 focus:ring-(--color-error-light)"
+            : "border-(--color-border) focus:border-(--color-primary) focus:ring-2 focus:ring-(--color-primary-ring)",
           props.type === "date" && isEmpty
             ? "text-(--color-text-placeholder)"
             : "text-(--color-text-primary)",
@@ -154,7 +154,7 @@ export function Input({
         <button
           type="button"
           onClick={handleClear}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-(--color-text-secondary) hover:text-(--color-text-primary) cursor-pointer"
         >
           ×
         </button>

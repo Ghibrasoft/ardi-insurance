@@ -114,7 +114,7 @@ export const useDriverVehicleFormController = ({
     },
     [data, onChange]
   );
-  const handlePlateLookup = useCallback(async () => {
+  const handlePlateNumberLookup = useCallback(async () => {
     if (!data.vehicle.plateNumber.trim()) return;
 
     setPlateState({ isFound: false, isLoading: true, error: null });
@@ -164,19 +164,19 @@ export const useDriverVehicleFormController = ({
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        handlePlateLookup();
+        handlePlateNumberLookup();
       }
     },
-    [handlePlateLookup]
+    [handlePlateNumberLookup]
   );
 
   return {
     plateState,
-    handlePlateLookup,
     handlePlateKeyDown,
     handleDriverInfoBlur,
     handleVehicleInfoBlur,
     handleDriverInfoChange,
+    handlePlateNumberLookup,
     handleVehicleInfoChange,
     handlePlateNumberChange,
   };

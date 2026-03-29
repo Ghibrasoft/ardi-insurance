@@ -29,12 +29,12 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="p-8 rounded-xl border border-red-200 bg-red-50 flex flex-col items-center gap-4 text-center">
+        <div className="p-8 rounded-xl border border-(--color-error-light) bg-(--color-error-light) flex flex-col items-center gap-4 text-center">
           <div>
-            <p className="text-sm font-medium text-red-600">
+            <p className="text-sm font-medium text-(--color-error)">
               დაფიქსირდა შეცდომა
             </p>
-            <p className="text-xs text-red-400 mt-1">
+            <p className="text-xs text-(--color-error) mt-1">
               {this.state.error?.message}
             </p>
           </div>

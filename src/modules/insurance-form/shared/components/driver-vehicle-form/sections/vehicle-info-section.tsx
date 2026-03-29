@@ -50,9 +50,9 @@ const VEHICLE_INFO_FORM_FIELDS = [
 export const VehicleInfoSection = ({ data, errors, controller }: Props) => {
   const {
     plateState,
-    handlePlateLookup,
     handlePlateKeyDown,
     handleVehicleInfoBlur,
+    handlePlateNumberLookup,
     handleVehicleInfoChange,
     handlePlateNumberChange,
   } = controller;
@@ -103,7 +103,7 @@ export const VehicleInfoSection = ({ data, errors, controller }: Props) => {
               onKeyDown={handlePlateKeyDown}
             />
             {plateState.isFound ? (
-              <div className="shrink-0 w-10 h-10 rounded-lg bg-green-50 border border-green-200 flex items-center justify-center text-green-500">
+              <div className="shrink-0 w-10 h-10 rounded-lg bg-(--color-success-light) border border-(--color-success-ring) flex items-center justify-center text-(--color-success)">
                 ✓
               </div>
             ) : (
@@ -114,7 +114,7 @@ export const VehicleInfoSection = ({ data, errors, controller }: Props) => {
                 disabled={
                   !PLATE_NUMBER_REGEX.test(data.vehicle.plateNumber.trim())
                 }
-                onClick={handlePlateLookup}
+                onClick={handlePlateNumberLookup}
               >
                 {!plateState.isLoading && "🔍"}
               </Button>
