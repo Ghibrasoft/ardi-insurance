@@ -41,12 +41,16 @@ const maskFunctions: Record<
       ? digits.slice(phonePrefix.length)
       : digits;
 
-    const part1 = local.slice(0, 3);
-    const part2 = local.slice(3, 6);
-    const part3 = local.slice(6, 9);
+    const validated =
+      local.startsWith("5") || local === ""
+        ? local
+        : local.replace(/^[^5]*/, "");
+
+    const part1 = validated.slice(0, 3);
+    const part2 = validated.slice(3, 6);
+    const part3 = validated.slice(6, 9);
 
     let masked = `+${phonePrefix}`;
-
     if (part1) masked += ` ${part1}`;
     if (part2) masked += ` ${part2}`;
     if (part3) masked += ` ${part3}`;

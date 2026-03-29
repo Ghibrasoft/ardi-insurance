@@ -4,7 +4,7 @@ import type {
   FieldErrorsType,
 } from "../insurance-form-types";
 
-export const PHONE_REGEX = /^\+995 \d{3} \d{3} \d{3}$/;
+export const PHONE_REGEX = /^\+995 5\d{2} \d{3} \d{3}$/;
 export const PLATE_NUMBER_REGEX = /^[A-Z]{2}-\d{3}-[A-Z]{2}$/i;
 
 // Helpers
@@ -38,7 +38,7 @@ export const driverValidators: {
   phone: (v) => {
     if (!v.trim() || v.trim() === "+995") return "ტელეფონი სავალდებულოა";
     if (!isValidGeorgianPhone(v))
-      return "ტელეფონის ფორმატი არასწორია (+995 XXX XXX XXX)";
+      return "ტელეფონის ფორმატი არასწორია (+995 5XX XXX XXX)";
   },
 };
 
