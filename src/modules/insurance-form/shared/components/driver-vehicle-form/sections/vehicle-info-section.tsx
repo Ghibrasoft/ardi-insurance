@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import {
   INSURANCE_FORM_FIELD_LABELS,
   INSURANCE_FORM_FIELD_PLACEHOLDERS,
@@ -71,6 +71,32 @@ export const VehicleInfoSection = ({ data, errors, controller }: Props) => {
     [handleVehicleInfoChange, data]
   );
 
+  const plateActionButton = useMemo(
+    () => (
+      <Button
+        className="shrink-0"
+        isLoading={plateState.isLoading}
+        variant={plateState.isFound ? "primary" : "outlined"}
+        btnColor={plateState.isFound ? "success" : "default"}
+        disabled={
+          !PLATE_NUMBER_REGEX.test(data.vehicle.plateNumber.trim()) ||
+          plateState.isFound
+        }
+        onClick={handlePlateNumberLookup}
+      >
+        <span className="text-(--color-text-primary)">
+          {plateState.isFound ? "✓" : "🔍"}
+        </span>
+      </Button>
+    ),
+    [
+      plateState.isFound,
+      plateState.isLoading,
+      data.vehicle.plateNumber,
+      handlePlateNumberLookup,
+    ]
+  );
+
   return (
     <SectionCard
       title="ავტომობილის ინფორმაცია"
@@ -78,46 +104,28 @@ export const VehicleInfoSection = ({ data, errors, controller }: Props) => {
     >
       <div className="flex flex-col gap-4">
         {/* Plate Number Field */}
-        <div className="flex items-center gap-2">
-          <FormInputField
-            className="flex-1"
-            name={InsuranceFormFieldNames.PLATE_NUMBER}
-            label={
-              INSURANCE_FORM_FIELD_LABELS[InsuranceFormFieldNames.PLATE_NUMBER]
-            }
-            placeholder={
-              INSURANCE_FORM_FIELD_PLACEHOLDERS[
-                InsuranceFormFieldNames.PLATE_NUMBER
-              ]
-            }
-            required
-            maskVariant="plate-number"
-            value={data.vehicle.plateNumber}
-            error={plateState.error ?? errors.vehicle.plateNumber}
-            hasError={!!plateState.error || !!errors.vehicle.plateNumber}
-            onChange={(e) => handlePlateNumberChange(e.target.value)}
-            onBlur={() =>
-              handleVehicleInfoBlur(InsuranceFormFieldNames.PLATE_NUMBER)
-            }
-            onKeyDown={handlePlateKeyDown}
-          />
-
-          <Button
-            variant={plateState.isFound ? "primary" : "outlined"}
-            btnColor={plateState.isFound ? "success" : "default"}
-            className="shrink-0 self-end"
-            isLoading={plateState.isLoading}
-            disabled={
-              !PLATE_NUMBER_REGEX.test(data.vehicle.plateNumber.trim()) ||
-              plateState.isFound
-            }
-            onClick={handlePlateNumberLookup}
-          >
-            <span className="text-(--color-text-primary)">
-              {plateState.isFound ? "✓" : "🔍"}
-            </span>
-          </Button>
-        </div>
+        <FormInputField
+          name={InsuranceFormFieldNames.PLATE_NUMBER}
+          label={
+            INSURANCE_FORM_FIELD_LABELS[InsuranceFormFieldNames.PLATE_NUMBER]
+          }
+          placeholder={
+            INSURANCE_FORM_FIELD_PLACEHOLDERS[
+              InsuranceFormFieldNames.PLATE_NUMBER
+            ]
+          }
+          required
+          maskVariant="plate-number"
+          actions={plateActionButton}
+          value={data.vehicle.plateNumber}
+          error={plateState.error ?? errors.vehicle.plateNumber}
+          hasError={!!plateState.error || !!errors.vehicle.plateNumber}
+          onChange={(e) => handlePlateNumberChange(e.target.value)}
+          onBlur={() =>
+            handleVehicleInfoBlur(InsuranceFormFieldNames.PLATE_NUMBER)
+          }
+          onKeyDown={handlePlateKeyDown}
+        />
 
         {/* Vehicle Info Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -51,8 +51,11 @@ export const driverValidators: {
 export const vehicleValidators: {
   [K in keyof IVehicleInfo]?: (value: IVehicleInfo[K]) => string | undefined;
 } = {
-  plateNumber: (v) =>
-    !v.trim() ? "სახელმწიფო ნომერი სავალდებულოა" : undefined,
+  plateNumber: (v) => {
+    if (!v.trim()) return "სახელმწიფო ნომერი სავალდებულოა";
+    if (!PLATE_NUMBER_REGEX.test(v.trim()))
+      return "სახელმწიფო ნომერი უნდა იყოს ფორმატში AA-123-AA";
+  },
   make: (v) => (!v.trim() ? "მარკა სავალდებულოა" : undefined),
   model: (v) => (!v.trim() ? "მოდელი სავალდებულოა" : undefined),
   year: (v) => {
