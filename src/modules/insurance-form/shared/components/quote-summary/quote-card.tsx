@@ -1,0 +1,81 @@
+import { SummaryRow } from "../../../../../components/ui/summary-row";
+import type { IQuoteSummary } from "../../insurance-form-types";
+import { formatDate } from "../../../../../lib/utils/format-date";
+import { formatPrice } from "../../../../../lib/utils/format-price";
+import { Button } from "../../../../../components/ui/button";
+import { ADDONS } from "../../../../../lib/constants/insurance-addons";
+import { Divider } from "../../../../../components/ui/divider";
+
+interface IQuoteCardProps {
+  quote: IQuoteSummary;
+  onDelete?: () => void;
+}
+export const QuoteCard = ({ quote, onDelete }: IQuoteCardProps) => {
+  const selectedAddons = ADDONS.filter((a) => quote.addons.includes(a.id));
+  const displayAddons = selectedAddons.map((a) => a.label).join(", ");
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  return (
+    <div className="h-full">
+      <div className="h-full w-full bg-(--color-bg) border border-(--color-border) shadow-sm rounded-xl p-4 text-sm text-left flex flex-col justify-between gap-2">
+        <div className="flex flex-col gap-2">
+          <SummaryRow
+            label="მძღოლი"
+            value={`${quote.driver.firstName} ${quote.driver.lastName}`}
+          />
+          <SummaryRow
+            label="ავტომობილი"
+            value={`${quote.vehicle.make} ${quote.vehicle.model}`}
+          />
+          <SummaryRow label="პაკეტი" value={quote.packageId} />
+          {quote.addons.length > 0 && (
+            <SummaryRow label="დამატებითი ოფციები" value={displayAddons} />
+          )}
+          <SummaryRow
+            label="წლიური პრემია"
+            value={`${formatPrice(quote.annualPremium)} ₾`}
+            highlight
+          />
+          <SummaryRow
+            label="თვიური გადახდა"
+            value={`${formatPrice(quote.monthlyPremium)} ₾`}
+            highlight
+          />
+          <SummaryRow
+            label="პერიოდი"
+            value={`${formatDate(quote.startDate)} - ${formatDate(
+              quote.endDate
+            )}`}
+          />
+        </div>
+
+        <div>
+          <Divider />
+          <div className="flex justify-between gap-2 pt-2">
+            {onDelete && (
+              <Button
+                btnColor="error"
+                variant="ghost"
+                onClick={onDelete}
+                className="text-xs"
+              >
+                წაშლა
+              </Button>
+            )}
+            <Button
+              variant="outlined"
+              btnColor="secondary"
+              className="sm:w-fit w-full"
+              onClick={handlePrint}
+            >
+              PDF / ამობეჭდვა
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

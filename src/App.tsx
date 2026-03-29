@@ -1,8 +1,11 @@
+import { MainLayout } from "./components/layout/main-layout";
+import InsuranceForm from "./modules/insurance-form/insurance-form";
+
 function App() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold">Hi</h1>
-    </div>
+    <MainLayout>
+      <InsuranceForm />
+    </MainLayout>
   );
 }
 
