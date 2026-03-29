@@ -33,6 +33,12 @@ export const driverValidators: {
   },
   dateOfBirth: (v) => {
     if (!v) return "დაბადების თარიღი სავალდებულოა";
+
+    const dob = new Date(v);
+    const today = new Date();
+
+    if (dob > today) return "დაბადების თარიღი არ შეიძლება იყოს მომავლის თარიღი";
+
     if (getAge(v) < 18) return "მძღოლი უნდა იყოს მინიმუმ 18 წლის";
   },
   phone: (v) => {

@@ -13,10 +13,16 @@ export function FormInputField({
   label,
   error,
   required,
+  className,
   ...inputProps
 }: FormInputFieldProps) {
   return (
-    <FormField label={label} error={error} required={required}>
+    <FormField
+      label={label}
+      error={error}
+      required={required}
+      className={className}
+    >
       <Input id={name} name={name} {...inputProps} />
     </FormField>
   );

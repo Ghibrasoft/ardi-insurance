@@ -166,6 +166,5 @@ src
 
 ## What Could Be Improved
 
-- Accessibility — `id`/`htmlFor` pairing and ARIA attributes missing
 - PDF — currently `window.print()`; proper solution needs `@react-pdf/renderer`
 - Phone input — country prefix handled via mask; a proper phone input with country selector would be more robust

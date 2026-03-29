@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from "react";
 import { cn } from "../../lib/utils/cn";
 
 type ButtonVariant = "primary" | "outlined" | "ghost";
-type ButtonBtnColor = "default" | "error" | "secondary";
+type ButtonBtnColor = "default" | "secondary" | "error" | "success";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
@@ -24,6 +24,14 @@ const COLOR_SCHEME_STYLES: Record<
   Partial<Record<ButtonVariant, string>>
 > = {
   default: {},
+  secondary: {
+    primary:
+      "bg-(--color-secondary) text-white hover:bg-(--color-secondary-hover) disabled:bg-(--color-secondary-light)",
+    outlined:
+      "bg-(--color-surface) text-(--color-secondary) border border-(--color-secondary) hover:bg-(--color-secondary-light) disabled:text-(--color-text-secondary)",
+    ghost:
+      "text-(--color-secondary) hover:bg-(--color-secondary-light) disabled:text-(--color-text-secondary)",
+  },
   error: {
     primary:
       "bg-(--color-error) text-white hover:bg-(--color-error-hover) disabled:bg-(--color-error-light)",
@@ -32,13 +40,13 @@ const COLOR_SCHEME_STYLES: Record<
     ghost:
       "text-(--color-error) hover:bg-(--color-error-light) disabled:text-(--color-text-secondary)",
   },
-  secondary: {
+  success: {
     primary:
-      "bg-(--color-secondary) text-white hover:bg-(--color-secondary-hover) disabled:bg-(--color-secondary-light)",
+      "bg-(--color-success) text-white hover:bg-(--color-success-hover) disabled:bg-(--color-success-light)",
     outlined:
-      "bg-(--color-surface) text-(--color-secondary) border border-(--color-secondary) hover:bg-(--color-secondary-light) disabled:text-(--color-text-secondary)",
+      "bg-(--color-surface) text-(--color-success) border border-(--color-success) hover:bg-(--color-success-light) disabled:text-(--color-text-secondary)",
     ghost:
-      "text-(--color-secondary) hover:bg-(--color-secondary-light) disabled:text-(--color-text-secondary)",
+      "text-(--color-success) hover:bg-(--color-success-light) disabled:text-(--color-text-secondary)",
   },
 };
 

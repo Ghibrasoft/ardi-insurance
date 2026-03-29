@@ -1,5 +1,4 @@
-import { FormField } from "../../../../../../components/ui/form-field";
-import { Input } from "../../../../../../components/ui/input";
+import { FormInputField } from "../../../../../../components/ui/form-input-field";
 import { SectionCard } from "../../../../../../components/ui/section-card";
 import {
   INSURANCE_FORM_FIELD_LABELS,
@@ -49,26 +48,24 @@ export const DriverInfoSection = ({ data, errors, controller }: Props) => {
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {DRIVER_INFO_FORM_FIELDS.map((field) => {
-          const { key, ...inputProps } = field;
+          const { key, required, ...inputProps } = field;
           const error = errors.driver[key as keyof typeof errors.driver];
+          const value = data.driver[key as keyof typeof data.driver];
 
           return (
-            <FormField
+            <FormInputField
               key={key}
-              label={INSURANCE_FORM_FIELD_LABELS[key]}
+              name={key}
+              value={value}
               error={error}
-              required={field.required}
-            >
-              <Input
-                name={key}
-                error={!!error}
-                placeholder={INSURANCE_FORM_FIELD_PLACEHOLDERS[key]}
-                value={data.driver[key as keyof typeof data.driver]}
-                onBlur={() => handleDriverInfoBlur(key)}
-                onChange={(e) => handleDriverInfoChange(key, e.target.value)}
-                {...inputProps}
-              />
-            </FormField>
+              hasError={!!error}
+              required={required}
+              label={INSURANCE_FORM_FIELD_LABELS[key]}
+              placeholder={INSURANCE_FORM_FIELD_PLACEHOLDERS[key]}
+              {...inputProps}
+              onBlur={() => handleDriverInfoBlur(key)}
+              onChange={(e) => handleDriverInfoChange(key, e.target.value)}
+            />
           );
         })}
       </div>
