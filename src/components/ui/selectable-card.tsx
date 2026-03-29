@@ -16,7 +16,7 @@ export function SelectableCard({
           w-full text-left px-4 py-4 rounded-xl border-2 transition-all duration-150
           ${
             selected
-              ? "border-blue-500 bg-blue-50"
+              ? "border-teal-500 bg-teal-50"
               : "border-gray-200 bg-white hover:border-gray-300"
           }
         `}

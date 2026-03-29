@@ -43,7 +43,7 @@ export const InsurancePlanSelection = ({
                     key={coverage}
                     className="text-xs text-gray-600 flex items-center gap-1.5"
                   >
-                    <span className="text-blue-500">✓</span>
+                    <span className="text-teal-500">✓</span>
                     {coverage}
                   </li>
                 ))}
@@ -67,7 +67,7 @@ export const InsurancePlanSelection = ({
               title={addon.label}
               description={addon.description}
               rightContent={
-                <span className="text-sm font-semibold text-blue-600">
+                <span className="text-sm font-semibold text-teal-600">
                   {addon.flatFee
                     ? `+${addon.flatFee} ₾`
                     : `+${addon.percentFee! * 100}%`}

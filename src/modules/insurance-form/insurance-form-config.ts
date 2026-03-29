@@ -64,7 +64,7 @@ export const INSURANCE_FORM_FIELD_PLACEHOLDERS = {
   [InsuranceFormFieldNames.LAST_NAME]: "გვარი",
   [InsuranceFormFieldNames.PERSONAL_ID]: "00000000000",
   [InsuranceFormFieldNames.DATE_OF_BIRTH]: "დდ/თთ/წწ",
-  [InsuranceFormFieldNames.PHONE]: "+(995) 5XX XXX XXX",
+  [InsuranceFormFieldNames.PHONE]: "+(995) XXX XXX XXX",
   [InsuranceFormFieldNames.PLATE_NUMBER]: "AB-123-CD",
   [InsuranceFormFieldNames.MAKE]: "მარკა",
   [InsuranceFormFieldNames.MODEL]: "მოდელი",

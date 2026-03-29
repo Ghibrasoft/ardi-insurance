@@ -29,6 +29,7 @@ const DRIVER_INFO_FORM_FIELDS = [
   {
     key: InsuranceFormFieldNames.PHONE,
     required: true,
+    phonePrefix: "995",
     maskVariant: "phone",
   },
   {

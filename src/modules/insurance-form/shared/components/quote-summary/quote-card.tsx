@@ -65,7 +65,12 @@ export const QuoteCard = ({ quote, onDelete }: IQuoteCardProps) => {
                 წაშლა
               </Button>
             )}
-            <Button onClick={handlePrint} className="sm:w-fit w-full">
+            <Button
+              variant="outlined"
+              btnColor="secondary"
+              className="sm:w-fit w-full"
+              onClick={handlePrint}
+            >
               PDF / ამობეჭდვა
             </Button>
           </div>

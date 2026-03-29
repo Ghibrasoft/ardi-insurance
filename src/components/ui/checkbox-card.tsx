@@ -28,7 +28,7 @@ export function CheckboxCard({
 
           <div
             className={`w-5 h-5 rounded border-2 flex items-center justify-center
-                ${checked ? "border-blue-500 bg-blue-500" : "border-gray-300"}
+                ${checked ? "border-teal-500 bg-teal-500" : "border-gray-300"}
               `}
           >
             {checked && <span className="text-white text-xs">✓</span>}

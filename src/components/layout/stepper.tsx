@@ -25,10 +25,10 @@ export function Stepper({
                 className={`
                   w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold
                   transition-all duration-200
-                  ${isCompleted ? "bg-blue-600 text-white" : ""}
+                  ${isCompleted ? "bg-teal-600 text-white" : ""}
                   ${
                     isActive
-                      ? "bg-blue-600 text-white ring-4 ring-blue-100"
+                      ? "bg-teal-600 text-white ring-4 ring-teal-100"
                       : ""
                   }
                   ${
@@ -42,7 +42,7 @@ export function Stepper({
               {i < totalSteps - 1 && (
                 <div
                   className={`w-8 h-0.5 transition-all duration-200 ${
-                    currentStep > step ? "bg-blue-600" : "bg-gray-200"
+                    currentStep > step ? "bg-teal-600" : "bg-gray-200"
                   }`}
                 />
               )}
