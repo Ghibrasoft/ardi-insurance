@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from "react";
 import { cn } from "../../lib/utils/cn";
 
 type ButtonVariant = "primary" | "outlined" | "ghost";
-type ButtonBtnColor = "default" | "error";
+type ButtonBtnColor = "default" | "error" | "secondary";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
@@ -11,7 +11,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const VARIANT_STYLES: Record<ButtonVariant, string> = {
-  primary: "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-300",
+  primary: "bg-teal-600 text-white hover:bg-teal-700 disabled:bg-teal-300",
   outlined:
     "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-400",
   ghost: "text-gray-600 hover:bg-gray-100 disabled:text-gray-300",
@@ -27,6 +27,13 @@ const COLOR_SCHEME_STYLES: Record<
     outlined:
       "bg-red-50 text-red-700 border border-red-300 hover:bg-red-100 disabled:bg-red-50 disabled:text-red-400",
     ghost: "text-red-600 hover:bg-red-50 disabled:text-red-300",
+  },
+  secondary: {
+    primary:
+      "bg-indigo-600 text-white hover:bg-indigo-700 disabled:bg-indigo-300",
+    outlined:
+      "bg-white text-indigo-700 border border-indigo-300 hover:bg-indigo-50 disabled:bg-white disabled:text-indigo-400",
+    ghost: "text-indigo-600 hover:bg-indigo-50 disabled:text-indigo-300",
   },
 };
 

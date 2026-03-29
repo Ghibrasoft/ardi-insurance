@@ -24,7 +24,7 @@ export function SummaryRow({
         className={cn(
           "min-w-0 flex-1 text-left sm:text-right wrap-break-word",
           highlight
-            ? "font-bold text-blue-600 text-base"
+            ? "font-bold text-teal-600 text-base"
             : "font-medium text-gray-900"
         )}
       >

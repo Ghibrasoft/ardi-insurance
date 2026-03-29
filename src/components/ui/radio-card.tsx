@@ -21,7 +21,7 @@ export function RadioCard({
         <span className="font-semibold text-gray-900">{title}</span>
         <div
           className={`w-4 h-4 rounded-full border-2 flex items-center justify-center
-              ${selected ? "border-blue-500 bg-blue-500" : "border-gray-300"}
+              ${selected ? "border-teal-500 bg-teal-500" : "border-gray-300"}
             `}
         >
           {selected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}

@@ -134,7 +134,7 @@ export function Input({
           "disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none",
           error
             ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
-            : "border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100",
+            : "border-gray-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-100",
           props.type === "date" && isEmpty ? "text-gray-400" : "text-gray-900",
           value ? "pr-8" : "",
           className
