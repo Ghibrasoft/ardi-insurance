@@ -35,9 +35,9 @@ export const useDriverVehicleFormController = ({
   onErrorsChange,
 }: UseDriverVehicleFormControllerProps) => {
   const [plateState, setPlateState] = useState<IPlateState>({
+    error: null,
     isFound: false,
     isLoading: false,
-    error: null,
   });
 
   // Driver handlers
@@ -106,13 +106,23 @@ export const useDriverVehicleFormController = ({
         vehicle: {
           ...data.vehicle,
           plateNumber: value,
-          ...(value.trim() === ""
-            ? { make: "", model: "", year: null, marketValue: null }
-            : {}),
+          make: "",
+          model: "",
+          year: null,
+        },
+      });
+
+      onErrorsChange({
+        ...errors,
+        vehicle: {
+          ...errors.vehicle,
+          make: undefined,
+          model: undefined,
+          year: undefined,
         },
       });
     },
-    [data, onChange]
+    [data, errors, onChange, onErrorsChange]
   );
   const handlePlateNumberLookup = useCallback(async () => {
     if (!data.vehicle.plateNumber.trim()) return;
