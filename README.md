@@ -17,6 +17,7 @@ Open [http://localhost:5173](http://localhost:5173)
 
 ```bash
 npm run build    # production build
+npm run preview  # production start
 npm run test:run # run unit tests
 ```
 
