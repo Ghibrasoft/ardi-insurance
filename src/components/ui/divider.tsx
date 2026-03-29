@@ -11,7 +11,7 @@ export function Divider({
   flexItem = false,
   direction = "horizontal",
 }: DividerProps) {
-  const baseStyles = "bg-gray-300";
+  const baseStyles = "bg-(--color-border)";
 
   const orientationStyles =
     direction === "vertical"

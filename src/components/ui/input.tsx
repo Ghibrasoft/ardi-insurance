@@ -133,13 +133,15 @@ export function Input({
         value={value}
         className={cn(
           "w-full px-3 py-2.5 rounded-lg border text-sm cursor-text",
-          "bg-white placeholder:text-gray-400",
-          "outline-none transition-all duration-150",
-          "disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none",
+          "bg-(--color-surface) outline-none transition-all duration-150",
+          "disabled:bg-(--color-input-disabled) disabled:text-(--color-text-secondary) disabled:cursor-not-allowed disabled:pointer-events-none",
           error
             ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
-            : "border-gray-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-100",
-          props.type === "date" && isEmpty ? "text-gray-400" : "text-gray-900",
+            : "border-(--color-border) focus:border-teal-500 focus:ring-2 focus:ring-teal-100",
+          props.type === "date" && isEmpty
+            ? "text-(--color-text-placeholder)"
+            : "text-(--color-text-primary)",
+          "placeholder:text-(--color-text-placeholder)",
           value ? "pr-8" : "",
           className
         )}

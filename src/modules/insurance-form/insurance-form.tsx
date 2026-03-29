@@ -57,14 +57,14 @@ export default function InsuranceForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-(--color-bg)">
       <div className="container mx-auto py-10 px-4">
         <InsuranceFormHeader
           isFormSucceed={formState.isSubmitSucceed}
           onReset={handleClearForm}
         />
 
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="bg-(--color-surface) rounded-2xl border border-(--color-border) shadow-sm overflow-hidden">
           <Stepper
             totalSteps={3}
             currentStep={currentStep}

@@ -18,17 +18,26 @@ export function RadioCard({
   return (
     <SelectableCard selected={selected} onClick={onClick}>
       <div className="flex items-center justify-between mb-2">
-        <span className="font-semibold text-gray-900">{title}</span>
+        <span className="font-semibold text-(--color-text-primary)">
+          {title}
+        </span>
+
         <div
           className={`w-4 h-4 rounded-full border-2 flex items-center justify-center
-              ${selected ? "border-teal-500 bg-teal-500" : "border-gray-300"}
-            `}
+            ${
+              selected
+                ? "border-(--color-primary) bg-(--color-primary)"
+                : "border-(--color-border)"
+            }
+          `}
         >
           {selected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
         </div>
       </div>
 
-      <p className="text-xs text-gray-500 mb-3">{description}</p>
+      <p className="text-xs text-(--color-text-secondary) mb-3">
+        {description}
+      </p>
 
       {children}
     </SelectableCard>

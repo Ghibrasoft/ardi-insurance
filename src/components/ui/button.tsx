@@ -11,10 +11,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const VARIANT_STYLES: Record<ButtonVariant, string> = {
-  primary: "bg-teal-600 text-white hover:bg-teal-700 disabled:bg-teal-300",
+  primary:
+    "bg-(--color-primary) text-white hover:bg-(--color-primary-hover) disabled:bg-(--color-primary-ring)",
   outlined:
-    "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-400",
-  ghost: "text-gray-600 hover:bg-gray-100 disabled:text-gray-300",
+    "bg-(--color-surface) text-(--color-text-primary) border border-(--color-border) hover:bg-(--color-bg) disabled:text-(--color-text-secondary)",
+  ghost:
+    "text-(--color-text-primary) hover:bg-(--color-bg) disabled:text-(--color-text-secondary)",
 };
 
 const COLOR_SCHEME_STYLES: Record<
@@ -23,17 +25,20 @@ const COLOR_SCHEME_STYLES: Record<
 > = {
   default: {},
   error: {
-    primary: "bg-red-600 text-white hover:bg-red-700 disabled:bg-red-300",
+    primary:
+      "bg-(--color-error) text-white hover:bg-(--color-error-hover) disabled:bg-(--color-error-light)",
     outlined:
-      "bg-red-50 text-red-700 border border-red-300 hover:bg-red-100 disabled:bg-red-50 disabled:text-red-400",
-    ghost: "text-red-600 hover:bg-red-50 disabled:text-red-300",
+      "bg-(--color-error-light) text-(--color-error) border border-(--color-error) hover:bg-(--color-error-light) disabled:text-(--color-text-secondary)",
+    ghost:
+      "text-(--color-error) hover:bg-(--color-error-light) disabled:text-(--color-text-secondary)",
   },
   secondary: {
     primary:
-      "bg-indigo-600 text-white hover:bg-indigo-700 disabled:bg-indigo-300",
+      "bg-(--color-secondary) text-white hover:bg-(--color-secondary-hover) disabled:bg-(--color-secondary-light)",
     outlined:
-      "bg-white text-indigo-700 border border-indigo-300 hover:bg-indigo-50 disabled:bg-white disabled:text-indigo-400",
-    ghost: "text-indigo-600 hover:bg-indigo-50 disabled:text-indigo-300",
+      "bg-(--color-surface) text-(--color-secondary) border border-(--color-secondary) hover:bg-(--color-secondary-light) disabled:text-(--color-text-secondary)",
+    ghost:
+      "text-(--color-secondary) hover:bg-(--color-secondary-light) disabled:text-(--color-text-secondary)",
   },
 };
 
