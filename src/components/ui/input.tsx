@@ -61,7 +61,7 @@ const maskFunctions: Record<
   numeric: (value: string) => value.replace(/\D+/g, ""),
 };
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
   clearable?: boolean;
   maskVariant?: MaskVariant;
