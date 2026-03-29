@@ -8,6 +8,7 @@ import { useDriverVehicleFormController } from "./use-driver-vehicle-form-contro
 
 interface DriverVehicleFormProps {
   data: IDriverVehicleFormData;
+  isPlateCheckedAndFound: boolean;
   errors: IDriverVehicleFormErrors;
   onChange: (data: IDriverVehicleFormData) => void;
   onErrorsChange: (errors: IDriverVehicleFormErrors) => void;
@@ -16,6 +17,7 @@ interface DriverVehicleFormProps {
 export const DriverVehicleForm = ({
   data,
   errors,
+  isPlateCheckedAndFound,
   onChange,
   onErrorsChange,
 }: DriverVehicleFormProps) => {
@@ -30,7 +32,12 @@ export const DriverVehicleForm = ({
     <div className="flex flex-col gap-6">
       <DriverInfoSection data={data} errors={errors} controller={controller} />
 
-      <VehicleInfoSection data={data} errors={errors} controller={controller} />
+      <VehicleInfoSection
+        data={data}
+        errors={errors}
+        controller={controller}
+        isPlateCheckedAndFound={isPlateCheckedAndFound}
+      />
     </div>
   );
 };

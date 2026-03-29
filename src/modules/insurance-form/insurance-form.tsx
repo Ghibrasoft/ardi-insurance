@@ -16,6 +16,7 @@ export default function InsuranceForm() {
     currentStep,
     collectedData,
     driverVehicleErrors,
+    isPlateCheckedAndFound,
     shouldRenderQuoteHistory,
     handleBack,
     handleNext,
@@ -33,6 +34,7 @@ export default function InsuranceForm() {
           <DriverVehicleForm
             errors={driverVehicleErrors}
             data={collectedData.driverVehicleData}
+            isPlateCheckedAndFound={isPlateCheckedAndFound}
             onChange={handleSubmitDriverVehicleForm}
             onErrorsChange={handleDriverVehicleErrorsChange}
           />

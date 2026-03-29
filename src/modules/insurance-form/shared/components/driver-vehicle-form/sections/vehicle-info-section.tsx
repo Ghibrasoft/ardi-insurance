@@ -16,6 +16,7 @@ import { FormInputField } from "../../../../../../components/ui/form-input-field
 
 interface Props extends UseDriverVehicleFormControllerType {
   data: IDriverVehicleFormData;
+  isPlateCheckedAndFound: boolean;
   errors: IDriverVehicleFormErrors;
 }
 
@@ -46,7 +47,12 @@ const VEHICLE_INFO_FORM_FIELDS = [
   },
 ] as const;
 
-export const VehicleInfoSection = ({ data, errors, controller }: Props) => {
+export const VehicleInfoSection = ({
+  data,
+  errors,
+  controller,
+  isPlateCheckedAndFound,
+}: Props) => {
   const {
     plateState,
     handlePlateKeyDown,
@@ -76,22 +82,22 @@ export const VehicleInfoSection = ({ data, errors, controller }: Props) => {
       <Button
         className="shrink-0"
         isLoading={plateState.isLoading}
-        variant={plateState.isFound ? "primary" : "outlined"}
-        btnColor={plateState.isFound ? "success" : "default"}
+        variant={isPlateCheckedAndFound ? "primary" : "outlined"}
+        btnColor={isPlateCheckedAndFound ? "success" : "default"}
         disabled={
           !PLATE_NUMBER_REGEX.test(data.vehicle.plateNumber.trim()) ||
-          plateState.isFound
+          isPlateCheckedAndFound
         }
         onClick={handlePlateNumberLookup}
       >
         <span className="text-(--color-text-primary)">
-          {plateState.isFound ? "✓" : "🔍"}
+          {isPlateCheckedAndFound ? "✓" : "🔍"}
         </span>
       </Button>
     ),
     [
-      plateState.isFound,
       plateState.isLoading,
+      isPlateCheckedAndFound,
       data.vehicle.plateNumber,
       handlePlateNumberLookup,
     ]
