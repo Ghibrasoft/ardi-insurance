@@ -79,6 +79,81 @@ No third-party UI or form validation libraries.
 
 **`lib/`** — shared utilities (calculations, formatters, `cn`) live outside the module — reusable across future modules.
 
+<pre>
+src
+ ┣ components
+ ┃ ┣ common               # Reusable atomic components (e.g., Logo)
+ ┃ ┃ ┗ logo.tsx
+ ┃ ┣ layout               # Page structural components (Header, Footer)
+ ┃ ┃ ┣ footer.tsx
+ ┃ ┃ ┣ header.tsx
+ ┃ ┃ ┣ main-layout.tsx
+ ┃ ┃ ┗ stepper.tsx
+ ┃ ┗ ui                   # Low-level primitive UI components (Design System)
+ ┃ ┃ ┣ button.tsx
+ ┃ ┃ ┣ checkbox-card.tsx
+ ┃ ┃ ┣ divider.tsx
+ ┃ ┃ ┣ error-boundary.tsx
+ ┃ ┃ ┣ form-field.tsx
+ ┃ ┃ ┣ input.tsx
+ ┃ ┃ ┣ radio-card.tsx
+ ┃ ┃ ┣ section-card.tsx
+ ┃ ┃ ┣ selectable-card.tsx
+ ┃ ┃ ┗ summary-row.tsx
+ ┣ hooks                  # Global custom React hooks
+ ┃ ┣ use-dark-mode.ts
+ ┃ ┗ use-local-storage.ts
+ ┣ lib                    # Third-party configs and shared business logic
+ ┃ ┣ constants            # Fixed data like insurance tiers and addon lists
+ ┃ ┃ ┣ insurance-addons.ts
+ ┃ ┃ ┗ insurance-packages.ts
+ ┃ ┗ utils                # Helper functions (Formatting, Validation)
+ ┃ ┃ ┣ _tests             # Unit tests for utility functions
+ ┃ ┃ ┃ ┗ calculations.test.ts
+ ┃ ┃ ┣ calculations.ts
+ ┃ ┃ ┣ check-plate-number.ts
+ ┃ ┃ ┣ cn.ts              # Tailwind class merging utility
+ ┃ ┃ ┣ format-date.ts
+ ┃ ┃ ┣ format-price.ts
+ ┃ ┃ ┗ sleep.ts
+ ┣ modules                # Feature-based architecture (Encapsulated logic)
+ ┃ ┗ insurance-form       # Main insurance flow module
+ ┃ ┃ ┣ shared             # Module-specific shared assets
+ ┃ ┃ ┃ ┣ api              # Mock data and API fetching logic
+ ┃ ┃ ┃ ┃ ┗ insurance-form-mock.ts
+ ┃ ┃ ┃ ┣ components       # Feature-specific sub-components
+ ┃ ┃ ┃ ┃ ┣ driver-vehicle-form
+ ┃ ┃ ┃ ┃ ┃ ┣ sections
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ driver-info-section.tsx
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ vehicle-info-section.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ driver-vehicle-form.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ use-driver-vehicle-form-controller.ts
+ ┃ ┃ ┃ ┃ ┣ insurance-plan-selection
+ ┃ ┃ ┃ ┃ ┃ ┣ insurance-plan-selection.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ use-insurance-plan-selection-controller.ts
+ ┃ ┃ ┃ ┃ ┣ quote-summary
+ ┃ ┃ ┃ ┃ ┃ ┣ quote-card.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ quote-history-list.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ quote-summary-header.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ quote-summary.tsx
+ ┃ ┃ ┃ ┃ ┣ insurance-form-header.tsx
+ ┃ ┃ ┃ ┃ ┣ insurance-form-navigation.tsx
+ ┃ ┃ ┃ ┃ ┗ policy-summary.tsx
+ ┃ ┃ ┃ ┣ hooks            # Hooks specific to the insurance flow
+ ┃ ┃ ┃ ┃ ┗ use-quote-history.ts
+ ┃ ┃ ┃ ┣ utils            # Validation logic for the form
+ ┃ ┃ ┃ ┃ ┣ _tests
+ ┃ ┃ ┃ ┃ ┃ ┗ validation.test.ts
+ ┃ ┃ ┃ ┃ ┗ validation.ts
+ ┃ ┃ ┃ ┗ insurance-form-types.ts
+ ┃ ┃ ┣ insurance-form-config.ts # Configuration for form steps/fields
+ ┃ ┃ ┣ insurance-form.tsx       # Entry point for the insurance module
+ ┃ ┃ ┗ use-insurance-form-controller.ts # Main state machine for the form
+ ┣ App.tsx                # Main Application component & Routing
+ ┣ index.css              # Global styles and Tailwind imports
+ ┗ main.tsx               # App entry point (ReactDOM Render)
+</pre>
+
 ---
 
 ## Georgian-specific Notes
@@ -91,7 +166,5 @@ No third-party UI or form validation libraries.
 
 ## What Could Be Improved
 
-- `localStorage` — no error handling for corrupted/invalid JSON on draft load
-- Accessibility — `id`/`htmlFor` pairing and ARIA attributes missing
 - PDF — currently `window.print()`; proper solution needs `@react-pdf/renderer`
 - Phone input — country prefix handled via mask; a proper phone input with country selector would be more robust

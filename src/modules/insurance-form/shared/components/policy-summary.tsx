@@ -28,15 +28,21 @@ export const PolicySummary = ({ quote, isFormSucceed }: PolicySummaryProps) => {
       <SectionCard title="მძღოლის ინფორმაცია">
         <div className="flex flex-col sm:flex-row gap-3 text-sm relative">
           <div className="flex-1 flex flex-col gap-2">
-            <SummaryRow label="სახელი და გვარი" value="John Doe" />
-            <SummaryRow label="პირადი ნომერი" value="123456789" />
+            <SummaryRow
+              label="სახელი და გვარი"
+              value={`${quote.driver.firstName} ${quote.driver.lastName}`}
+            />
+            <SummaryRow label="პირადი ნომერი" value={quote.driver.personalId} />
           </div>
 
           <Divider direction="vertical" flexItem className="hidden sm:block" />
 
           <div className="flex-1 flex flex-col gap-2">
-            <SummaryRow label="დაბადების თარიღი" value="01/01/1990" />
-            <SummaryRow label="ტელეფონი" value="+995 555 123 456" />
+            <SummaryRow
+              label="დაბადების თარიღი"
+              value={formatDate(quote.driver.dateOfBirth)}
+            />
+            <SummaryRow label="ტელეფონი" value={quote.driver.phone} />
           </div>
         </div>
       </SectionCard>

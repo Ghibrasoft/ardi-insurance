@@ -42,11 +42,17 @@ export const useInsuranceFormController = () => {
       driver: {},
       vehicle: {},
     });
+
   const shouldRenderQuoteHistory =
     formState.isSubmitSucceed && history.length > 0;
   const isFormDirty =
     JSON.stringify(collectedData) !==
     JSON.stringify(INSURANCE_FORM_DEFAULT_VALUES);
+  const isPlateCheckedAndFound = !!(
+    collectedData.driverVehicleData.vehicle.make &&
+    collectedData.driverVehicleData.vehicle.model &&
+    collectedData.driverVehicleData.vehicle.year
+  );
 
   const handleCalculateQuote = useCallback(() => {
     const { startDate, endDate } = getPolicyDates();
@@ -171,6 +177,7 @@ export const useInsuranceFormController = () => {
     currentStep,
     collectedData,
     driverVehicleErrors,
+    isPlateCheckedAndFound,
     shouldRenderQuoteHistory,
     handleBack,
     handleNext,

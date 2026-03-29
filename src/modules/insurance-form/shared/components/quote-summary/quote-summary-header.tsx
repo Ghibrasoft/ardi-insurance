@@ -16,10 +16,7 @@ export const QuoteSummaryHeader = () => {
       </div>
 
       <div>
-        <h2
-          className="text-2xl font-bold"
-          style={{ color: "var(--color-text-primary)" }}
-        >
+        <h2 className="text-2xl font-bold text-(--color-text-primary)">
           პოლისი წარმატებით შეიქმნა 🎉
         </h2>
         <p className="mt-2" style={{ color: "var(--color-text-secondary)" }}>
